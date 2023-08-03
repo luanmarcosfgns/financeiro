@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\ServicosAnexoController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UsuariosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,5 @@ Route::group([
             Route::resource('servicos', ServicoController::class)->except(['create','edit']);
             Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
             Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
+            Route::resource('sessions', SessionController::class)->except(['create','edit']);
     });
