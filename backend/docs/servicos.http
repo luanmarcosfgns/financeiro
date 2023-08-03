@@ -1,0 +1,52 @@
+
+###LISTAR SERVIÇOS
+GET http://localhost:8000/api/servicos
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODY1NDUsImV4cCI6MTY5MTA5MDE0NSwibmJmIjoxNjkxMDg2NTQ1LCJqdGkiOiJSNU9vSGpEN3NqbDloWDNyIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fCKRrZByh3mS1z8Rl6ePnycbqoit5_Fh4KeVEE7xsKY
+Content-Type: application/json
+Accept: application/json
+
+###VER SERVIÇOS
+GET http://localhost:8000/api/servicos/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODY1NDUsImV4cCI6MTY5MTA5MDE0NSwibmJmIjoxNjkxMDg2NTQ1LCJqdGkiOiJSNU9vSGpEN3NqbDloWDNyIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fCKRrZByh3mS1z8Rl6ePnycbqoit5_Fh4KeVEE7xsKY
+Content-Type: application/json
+Accept: application/json
+
+####ADICIONAR SERVIÇOS
+POST http://localhost:8000/api/servicos
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODY1NDUsImV4cCI6MTY5MTA5MDE0NSwibmJmIjoxNjkxMDg2NTQ1LCJqdGkiOiJSNU9vSGpEN3NqbDloWDNyIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fCKRrZByh3mS1z8Rl6ePnycbqoit5_Fh4KeVEE7xsKY
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nome": "Tributado",
+    "descritivo": null,
+    "ativo": true,
+    "preco": 0.02,
+    "aliquota_id": 1,
+    "categoria_id": 1
+}
+####MUDAR SERVIÇOS
+POST http://localhost:8000/api/servicos/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODY1NDUsImV4cCI6MTY5MTA5MDE0NSwibmJmIjoxNjkxMDg2NTQ1LCJqdGkiOiJSNU9vSGpEN3NqbDloWDNyIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fCKRrZByh3mS1z8Rl6ePnycbqoit5_Fh4KeVEE7xsKY
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "PUT",
+    "nome": "Certificado A1",
+    "descritivo": null,
+    "ativo": true,
+    "preco": 0.02,
+    "aliquota_id": 1,
+    "categoria_id": 1
+}
+
+####APAGAR SERVIÇOS
+POST http://localhost:8000/api/servicos/2
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODY1NDUsImV4cCI6MTY5MTA5MDE0NSwibmJmIjoxNjkxMDg2NTQ1LCJqdGkiOiJSNU9vSGpEN3NqbDloWDNyIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.fCKRrZByh3mS1z8Rl6ePnycbqoit5_Fh4KeVEE7xsKY
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "DELETE"
+}

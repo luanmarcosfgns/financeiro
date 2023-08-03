@@ -1,0 +1,45 @@
+
+###LISTAR ALIQUOTAS
+GET http://localhost:8000/api/aliquotas
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODE2NzcsImV4cCI6MTY5MTA4NTI3NywibmJmIjoxNjkxMDgxNjc3LCJqdGkiOiJTWHVRS1doaVROcDlvang3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.V27sjqVIfnG2MFrcAzuItrmH2IpNdJ-28IE5tvAaOnM
+Content-Type: application/json
+Accept: application/json
+
+###VER ALIQUOTAS
+GET http://localhost:8000/api/aliquotas/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODE2NzcsImV4cCI6MTY5MTA4NTI3NywibmJmIjoxNjkxMDgxNjc3LCJqdGkiOiJTWHVRS1doaVROcDlvang3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.V27sjqVIfnG2MFrcAzuItrmH2IpNdJ-28IE5tvAaOnM
+Content-Type: application/json
+Accept: application/json
+
+####ADICIONAR ALIQUOTAS
+POST http://localhost:8000/api/aliquotas
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODE2NzcsImV4cCI6MTY5MTA4NTI3NywibmJmIjoxNjkxMDgxNjc3LCJqdGkiOiJTWHVRS1doaVROcDlvang3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.V27sjqVIfnG2MFrcAzuItrmH2IpNdJ-28IE5tvAaOnM
+Content-Type: application/json
+Accept: application/json
+
+{
+    "nome": "Tributado",
+    "descritivo": null,
+    "ativo": true
+}
+####MUDAR ALIQUOTAS
+POST http://localhost:8000/api/aliquotas/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODE2NzcsImV4cCI6MTY5MTA4NTI3NywibmJmIjoxNjkxMDgxNjc3LCJqdGkiOiJTWHVRS1doaVROcDlvang3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.V27sjqVIfnG2MFrcAzuItrmH2IpNdJ-28IE5tvAaOnM
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "PUT",
+    "nome": "Tributada",
+    "descritivo": null,
+    "ativo": true
+}
+####APAGAR ALIQUOTAS
+POST http://localhost:8000/api/aliquotas/2
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODE2NzcsImV4cCI6MTY5MTA4NTI3NywibmJmIjoxNjkxMDgxNjc3LCJqdGkiOiJTWHVRS1doaVROcDlvang3Iiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.V27sjqVIfnG2MFrcAzuItrmH2IpNdJ-28IE5tvAaOnM
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "DELETE"
+}

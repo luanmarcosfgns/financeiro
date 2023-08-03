@@ -1,0 +1,52 @@
+
+###LISTAR SERVIÇOS
+GET http://localhost:8000/api/sessions
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+###VER SERVIÇOS
+GET http://localhost:8000/api/sessions/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+####ADICIONAR SERVIÇOS
+POST http://localhost:8000/api/sessions
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "business_id":1,
+    "descritivo":"Loren Epsun",
+    "image_video":"Loren Epsun",
+    "nome":"Loren Epsun",
+    "parent_id":1
+
+}
+####MUDAR SERVIÇOS
+POST http://localhost:8000/api/sessions/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "PUT",
+    "business_id":1,
+    "descritivo":"Loren Epsun",
+    "image_video":"Loren Epsun",
+    "nome":"Loren Epsun",
+    "parent_id":1
+
+}
+
+####APAGAR SERVIÇOS
+POST http://localhost:8000/api/sessions/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "DELETE"
+}
