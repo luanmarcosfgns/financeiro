@@ -67,7 +67,7 @@ class UsuariosController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
        return response()->json($user);
     }
@@ -81,7 +81,7 @@ class UsuariosController extends Controller
         $id
     ): JsonResponse{
 
-        $user = User::find($id);
+        $user = User::findOrFail($id);
 
         $validated = $this->validated("update",$request,$id);
         if(User::where('email',$validated['email'])->where('id','<>',$id)->count()>0){

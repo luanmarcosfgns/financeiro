@@ -2,31 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Aliquota;
 use App\Models\Servico;
-use App\Models\ServicosAnexo;
+use App\Models\VendasServico;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 
-class ServicosAnexoController extends Controller
+class VendasServicoController extends Controller
 {
     public function validated($type,$request){
     if($type=="store"){
         $request->validate(
         [
-            'image_video'=>['required','max:255','string'],
-            'servico_id'=>['required'],
+            'impostos'=>['required','json'],
+            'produto_id'=>['required'],
+            'valor'=>['required','numeric'],
+            'venda_id'=>['required'],
         ]
         );
     }else{
         $request->validate([
-            'image_video'=>['required','max:255','string'],
-            'servico_id'=>['required'],
+            'impostos'=>['required','json'],
+            'produto_id'=>['required'],
+            'valor'=>['required','numeric'],
+            'venda_id'=>['required'],
         ]);
     }
-        return $request->only(["image_video","servico_id"]);
+        return $request->only(["impostos","produto_id","valor","venda_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -38,19 +41,18 @@ class ServicosAnexoController extends Controller
         if ($search == null) {
             $search = "";
         }
-        if (empty($request->servico_id)) {
+
+        if (empty($request->venda_id)) {
             abort(404,'Not Found');
         }
 
-        $countServico = Servico::where('id',$request->servico_id)->where('business_id',auth()->user()->business_id)->count();
-        if($countServico==0){
+        $countVendasPagamento = Servico::where('id',$request->venda_id)->where('business_id',auth()->user()->business_id)->count();
+        if($countVendasPagamento==0){
             abort(404, 'Not Found');
         }
-        $servicos_anexos = ServicosAnexo::search($search)
-            ->where('servico_id',$request->servico_id)
-            ->paginate(5);
+        $vendasServicos = VendasServico::search($search)->where('venda_id',$request->venda_id)->paginate(5);
 
-        return response()->json($servicos_anexos);
+        return response()->json($vendasServicos);
     }
 
 
@@ -62,9 +64,10 @@ class ServicosAnexoController extends Controller
     {
 
         $validated = $this->validated("store",$request);
-        $servicos_anexo = ServicosAnexo::create($validated);
 
-         return response()->json($servicos_anexo);
+        $vendas_servico = VendasServico::create($validated);
+
+         return response()->json($vendas_servico);
     }
 
     /**
@@ -72,9 +75,9 @@ class ServicosAnexoController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
+        $vendas_servico = VendasServico::findOrFail($id);
 
-       return response()->json($servicos_anexo);
+       return response()->json($vendas_servico);
     }
 
 
@@ -86,12 +89,12 @@ class ServicosAnexoController extends Controller
        $id
     ): JsonResponse{
 
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
+        $vendas_servico = VendasServico::findOrFail($id);
         $validated = $this->validated("update",$request);
 
-        $servicos_anexo->update($validated);
+        $vendas_servico->update($validated);
 
-         return response()->json($servicos_anexo);
+         return response()->json($vendas_servico);
     }
 
     /**
@@ -99,8 +102,8 @@ class ServicosAnexoController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
-        $servicos_anexo->delete();
+        $vendas_servico = VendasServico::findOrFail($id);
+        $vendas_servico->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
     }

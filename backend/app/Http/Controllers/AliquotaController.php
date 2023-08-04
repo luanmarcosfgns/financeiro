@@ -67,7 +67,7 @@ class AliquotaController extends Controller
     public function show(Request $request, $id): JsonResponse
     {
         $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
 
         return response()->json($aliquota);
     }
@@ -83,7 +83,7 @@ class AliquotaController extends Controller
     {
 
         $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
         $validated = $this->validated("update", $request);
 
         $aliquota->update($validated);
@@ -97,7 +97,7 @@ class AliquotaController extends Controller
     public function destroy(Request $request, $id): JsonResponse
     {
         $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
         $aliquota->delete();
 
         return response()->json(["success" => true, "message" => "Removed success"]);

@@ -38,7 +38,7 @@ where TABLE_NAME = ':table'
         }
 
 
-        $writeModelText = WriteModelText::render(self::mold(),[':table'=>$table,':columns'=>$columns]);
+        $writeModelText = WriteModelText::render(self::mold(),[':table'=>$table,':columns'=>$columns,':description'=>strtoupper($table)]);
         $dir = base_path().'/docs';
 
         $filename = $table.'.http';
@@ -50,19 +50,19 @@ where TABLE_NAME = ':table'
     public static function mold(): string
     {
         return '
-###LISTAR SERVIÇOS
+###LIST :description
 GET http://localhost:8000/api/:table
 Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-###VER SERVIÇOS
+###VER :description
 GET http://localhost:8000/api/:table/1
 Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR SERVIÇOS
+####ADICIONAR :description
 POST http://localhost:8000/api/:table
 Authorization: Bearer :hash
 Content-Type: application/json
@@ -71,7 +71,7 @@ Accept: application/json
 {
 :columns
 }
-####MUDAR SERVIÇOS
+####MUDAR :description
 POST http://localhost:8000/api/:table/1
 Authorization: Bearer :hash
 Content-Type: application/json
@@ -82,7 +82,7 @@ Accept: application/json
 :columns
 }
 
-####APAGAR SERVIÇOS
+####APAGAR :description
 POST http://localhost:8000/api/:table/1
 Authorization: Bearer :hash
 Content-Type: application/json
@@ -136,7 +136,7 @@ Accept: application/json
             'bool' => 'true'.$comma,
             'enum' => $quote.'value'.$quote.$comma,
             'set' =>  $quote.'value'.$quote.$comma,
-            'json' =>  $quote.'json'.$quote.$comma,
+            'json' =>  $quote.'[]'.$quote.$comma,
         );
 
        return $typeData[$type]??"";

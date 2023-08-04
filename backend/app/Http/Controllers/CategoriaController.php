@@ -28,7 +28,7 @@ class CategoriaController extends Controller
             'parent_id'=>['nullable'],
         ]);
     }
-        return $request->only(["business_id","descritivo","nome","parent_id"]);
+        return $request->only(["descritivo","nome","parent_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -71,7 +71,7 @@ class CategoriaController extends Controller
     public function show(Request $request, $id):JsonResponse
     {
         $categoria = Categoria::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
 
        return response()->json($categoria);
     }
@@ -86,7 +86,7 @@ class CategoriaController extends Controller
     ): JsonResponse{
 
         $categoria = Categoria::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
         $validated = $this->validated("update",$request);
 
         $categoria->update($validated);
@@ -100,7 +100,7 @@ class CategoriaController extends Controller
     public function destroy(Request $request, $id): JsonResponse
     {
         $categoria = Categoria::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->first();
+            ->where('id', $id)->firstOrFail();
         $categoria->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

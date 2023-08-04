@@ -2,37 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Servico;
+use App\Models\Venda;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 
-class ServicoController extends Controller
+class VendaController extends Controller
 {
     public function validated($type,$request){
     if($type=="store"){
         $request->validate(
         [
-            'aliquota_id'=>['nullable'],
-            'ativo'=>['required','boolean'],
-            'categoria_id'=>['nullable'],
+
+            'contato_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
-            'preco'=>['required','numeric'],
+            'impostos_totais'=>['required','json'],
+            'valor_total'=>['required','numeric'],
         ]
         );
     }else{
         $request->validate([
-            'aliquota_id'=>['nullable'],
-            'ativo'=>['required','boolean'],
-            'categoria_id'=>['nullable'],
+
+            'contato_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
-            'preco'=>['required','numeric'],
+            'impostos_totais'=>['required','json'],
+            'valor_total'=>['required','numeric'],
         ]);
     }
-        return $request->only(["aliquota_id","ativo","business_id","categoria_id","descritivo","nome","preco"]);
+        return $request->only(["contato_id","descritivo","impostos_totais","valor_total"]);
     }
     /**
      * Display a listing of the resource.
@@ -44,11 +42,11 @@ class ServicoController extends Controller
         if ($search == null) {
             $search = "";
         }
-        $servicos = Servico::search($search)
+        $vendas = Venda::search($search)
             ->where('business_id', auth()->user()->business_id)
             ->paginate(5);
 
-        return response()->json($servicos);
+        return response()->json($vendas);
     }
 
 
@@ -61,9 +59,9 @@ class ServicoController extends Controller
 
         $validated = $this->validated("store",$request);
         $validated['business_id'] = auth()->user()->business_id;
-        $servico = Servico::create($validated);
+        $venda = Venda::create($validated);
 
-         return response()->json($servico);
+         return response()->json($venda);
     }
 
     /**
@@ -71,10 +69,10 @@ class ServicoController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $servico = Servico::where('business_id', auth()->user()->business_id)
+        $venda = Venda::where('business_id', auth()->user()->business_id)
             ->where('id', $id)->firstOrFail();
 
-       return response()->json($servico);
+       return response()->json($venda);
     }
 
 
@@ -86,12 +84,13 @@ class ServicoController extends Controller
        $id
     ): JsonResponse{
 
-        $servico = Servico::where('business_id', auth()->user()->business_id)
+        $venda = Venda::where('business_id', auth()->user()->business_id)
             ->where('id', $id)->firstOrFail();
         $validated = $this->validated("update",$request);
-        $servico->update($validated);
 
-         return response()->json($servico);
+        $venda->update($validated);
+
+         return response()->json($venda);
     }
 
     /**
@@ -99,9 +98,9 @@ class ServicoController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $servico = Servico::where('business_id', auth()->user()->business_id)
+        $venda = Venda::where('business_id', auth()->user()->business_id)
             ->where('id', $id)->firstOrFail();
-        $servico->delete();
+        $venda->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
     }

@@ -10,6 +10,9 @@ use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\ServicosAnexoController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\VendaController;
+use App\Http\Controllers\VendasPagamentoController;
+use App\Http\Controllers\VendasServicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +39,7 @@ Route::group([
             Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
             Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
             Route::resource('sessions', SessionController::class)->except(['create','edit']);
+            Route::resource('vendas', VendaController::class)->except(['create','edit']);
+            Route::resource('vendas_pagamentos', VendasPagamentoController::class)->except(['create','edit']);
+            Route::resource('vendas_servicos', VendasServicoController::class)->except(['create','edit']);
     });

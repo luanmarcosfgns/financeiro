@@ -90,7 +90,7 @@ class ContatoController extends Controller
     {
         $contato = Contato::where('id', $id)
             ->where('business_id', auth()->user()->business_id)
-            ->first();
+            ->firstOrFail();
         return response()->json($contato);
     }
 
@@ -105,7 +105,7 @@ class ContatoController extends Controller
 
         $contato =  Contato::where('id', $id)
             ->where('business_id', auth()->user()->business_id)
-            ->first();
+            ->firstOrFail();
         $validated = $this->validated("update",$request);
 
         $contato->update($validated);
@@ -120,7 +120,7 @@ class ContatoController extends Controller
     {
        $contato =  Contato::where('id', $id)
         ->where('business_id', auth()->user()->business_id)
-        ->first();
+        ->firstOrFail();
 
         $contato->delete();
 

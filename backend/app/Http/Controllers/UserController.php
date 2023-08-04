@@ -70,7 +70,7 @@ class UserController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $this->authorize("view", $user);
 
        return response()->json($user);
@@ -85,7 +85,7 @@ class UserController extends Controller
        $id
     ): JsonResponse{
 
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $validated = $this->validated("update",$request);
 
         $user->update($validated);
@@ -98,7 +98,7 @@ class UserController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $user->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

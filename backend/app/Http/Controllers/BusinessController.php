@@ -79,7 +79,7 @@ class BusinessController extends Controller
     {
         $busine = Business::where('id',auth()->user()->business_id)
             ->where('id',$id)
-            ->first();
+            ->firstOrFail();
 
        return response()->json($busine);
     }
@@ -95,7 +95,7 @@ class BusinessController extends Controller
 
         $busine = Business::where('id',auth()->user()->business_id)
             ->where('id',$id)
-            ->first();
+            ->firstOrFail();
         $validated = $this->validated("update",$request);
 
         $busine->update($validated);
@@ -110,7 +110,7 @@ class BusinessController extends Controller
     {
         $busine = Business::where('id',auth()->user()->business_id)
             ->where('id',$id)
-            ->first();
+            ->firstOrFail();
         $busine->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

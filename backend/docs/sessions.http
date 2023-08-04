@@ -1,24 +1,23 @@
 
 ###LISTAR SERVIÇOS
 GET http://localhost:8000/api/sessions
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwOTU4ODUsImV4cCI6MTY5MTA5OTQ4NSwibmJmIjoxNjkxMDk1ODg1LCJqdGkiOiJ6ZVhoZ014MEhWa3FzV0NYIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.C9JUacar0dIBP9HVrlc_alueeWOU7mzTnkaj1veyRUo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzEyMTMsImV4cCI6MTY5MTE3NDgxMywibmJmIjoxNjkxMTcxMjEzLCJqdGkiOiJheWZmdmJJcTBmNFNxVWNhIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.DMq2cANxSUVdoGzH93pdYo08HQMN11OffqDt64-39Qg
 Content-Type: application/json
 Accept: application/json
 
 ###VER SERVIÇOS
 GET http://localhost:8000/api/sessions/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwOTU4ODUsImV4cCI6MTY5MTA5OTQ4NSwibmJmIjoxNjkxMDk1ODg1LCJqdGkiOiJ6ZVhoZ014MEhWa3FzV0NYIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.C9JUacar0dIBP9HVrlc_alueeWOU7mzTnkaj1veyRUo
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzEyMTMsImV4cCI6MTY5MTE3NDgxMywibmJmIjoxNjkxMTcxMjEzLCJqdGkiOiJheWZmdmJJcTBmNFNxVWNhIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.DMq2cANxSUVdoGzH93pdYo08HQMN11OffqDt64-39Qg
 Content-Type: application/json
 Accept: application/json
 
 ####ADICIONAR SERVIÇOS
 POST http://localhost:8000/api/sessions
-Authorization: Bearer :hash
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
 Content-Type: application/json
 Accept: application/json
 
 {
-    "business_id":1,
     "descritivo":"Loren Epsun",
     "image_video":"Loren Epsun",
     "nome":"Loren Epsun",
@@ -26,14 +25,13 @@ Accept: application/json
 
 }
 ####MUDAR SERVIÇOS
-POST http://localhost:8000/api/sessions/1
-Authorization: Bearer :hash
+POST http://localhost:8000/api/sessions/4
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
-    "business_id":1,
     "descritivo":"Loren Epsun",
     "image_video":"Loren Epsun",
     "nome":"Loren Epsun",
@@ -42,8 +40,8 @@ Accept: application/json
 }
 
 ####APAGAR SERVIÇOS
-POST http://localhost:8000/api/sessions/1
-Authorization: Bearer :hash
+POST http://localhost:8000/api/sessions/6
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
 Content-Type: application/json
 Accept: application/json
 

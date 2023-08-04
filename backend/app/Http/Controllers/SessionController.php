@@ -14,7 +14,6 @@ class SessionController extends Controller
     if($type=="store"){
         $request->validate(
         [
-            'business_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
             'image_video'=>['nullable','max:4294967295','string'],
             'nome'=>['required','max:255','string'],
@@ -23,14 +22,13 @@ class SessionController extends Controller
         );
     }else{
         $request->validate([
-            'business_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
             'image_video'=>['nullable','max:4294967295','string'],
             'nome'=>['required','max:255','string'],
             'parent_id'=>['nullable'],
         ]);
     }
-        return $request->only(["business_id","descritivo","image_video","nome","parent_id"]);
+        return $request->only(["descritivo","image_video","nome","parent_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -43,6 +41,7 @@ class SessionController extends Controller
             $search = "";
         }
         $sessions = Session::search($search)
+            ->where('business_id', auth()->user()->business_id)
             ->paginate(5);
 
         return response()->json($sessions);
@@ -57,7 +56,7 @@ class SessionController extends Controller
     {
 
         $validated = $this->validated("store",$request);
-
+        $validated['business_id'] = auth()->user()->business_id;
         $session = Session::create($validated);
 
          return response()->json($session);
@@ -68,7 +67,8 @@ class SessionController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $session = Session::find($id);
+        $session = Session::where('business_id', auth()->user()->business_id)
+            ->where('id', $id)->firstOrFail();
 
        return response()->json($session);
     }
@@ -82,9 +82,9 @@ class SessionController extends Controller
        $id
     ): JsonResponse{
 
-        $session = Session::find($id);
+        $session = Session::where('business_id', auth()->user()->business_id)
+            ->where('id', $id)->firstOrFail();
         $validated = $this->validated("update",$request);
-
         $session->update($validated);
 
          return response()->json($session);
@@ -95,7 +95,8 @@ class SessionController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $session = Session::find($id);
+        $session = Session::where('business_id', auth()->user()->business_id)
+            ->where('id', $id)->firstOrFail();
         $session->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
