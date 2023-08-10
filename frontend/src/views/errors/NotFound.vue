@@ -33,7 +33,7 @@ export default {
     align-items: center;
     font-size: 144px;
     font-weight: 100;
-    color: #4a5568;
+    color: #ffffff;
 }
 
 .main-text {
@@ -41,7 +41,7 @@ export default {
     justify-content: center;
     align-items: center;
     font-size: 30px;
-    color: #4a5568;
+    color: #ffffff;
 
 }
 
@@ -64,6 +64,7 @@ box-center {
     justify-content: right;
     align-items: center;
     margin: 10px;
+    color: white;
 
 }
 </style>

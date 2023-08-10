@@ -2,7 +2,7 @@
 
     <div class="content-wrapper p-5">
         <div class="row justify-content-center">
-            <div class="col-md-3">
+            <div class="col-md-6" style="max-width: 360px; min-width: 280px">
                 <div class="card">
                     <div class="card-header pt-5 pb-4">
                         <div>
@@ -82,7 +82,9 @@ export default {
             };
             axios.post(process.env.VUE_APP_API_HOST_NAME + '/api/auth/login', data)
                 .then(function (response) {
-                    console.log(response)
+                    localStorage.setItem('HASH',response.data.data.token);
+                    location.href = '/painel'
+
                 }).catch(function (error) {
               if(error.request.status==401){
                   toastr.error("Login ou senha invalidos");

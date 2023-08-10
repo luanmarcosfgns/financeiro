@@ -1,10 +1,18 @@
 <template>
-    <router-view></router-view>
+    <div>
+        <loading-page></loading-page>
+        <router-view></router-view>
+    </div>
+
 </template>
 
 <script>
+import LoadingPage from "@/components/widget/loadingPage.vue";
+
 export default {
-    name: 'App'
+    name: 'App',
+    components: {LoadingPage},
+
 }
 </script>
 <style>
