@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import LoadingPage from "@/components/widget/loadingPage.vue";
+import LoadingPage from "@/components/page/loadingPage.vue";
 
 export default {
     name: 'App',
