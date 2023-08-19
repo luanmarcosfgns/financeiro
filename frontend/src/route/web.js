@@ -13,6 +13,8 @@ import IndexVendas from "@/views/vendas/IndexVendas.vue";
 import LoginForm from "@/views/auth/LoginForm.vue";
 import notFound from "@/views/errors/NotFound.vue";
 import Middleware from "@/services/Middleware";
+import CreateCategorias from "@/views/categorias/CreateCategorias.vue";
+import EditCategorias from "@/views/categorias/EditCategorias.vue";
 
 
 const routes = [
@@ -48,6 +50,23 @@ const routes = [
         path: '/categorias/index',
         name: 'indexCategorias',
         component: IndexCategorias,
+        meta: {
+            auth: true
+        }
+    },
+
+    {
+        path: '/categorias/create',
+        name: 'createCategorias',
+        component: CreateCategorias,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/categorias/:id/edit',
+        name: 'editCategorias',
+        component: EditCategorias,
         meta: {
             auth: true
         }
@@ -105,16 +124,20 @@ const routes = [
     {
         path: '/404',
         component: notFound
+    },
+    {
+        path: '/',
+        redirect: '/login'
     }
 ];
 const router = createRouter({history: createWebHistory(), routes});
 router.beforeEach((to) => {
     let middleware = new Middleware();
-    if(!middleware.logout(to)){
+    if (!middleware.logout(to)) {
         middleware.routeExists(to);
         middleware.validateHash(to);
     }
-   middleware.finishLoading();
+    middleware.finishLoading();
 
 
 })

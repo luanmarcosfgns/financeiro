@@ -79,7 +79,7 @@ class :modelController extends Controller
             $search = "";
         }
         $:table = :model::search($search)
-            ->paginate(5);
+            ->paginate(1000);
 
         return response()->json($:table);
     }

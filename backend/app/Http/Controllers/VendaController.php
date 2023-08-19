@@ -44,7 +44,7 @@ class VendaController extends Controller
         }
         $vendas = Venda::search($search)
             ->where('business_id', auth()->user()->business_id)
-            ->paginate(5);
+            ->paginate(1000);
 
         return response()->json($vendas);
     }

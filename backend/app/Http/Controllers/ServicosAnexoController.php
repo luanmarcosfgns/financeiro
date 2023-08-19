@@ -48,7 +48,7 @@ class ServicosAnexoController extends Controller
         }
         $servicos_anexos = ServicosAnexo::search($search)
             ->where('servico_id',$request->servico_id)
-            ->paginate(5);
+            ->paginate(1000);
 
         return response()->json($servicos_anexos);
     }

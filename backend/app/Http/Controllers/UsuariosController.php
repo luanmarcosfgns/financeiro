@@ -42,7 +42,7 @@ class UsuariosController extends Controller
             return response()->json(User::paginate(5));
         }
         $users = User::search($search)
-            ->paginate(5);
+            ->paginate(1000);
 
         return response()->json($users);
     }

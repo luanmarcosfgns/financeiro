@@ -52,7 +52,7 @@ class BusinessController extends Controller
         }
         $business = Business::search($search)
             ->where('id',auth()->user()->business_id)
-            ->paginate(5);
+            ->paginate(1000);
 
         return response()->json($business);
     }

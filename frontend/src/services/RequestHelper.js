@@ -1,5 +1,4 @@
 import axios from "axios";
-import toastr from "toastr/build/toastr.min";
 
 
 export default class RequestHelper {
@@ -18,18 +17,74 @@ export default class RequestHelper {
             .then((response) => {
                 window.axios = response;
             }).catch((error) => {
-            if (error?.request.status == 401) {
-                toastr.error("Login ou senha invalidos");
-                window.axios = false;
-            }
-            if (error?.request.status == 403) {
-                window.axios = false;
-                localStorage.setItem('HASH', undefined);
-                location.href = '/login'
+                window.axios = error;
+                if (error?.request.status == 403 || error?.request.status == 401) {
+                    window.axios = false;
+                    localStorage.setItem('HASH', undefined);
+                    location.href = '/login'
 
-            }
-            toastr.error(error.response.data.message);
+                }
         });
+        return  window.axios;
+
+    }
+
+    async getAuth(url, dataParams) {
+        let params = '';
+        let keys  = Object.keys(dataParams);
+        let values = Object.values(dataParams);
+        let lenghArray = keys.length;
+        if(lenghArray>0){
+            params = '?';
+        }
+        for (let i = 0;i<lenghArray;i++ ){
+            params += keys[i]+'='+values[i];
+            if((i+1)<lenghArray){
+                params +='&';
+            }
+        }
+
+        await axios.get(url+params, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("HASH")}`,
+                Accept: 'application/json',
+                "Content-Type": 'application/json'
+            }
+        })
+            .then((response) => {
+                window.axios = response;
+            }).catch((error) => {
+                window.axios = error;
+                if (error?.request.status == 403 || error?.request.status == 401) {
+                    window.axios = false;
+                    localStorage.setItem('HASH', undefined);
+                    location.href = '/login'
+
+                }
+            });
+        return  window.axios;
+    }
+
+    async deleteAuth(url) {
+
+        await axios.delete(url, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("HASH")}`,
+                Accept: 'application/json',
+                "Content-Type": 'application/json'
+            }
+        })
+            .then((response) => {
+                window.axios = response;
+            }).catch((error) => {
+                window.axios = error;
+                if (error?.request.status == 403 || error?.request.status == 401) {
+                    window.axios = false;
+                    localStorage.setItem('HASH', undefined);
+                    location.href = '/login'
+
+                }
+            });
         return  window.axios;
 
     }

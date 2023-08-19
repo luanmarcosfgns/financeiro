@@ -21,7 +21,7 @@ export default {
 }
 
 .toast-success {
-    background-color: greenyellow !important;
+    background-color: green !important;
 }
 
 .toast-info {

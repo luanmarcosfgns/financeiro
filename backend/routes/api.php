@@ -32,7 +32,8 @@ Route::group([
             Route::resource('contatos',ContatoController::class)->except(['create','edit']);
             Route::resource('usuarios', UsuariosController::class)->except(['create','edit']);
             Route::resource('business', BusinessController::class)->except(['create','edit']);
-            Route::resource('categorias', CategoriaController::class)->except(['create','edit']);
+        Route::get('categorias/list', [CategoriaController::class,'list']);
+        Route::resource('categorias', CategoriaController::class)->except(['create','edit']);
             Route::resource('aliquotas', AliquotaController::class)->except(['create','edit']);
             Route::resource('aliquotas_items', AliquotasItemController::class)->except(['create','edit']);
             Route::resource('servicos', ServicoController::class)->except(['create','edit']);
