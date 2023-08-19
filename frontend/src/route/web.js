@@ -80,6 +80,14 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/contatos/create',
+        name: 'createContatos',
+        component: CreateCategorias,
+        meta: {
+            auth: true
+        }
+    },
 
     {
         path: '/painel',

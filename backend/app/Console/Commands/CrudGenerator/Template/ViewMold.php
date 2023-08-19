@@ -2,215 +2,457 @@
 
 namespace App\Console\Commands\CrudGenerator\Template;
 
+use App\Console\Commands\CrudGenerator\Util\WriteArchive;
+use App\Console\Commands\CrudGenerator\Util\WriteModelText;
+use Illuminate\Support\Facades\DB;
+
 class ViewMold
 {
-    public static function buildView()
+    public static function buildView($table)
     {
        $views = self::mold();
-       self::renderIndex($views);
+       $tableUppercase = ucfirst($table);
+        $columns = self::setColumns($table);
+        $tdColumns = self:: buidTdColumns($columns);
+        $thColumns = self:: buidThColumns($columns);
+      $index = WriteModelText::render($views['index'],
+          [':tableUppercase'=>$tableUppercase,
+              ':table'=>$table,
+              ':tdColumns'=>$tdColumns,
+          ':thColumns'=>$thColumns
+          ]);
+
+        $inputFom = self::buildInputForm($columns);
+
+      $form = WriteModelText::render($views['form'],
+          [':tableUppercase'=>$tableUppercase,
+              ':table'=>$table,
+              ':inputFom'=>$inputFom
+          ]);
+
+        $dataFormSend = self::buildDataForm($columns);
+        $dataFormEdit = self::buildEditForm($columns);
+
+      $edit = WriteModelText::render($views['edit'],
+          [':tableUppercase'=>$tableUppercase,
+              ':table'=>$table,
+              ':dataFormEdit'=> $dataFormEdit,
+              ':dataFormSend'=>$dataFormSend]);
+
+
+      $create = WriteModelText::render($views['create'],
+          [':tableUppercase'=>$tableUppercase,
+              ':table'=>$table,
+              ':dataFormSend'=>$dataFormSend]);
+      $dir = self::diretorioFrontend();
+      $dir = $dir.'/src/views/'.$table.'/';
+
+        WriteArchive::now($index,'Index'.$tableUppercase.'.vue',$dir);
+        WriteArchive::now($form,'Form'.$tableUppercase.'.vue',$dir);
+        WriteArchive::now($edit,'Edit'.$tableUppercase.'.vue',$dir);
+        WriteArchive::now($create,'Create'.$tableUppercase.'.vue',$dir);
     }
     public static function mold()
     {
-        $data = [];
-        $data['index'] = '@extends("layouts.app")
+        $quote ="'";
+        $data['index'] = '<template>
+    <layout-page>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12 ps-4 pt-3 ">
+                    <div class="float-start">
+                        <h5> :tableUppercase</h5>
+                    </div>
+                    <div class="w-50">
+                        <input id="search" class="form-control" @change="list()" placeholder="Digite sua pesquisa"
+                               type="text" v-model="search">
+                    </div>
 
-@section("content")
-<div class="container">
-    <div class="searchbar mt-0 mb-4">
-        <div class="row">
-            <div class="col-md-6">
-                <form>
-                    <div class="input-group">
-                        <input
-                            id="indexSearch"
-                            type="text"
-                            name="search"
-                            placeholder="@lang(crud.common.search)"
-                            value="{{ $search ?? "" }}"
-                            class="form-control"
-                            autocomplete="off"
-                        />
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="icon ion-md-search"></i>
+                    <div class="float-end">
+                        <button-widget cor="azul" href="./create" tamanho="M">
+                            Adcionar
+                        </button-widget>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    :thColumns
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="row in rows" :key="row.id">
+                    <td>{{ row.id }}</td>
+                    :tdColumns
+                    <td>
+                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                            <router-link class="btn btn-danger" :to="\'./\'+row.id+\'/edit\'">
+                                <i class="bi bi-pencil-square"></i>
+                            </router-link>
+                            <button class="btn btn-danger" @click="deleteRow(row.id)">
+                                <i class="bi bi-trash2-fill"></i>
                             </button>
                         </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </layout-page>
+</template>
+<script>
+import LayoutPage from "@/components/page/layoutPage.vue";
+import ButtonWidget from "@/components/widget/buttonWidget.vue";
+import RequestHelper from "@/services/RequestHelper";
+import Helpers from "@/services/Helpers";
+import toastr from "toastr/build/toastr.min";
+
+export default {
+    name: "Index:tableUppercase",
+    components: {ButtonWidget, LayoutPage},
+    data() {
+        return {
+            rows: \'<tr>\' +
+                \'<td class="text-center" colspan="3">Não há dados</td>\' +
+                \'</tr>\',
+            search: null
+        }
+    },
+    methods: {
+        async list() {
+
+
+            let dataRequest = {};
+            let requestHelper = new RequestHelper();
+            let helpers = new Helpers();
+
+            if (!helpers.empty(this.search)) {
+                dataRequest = {
+                    search: this.search
+                };
+            }
+
+            let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table\', dataRequest);
+
+            if (dataRow.data.data.length > 0) {
+                this.rows = dataRow.data.data;
+
+            } else if (!helpers.empty(dataRow.response?.data)) {
+                toastr.error(\'Houve um problema\');
+            }
+
+
+        },
+        async deleteRow(id){
+            let requestHelper = new RequestHelper();
+            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table/\'+id);
+           if(dataRow.data.success){
+               this.list();
+               toastr.success(\'Apagado com sucesso\');
+           }else{
+               toastr.error(\'Houve um problema ao apagar\');
+           }
+        }
+
+    },
+    created() {
+        this.list();
+
+    }
+}
+
+</script>
+
+<style scoped>
+@import "toastr/build/toastr.css";
+@import "bootstrap-icons/font/bootstrap-icons.min.css";
+</style>';
+        $data['create'] = '<template>
+    <layout-page>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12 ps-4 pt-3 ">
+                    <div class="float-start">
+                        <h5>Adicionar :tableUppercase</h5>
                     </div>
-                </form>
-            </div>
-            <div class="col-md-6 text-right">
-                @can("create", App\Models\:model::class)
-                <a href="{{ route(":table.create") }}" class="btn btn-primary">
-                    <i class="icon ion-md-add"></i>
-                    @lang(crud.common.create)
-                </a>
-                @endcan
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <div class="card-body">
-            <div style="display: flex; justify-content: space-between;">
-                <h4 class="card-title">:modelLabel</h4>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-borderless table-hover">
-                    <thead>
-                        :theadTr
-                    </thead>
-                    <tbody>
-                        @forelse($:table as :tableSingular)
-                            :tbodyTr
-                        @empty
-                        <tr>
-                            <td colspan="13">
-                                @lang("crud.common.no_items_found")
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="13">{!! $:table->render() !!}</td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-';
-        $data['show'] = '@extends("layouts.app")
-
-@section("content")
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <a href="{{ route(":table.index") }}" class="mr-4"
-                    ><i class="icon ion-md-arrow-back"></i
-                ></a>
-                @lang("crud.:table.show_title")
-            </h4>
-
-            <div class="mt-4">
-                :colData
-            </div>
-
-            <div class="mt-4">
-                <a href="{{ route(":table.index") }}" class="btn btn-light">
-                    <i class="icon ion-md-return-left"></i>
-                    @lang("crud.common.back")
-                </a>
-
-
-                <a href="{{ route(":table.create") }}" class="btn btn-light">
-                    <i class="icon ion-md-add"></i> @lang("crud.common.create")
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
-';
-        $data['edit'] = '@extends("layouts.app")
-
-@section("content")
-<div class="container">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">
-                <a href="{{ route(":table.index") }}" class="mr-4"
-                    ><i class="icon ion-md-arrow-back"></i
-                ></a>
-                @lang("crud.:table.edit_title")
-            </h4>
-
-            <x-form
-                method="PUT"
-                action="{{ route(":table.update", $pessoa) }}"
-                class="mt-4"
-            >
-                @include("app.:table.form-inputs")
-
-                <div class="mt-4">
-                    <a
-                        href="{{ route(":table.index") }}"
-                        class="btn btn-light"
-                    >
-                        <i class="icon ion-md-return-left text-primary"></i>
-                        @lang("crud.common.back")
-                    </a>
-
-                    <a
-                        href="{{ route(":table.create") }}"
-                        class="btn btn-light"
-                    >
-                        <i class="icon ion-md-add text-primary"></i>
-                        @lang("crud.common.create")
-                    </a>
-
-                    <button type="submit" class="btn btn-primary float-right">
-                        <i class="icon ion-md-save"></i>
-                        @lang("crud.common.update")
-                    </button>
+                    <div class="float-end">
+                        <button-widget cor="azul" href="./index" tamanho="M">
+                            Voltar
+                        </button-widget>
+                    </div>
                 </div>
-            </x-form>
-        </div>
-    </div>
-</div>
-@endsection
-';
-        $data['create'] = '@extends("layouts.app")
 
-@section("content")
-<div class="container">
-    <div class="card">
+            </div>
+        </div>
         <div class="card-body">
-            <h4 class="card-title">
-                <a href="{{ route(":table.index") }}" class="mr-4"
-                    ><i class="icon ion-md-arrow-back"></i
-                ></a>
-                @lang("crud.:table.create_title")
-            </h4>
-
-            <x-form
-                method="POST"
-                action="{{ route(":table.store") }}"
-                class="mt-4"
-            >
-                @include("app.:table.form-inputs")
-
-                <div class="mt-4">
-                    <a
-                        href="{{ route(":table.index") }}"
-                        class="btn btn-light"
-                    >
-                        <i class="icon ion-md-return-left text-primary"></i>
-                        @lang("crud.common.back")
-                    </a>
-
-                    <button type="submit" class="btn btn-primary float-right">
-                        <i class="icon ion-md-save"></i>
-                        @lang("crud.common.create")
-                    </button>
-                </div>
-            </x-form>
+            <div class="row">
+                <Form:tableUppercase></Form:tableUppercase>
+                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+            </div>
         </div>
-    </div>
-</div>
-@endsection
-';
-        $data['form-inputs'] = '<div class="row">
-        :inputForms
-    </div>';
+    </layout-page>
+</template>
+<script>
+import ButtonWidget from "@/components/widget/buttonWidget.vue";
+import LayoutPage from "@/components/page/layoutPage.vue";
+import Form:tableUppercase from "@/views/:table/Form:tableUppercase.vue";
+import RequestHelper from "@/services/RequestHelper";
+import toastr from "toastr/build/toastr.min";
+
+export default {
+    name: "Create:tableUppercase",
+    components: {Form:tableUppercase, LayoutPage, ButtonWidget},
+    methods:{
+        async sendForm(){
+            let dataForm = {
+              :dataFormSend
+
+            }
+            if(!dataForm.parent_id){
+                delete dataForm.parent_id
+            }
+            let request =  new RequestHelper();
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table\',dataForm);
+            if(response.data?.id){
+                location.href = \'./\'+response.data.id+\'/edit\';
+            }else{
+                if (response.response.data?.message){
+                    toastr.error(response.response.data?.message);
+                }else{
+                    toastr.error(\'Houve um problema ao inserir\');
+                }
+
+            }
+        }
+    }
+}
+</script>
+<style scoped>
+</style>';
+
+
+        $data['form'] = '<template>
+       :inputFom
+</template>
+
+<script>
+import InputForm from "@/components/form/inputForm.vue";
+import RequestHelper from "@/services/RequestHelper";
+
+
+export default {
+    name: "Form:tableUppercase",
+    components: {InputForm},
+    data() {
+        return {:table: null}
+    },
+    methods:{
+         async get:tableUppercase(){
+            let request =  new RequestHelper();
+            this.:table = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table/list\',{});
+             this.:table =  await this.:table.data;
+
+        },
+
+
+    },
+    created() {
+        this.get:tableUppercase();
+    }
+}
+</script>
+
+<style scoped>
+@import "toastr/build/toastr.css";
+</style>';
+        $data['edit'] = '<template>
+    <layout-page>
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-12 ps-4 pt-3 ">
+                    <div class="float-start">
+                        <h5>Editar :tableUppercase</h5>
+                    </div>
+                    <div class="float-end">
+                        <button-widget cor="azul" href="../index" tamanho="M">
+                            Voltar
+                        </button-widget>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <Form:tableUppercase></Form:tableUppercase>
+                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+            </div>
+        </div>
+    </layout-page>
+
+</template>
+
+<script>
+import Form:tableUppercase from "@/views/:table/Form:tableUppercase.vue";
+import RequestHelper from "@/services/RequestHelper";
+import ButtonWidget from "@/components/widget/buttonWidget.vue";
+import LayoutPage from "@/components/page/layoutPage.vue";
+import toastr from "toastr/build/toastr.min";
+
+export default {
+    name: "Edit:tableUppercase",
+    components: {LayoutPage, ButtonWidget, Form:tableUppercase},
+    methods:{
+       async edit(id){
+            let request = new RequestHelper();
+            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table/\'+id,{});
+           :dataFormEdit
+        },
+        async sendForm(){
+            let dataForm = {
+                  :dataFormSend
+                _method:\'PUT\'
+
+            }
+            if(!dataForm.parent_id){
+                delete dataForm.parent_id
+            }
+            let request =  new RequestHelper();
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + \'/api/:table/\'+this.$route.params.id,dataForm);
+            if(response.data?.id){
+               toastr.success(\'Salvo com sucesso\')
+            }else{
+                if (response.response.data?.message){
+                    toastr.error(response.response.data?.message);
+                }else{
+                    toastr.error(\'Houve um problema ao inserir\');
+                }
+
+            }
+        }
+    },
+  created() {
+    this.edit(this.$route.params.id)
+  }
+}
+</script>
+
+<style scoped>
+
+</style>';
         return $data;
     }
 
     private static function renderIndex(array $views)
     {
+    }
+
+    private static function setColumns($table)
+    {
+        $database = getenv('DB_DATABASE');
+
+        $sql = "select COLUMN_NAME as name, DATA_TYPE as type, CHARACTER_MAXIMUM_LENGTH as length,IS_NULLABLE as is_nullable,COLUMN_TYPE AS type_column
+from information_schema.COLUMNS
+where TABLE_NAME = ':table'
+    and TABLE_SCHEMA = ':database'
+    and COLUMN_NAME not in ('created_at','updated_at','id')
+    ";
+
+        $sql = str_replace(':table', $table, $sql);
+        $sql = str_replace(':database', $database, $sql);
+
+        $columns = DB::select($sql);
+        if(empty($columns)){
+            echo 'The table not exists'.PHP_EOL;
+            die();
+        }
+        return $columns;
+    }
+
+    private static function buidTdColumns(array $columns) :string
+    {
+        $html ='';
+        foreach ($columns as $i=>$column){
+            if($i<8){
+                $html .='                    <td>{{row.'.$column->name.'}}</td>'.PHP_EOL;
+            }
+
+        }
+        return $html;
+    }
+
+    private static function buidThColumns(?array $columns):string
+    {
+        $html ='';
+        foreach ($columns as $i=>$column){
+            if($i < 8){
+                $html .='                    <th>'.ucfirst($column->name).'</th>'.PHP_EOL;
+            }
+
+        }
+        return $html;
+    }
+
+    private static function buildInputForm(array $columns):string
+    {
+        $html ='';
+        foreach ($columns as $column){
+            if($column->type=='varchar'){
+                $html .= '<input-form class-list="col-md-12"  type="string" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+            }elseif ($column->type=='longtext'){
+                $html .= '<input-form class-list="col-md-12"  type="text" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+            }elseif (strpos($column->name,'_id')){
+                $table = str_replace('_id','s',$column->name);
+                $html .='  <input-form placeholder="Selecione' .ucfirst($table).'" class-list="col-md-12" type="select" :items="' .$table.'" label="' .$table.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+            }elseif ($column->type=='enum'){
+                $columnTypes = explode($column->type_column,',');
+                $data = '[';
+                foreach ($columnTypes as $columnType) {
+                    $data .= "{id:".$columnType.',message:'.$columnType.",}";
+                }
+                $data .= ']';
+                $html .='  <input-form placeholder="Selecione' .ucfirst($column->name).'" class-list="col-md-12" type="select" :items="' .$data.'" label="' .ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+            }else{
+                $html .= '<input-form class-list="col-md-12"  type="'.$column->type.'" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+            }
+
+        }
+        return $html;
+    }
+
+    private static function buildDataForm(?array $columns):string
+    {
+        $script ='';
+        foreach ($columns as $column){
+            $script .=  $column->name.": document.getElementById('".$column->name."').value,".PHP_EOL;
+        }
+        return $script;
+    }
+
+    private static function buildEditForm(?array $columns):string
+    {
+        $script ='';
+        foreach ($columns as $column){
+            $script .="document.getElementById('".$column->name."').value = response.data.".$column->name.';'.PHP_EOL;
+        }
+        return $script;
+    }
+
+    private static function diretorioFrontend():string
+    {
+        $dirArray = explode('/',base_path());
+        $numberArray = count($dirArray);
+        $dirArray[($numberArray-1)]= 'frontend';
+        return implode('/',$dirArray);
     }
 }

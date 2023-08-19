@@ -63,7 +63,9 @@ class CrudCommand extends Command
             }
 
         }
-        else{
+        elseif($type=='view'){
+            ViewMold::buildView($table);
+        }else{
             echo "Comand not found";
         }
 
