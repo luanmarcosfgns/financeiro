@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('servicos_anexos', function (Blueprint $table) {
+        Schema::create('perguntas', function (Blueprint $table) {
             $table->id();
-            $table->string('anexo');
-            $table->enum('tipo',['produto','imagem','documento']);
-            $table->bigInteger('servico_id');
+            $table->longText('enunciado');
+            $table->enum('tipo_resposta',['multipla','unica','descritiva','inteira','dedcimal','datada']);
+            $table->integer('ordem');
+            $table->json('opcoes');
+            $table->bigInteger('business_id');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('servicos_anexos');
+        Schema::dropIfExists('perguntas');
     }
 };

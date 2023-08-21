@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->longText('descritivo')->nullable();
+            $table->boolean('ecommerce')->default(true);
             $table->double('preco')->default(0.00);
             $table->bigInteger('aliquota_id')->nullable();
             $table->bigInteger('categoria_id')->nullable();

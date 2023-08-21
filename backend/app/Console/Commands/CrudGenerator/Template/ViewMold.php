@@ -353,9 +353,6 @@ export default {
         return $data;
     }
 
-    private static function renderIndex(array $views)
-    {
-    }
 
     private static function setColumns($table)
     {
@@ -406,24 +403,46 @@ where TABLE_NAME = ':table'
     private static function buildInputForm(array $columns):string
     {
         $html ='';
+
         foreach ($columns as $column){
+            $label = str_replace('_id','',$column->name);
+            $label = str_replace('_',' ',$label);
+            $label = str_replace('cnpj','CNPJ',$label);
+            $label = str_replace('cpf','CPF',$label);
+            $label = str_replace('rg','RG',$label);
+            $label = str_replace('ie','IE',$label);
+            $label = str_replace('endereco','Endereço',$label);
+            $label = str_replace('numero','Número',$label);
+            $labelArray = explode(' ',$label);
+            $label ='';
+            foreach ($labelArray as $item) {
+               $label .= ucfirst($item).' ';
+            }
+
+
             if($column->type=='varchar'){
-                $html .= '<input-form class-list="col-md-12"  type="string" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-md-12"  type="string" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif ($column->type=='longtext'){
-                $html .= '<input-form class-list="col-md-12"  type="text" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-md-12"  type="text" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif (strpos($column->name,'_id')){
-                $table = str_replace('_id','s',$column->name);
-                $html .='  <input-form placeholder="Selecione' .ucfirst($table).'" class-list="col-md-12" type="select" :items="' .$table.'" label="' .$table.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $table = str_replace('_id','',$column->name);
+                $html .='  <input-form placeholder="Selecione ' .$label.'" class-list="col-md-12" type="select" :items="' .$table.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif ($column->type=='enum'){
-                $columnTypes = explode($column->type_column,',');
+                $enum =  str_replace('enum(','',$column->type_column);
+                $enum =  str_replace(')','',$enum);
+
+                $columnTypes = explode(',',$enum);
+
                 $data = '[';
                 foreach ($columnTypes as $columnType) {
-                    $data .= "{id:".$columnType.',message:'.$columnType.",}";
+
+                    $data .= "{id:".$columnType.',message:'.$columnType.",},";
                 }
                 $data .= ']';
-                $html .='  <input-form placeholder="Selecione' .ucfirst($column->name).'" class-list="col-md-12" type="select" :items="' .$data.'" label="' .ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+
+                $html .='  <input-form placeholder="Selecione '.$label.'" class-list="col-md-12" type="select" :items="' .$data.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }else{
-                $html .= '<input-form class-list="col-md-12"  type="'.$column->type.'" label="'.ucfirst($column->name).'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-md-12"  type="'.$column->type.'" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }
 
         }

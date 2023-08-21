@@ -17,7 +17,6 @@ return new class extends Migration
             $table->longText('descritivo')->nullable();
             $table->bigInteger('parent_id')->nullable();
             $table->bigInteger('business_id');
-
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ import notFound from "@/views/errors/NotFound.vue";
 import Middleware from "@/services/Middleware";
 import CreateCategorias from "@/views/categorias/CreateCategorias.vue";
 import EditCategorias from "@/views/categorias/EditCategorias.vue";
+import CreateContatos from "@/views/contatos/CreateContatos.vue";
+import EditContatos from "@/views/contatos/EditContatos.vue";
 
 
 const routes = [
@@ -83,7 +85,15 @@ const routes = [
     {
         path: '/contatos/create',
         name: 'createContatos',
-        component: CreateCategorias,
+        component: CreateContatos,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/contatos/:id/edit',
+        name: 'editContatos',
+        component: EditContatos,
         meta: {
             auth: true
         }
