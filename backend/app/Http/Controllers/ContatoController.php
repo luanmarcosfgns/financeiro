@@ -62,6 +62,7 @@ class ContatoController extends Controller
             $search = "";
         }
         $contatos = Contato::search($search)
+            ->where('business_id', auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($contatos);

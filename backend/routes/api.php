@@ -32,7 +32,7 @@ Route::group([
     function ($router) {
             Route::resource('contatos',ContatoController::class)->except(['create','edit']);
             Route::resource('enderecos',EnderecoController::class)->except(['create','edit']);
-            Route::resource('usuarios', UsuariosController::class)->except(['create','edit']);
+            Route::resource('users', UsuariosController::class)->except(['create','edit']);
             Route::resource('business', BusinessController::class)->except(['create','edit']);
         Route::get('categorias/list', [CategoriaController::class,'list']);
         Route::resource('categorias', CategoriaController::class)->except(['create','edit']);

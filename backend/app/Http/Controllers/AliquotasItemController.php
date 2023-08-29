@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Aliquota;
 use App\Models\AliquotasItem;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -15,21 +14,21 @@ class AliquotasItemController extends Controller
     if($type=="store"){
         $request->validate(
         [
+            'nome'=>['required','max:255','string'],
             'aliquota_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
             'porcentagem'=>['required','numeric'],
         ]
         );
     }else{
         $request->validate([
+            'nome'=>['required','max:255','string'],
             'aliquota_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
             'porcentagem'=>['required','numeric'],
         ]);
     }
-        return $request->only(["aliquota_id","descritivo","nome","porcentagem"]);
+        return $request->only(["nome","aliquota_id","descritivo","porcentagem"]);
     }
     /**
      * Display a listing of the resource.
@@ -41,17 +40,7 @@ class AliquotasItemController extends Controller
         if ($search == null) {
             $search = "";
         }
-        if (empty($request->aliquota_id)) {
-            abort(404,'Not Found');
-        }
-
-        $countAliquota = Aliquota::where('id',$request->aliquota_id)->where('business_id',auth()->user()->business_id)->count();
-        if($countAliquota==0){
-            abort(404, 'Not Found');
-        }
-
         $aliquotas_items = AliquotasItem::search($search)
-            ->where('aliquota_id',$request->aliquota_id)
             ->paginate(1000);
 
         return response()->json($aliquotas_items);
@@ -77,11 +66,8 @@ class AliquotasItemController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $aliquotas_item = AliquotasItem::findOrFailOrFail($id);
-        $countAliquota = Aliquota::where('id',$aliquotas_item->aliquota_id)->where('business_id',auth()->user()->business_id)->count();
-        if($countAliquota==0){
-            abort(404, 'Not Found');
-        }
+        $aliquotas_item = AliquotasItem::find($id);
+
        return response()->json($aliquotas_item);
     }
 
@@ -94,7 +80,7 @@ class AliquotasItemController extends Controller
        $id
     ): JsonResponse{
 
-        $aliquotas_item = AliquotasItem::findOrFailOrFail($id);
+        $aliquotas_item = AliquotasItem::find($id);
         $validated = $this->validated("update",$request);
 
         $aliquotas_item->update($validated);
@@ -107,7 +93,7 @@ class AliquotasItemController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $aliquotas_item = AliquotasItem::findOrFail($id);
+        $aliquotas_item = AliquotasItem::find($id);
         $aliquotas_item->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

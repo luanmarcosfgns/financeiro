@@ -4,10 +4,10 @@
             <div class="row">
                 <div class="col-md-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5>Editar Enderecos</h5>
+                        <h5>Editar Linha de Aliquotas</h5>
                     </div>
                     <div class="float-end">
-                        <button @click="goBack" class="btn btn-primary">
+                        <button class="btn btn-primary" @click="goBack" tamanho="M">
                             Voltar
                         </button>
                     </div>
@@ -17,7 +17,7 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <FormEnderecos></FormEnderecos>
+                <FormAliquotasItems></FormAliquotasItems>
                 <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
             </div>
         </div>
@@ -26,35 +26,30 @@
 </template>
 
 <script>
-import FormEnderecos from "@/views/enderecos/FormEnderecos.vue";
+import FormAliquotasItems from "@/views/aliquotas_items/FormAliquotasItems.vue";
 import RequestHelper from "@/services/RequestHelper";
 import LayoutPage from "@/components/page/layoutPage.vue";
 import toastr from "toastr/build/toastr.min";
 
 export default {
-    name: "EditEnderecos",
-    components: {LayoutPage, FormEnderecos},
+    name: "EditAliquotasItems",
+    components: {LayoutPage, FormAliquotasItems},
     methods: {
         async edit(id) {
             let request = new RequestHelper();
-            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/enderecos/' + id, {});
-            document.getElementById('contato_id').value = response.data.contato_id;
-            document.getElementById('endereco').value = response.data.endereco;
-            document.getElementById('numero').value = response.data.numero;
-            document.getElementById('bairro').value = response.data.bairro;
-            document.getElementById('cidade').value = response.data.cidade;
-            document.getElementById('cep').value = response.data.cep;
-
+            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items/' + id, {});
+            document.getElementById('nome').value = response.data.nome;
+            this.aliquota_id = response.data.aliquota_id;
+            document.getElementById('descritivo').value = response.data.descritivo;
+            document.getElementById('porcentagem').value = response.data.porcentagem;
 
         },
         async sendForm() {
             let dataForm = {
-                contato_id: document.getElementById('contato_id').value,
-                endereco: document.getElementById('endereco').value,
-                numero: document.getElementById('numero').value,
-                bairro: document.getElementById('bairro').value,
-                cidade: document.getElementById('cidade').value,
-                cep: document.getElementById('cep').value,
+                nome: document.getElementById('nome').value,
+                aliquota_id: this.aliquota_id,
+                descritivo: document.getElementById('descritivo').value,
+                porcentagem: document.getElementById('porcentagem').value,
                 _method: 'PUT'
 
             }
@@ -62,7 +57,7 @@ export default {
                 delete dataForm.parent_id
             }
             let request = new RequestHelper();
-            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/enderecos/' + this.$route.params.id, dataForm);
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items/' + this.$route.params.id, dataForm);
             if (response.data?.id) {
                 toastr.success('Salvo com sucesso')
             } else {
@@ -75,11 +70,16 @@ export default {
             }
         },
         goBack(){
-            history.back();
+            history.back()
         }
     },
     created() {
         this.edit(this.$route.params.id)
+    },
+    data(){
+        return {
+            aliquota_id: null
+        }
     }
 }
 </script>

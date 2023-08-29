@@ -19,6 +19,14 @@ import CreateContatos from "@/views/contatos/CreateContatos.vue";
 import EditContatos from "@/views/contatos/EditContatos.vue";
 import createBusiness from "@/views/business/CreateBusiness.vue";
 import EditBusiness from "@/views/business/EditBusiness.vue";
+import EditEnderecos from "@/views/enderecos/EditEnderecos.vue";
+import CreateServicos from "@/views/servicos/CreateServicos.vue";
+import EditServicos from "@/views/servicos/EditServicos.vue";
+import CreateAliquotas from "@/views/aliquotas/CreateAliquotas.vue";
+import EditAliquotas from "@/views/aliquotas/EditAliquotas.vue";
+import EditAliquotasItems from "@/views/aliquotas_items/EditAliquotasItems.vue";
+import CreateUsers from "@/views/users/CreateUsers.vue";
+import EditUsers from "@/views/users/EditUsers.vue";
 
 
 const routes = [
@@ -37,6 +45,22 @@ const routes = [
         path: '/aliquotas/index',
         name: 'indexAliquotas',
         component: IndexAliquotas,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/aliquotas/create',
+        name: 'createAliquotas',
+        component: CreateAliquotas,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/aliquotas/:id/edit',
+        name: 'editAliquotas',
+        component: EditAliquotas,
         meta: {
             auth: true
         }
@@ -116,6 +140,22 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/enderecos/:id/edit',
+        name: 'editEnderecos',
+        component: EditEnderecos,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/aliquotasitems/:id/edit',
+        name: 'editAliquotasItems',
+        component: EditAliquotasItems,
+        meta: {
+            auth: true
+        }
+    },
 
     {
         path: '/painel',
@@ -138,7 +178,22 @@ const routes = [
             auth: true
         }
     },
-
+    {
+        path: '/servicos/create',
+        name: 'createServicos',
+        component: CreateServicos,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/servicos/:id/edit',
+        name: 'editServicos',
+        component: EditServicos,
+        meta: {
+            auth: true
+        }
+    },
 
     {
         path: '/users/index',
@@ -148,6 +203,23 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/users/create',
+        name: 'createUsers',
+        component: CreateUsers,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/users/:id/edit',
+        name: 'editUsers',
+        component: EditUsers,
+        meta: {
+            auth: true
+        }
+    },
+
     {
         path: '/vendas/index',
         name: 'indexVendas',

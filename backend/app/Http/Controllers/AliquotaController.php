@@ -10,26 +10,24 @@ use Illuminate\Http\JsonResponse;
 
 class AliquotaController extends Controller
 {
-    public function validated($type, $request)
-    {
-        if ($type == "store") {
-            $request->validate(
-                [
-                    'ativo' => ['required', 'boolean'],
-                    'descritivo' => ['nullable', 'max:4294967295', 'string'],
-                    'nome' => ['required', 'max:255', 'string'],
-                ]
-            );
-        } else {
-            $request->validate([
-                'ativo' => ['required', 'boolean'],
-                'descritivo' => ['nullable', 'max:4294967295', 'string'],
-                'nome' => ['required', 'max:255', 'string'],
-            ]);
-        }
-        return $request->only(["ativo", "descritivo", "nome"]);
+    public function validated($type,$request){
+    if($type=="store"){
+        $request->validate(
+        [
+            'nome'=>['required','max:255','string'],
+            'descritivo'=>['nullable','max:4294967295','string'],
+            'ativo'=>['required','boolean'],
+        ]
+        );
+    }else{
+        $request->validate([
+            'nome'=>['required','max:255','string'],
+            'descritivo'=>['nullable','max:4294967295','string'],
+            'ativo'=>['required','boolean'],
+        ]);
     }
-
+        return $request->only(["nome","descritivo","ativo","business_id"]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -48,28 +46,28 @@ class AliquotaController extends Controller
     }
 
 
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request): JsonResponse
     {
 
-        $validated = $this->validated("store", $request);
+        $validated = $this->validated("store",$request);
         $validated['business_id'] = auth()->user()->business_id;
         $aliquota = Aliquota::create($validated);
 
-        return response()->json($aliquota);
+         return response()->json($aliquota);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id): JsonResponse
+    public function show(Request $request, $id):JsonResponse
     {
-        $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $aliquota = Aliquota::find($id);
 
-        return response()->json($aliquota);
+       return response()->json($aliquota);
     }
 
 
@@ -77,18 +75,16 @@ class AliquotaController extends Controller
      * Update the specified resource in storage.
      */
     public function update(
-        Request $request,
-                $id
-    ): JsonResponse
-    {
+       Request $request,
+       $id
+    ): JsonResponse{
 
-        $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
-        $validated = $this->validated("update", $request);
+        $aliquota = Aliquota::find($id);
+        $validated = $this->validated("update",$request);
 
         $aliquota->update($validated);
 
-        return response()->json($aliquota);
+         return response()->json($aliquota);
     }
 
     /**
@@ -96,11 +92,10 @@ class AliquotaController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $aliquota = Aliquota::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $aliquota = Aliquota::find($id);
         $aliquota->delete();
 
-        return response()->json(["success" => true, "message" => "Removed success"]);
+       return response()->json(["success"=>true,"message"=>"Removed success"]);
     }
 
 }

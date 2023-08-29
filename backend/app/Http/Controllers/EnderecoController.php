@@ -48,6 +48,7 @@ class EnderecoController extends Controller
         }
         $enderecos = Endereco::search($search)
             ->where('contato_id',$request->id)
+            ->where('business_id', auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($enderecos);

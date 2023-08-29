@@ -45,6 +45,7 @@ class UserController extends Controller
             $search = "";
         }
         $users = User::search($search)
+            ->where('business_id', auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($users);
@@ -61,7 +62,7 @@ class UserController extends Controller
         $validated = $this->validated("store",$request);
 
         $user = User::create($validated);
-
+        $validated['business_id'] = $request->user()->business_id;
          return response()->json($user);
     }
 

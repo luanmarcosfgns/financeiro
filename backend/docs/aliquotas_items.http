@@ -1,44 +1,47 @@
 
-###LISTAR ALIQUOTAS ITEMS
-GET http://localhost:8000/api/aliquotas_items?aliquota_id=1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzA0MjgsImV4cCI6MTY5MTE3NDAyOCwibmJmIjoxNjkxMTcwNDI4LCJqdGkiOiJWMzFjN2E2d1VQQVRJcVdQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.FUfuTXobOEIWtZ0Q_wxIpLmq50Ffgvfq9B57ZIJTe1Y
+###LIST ALIQUOTAS_ITEMS
+GET http://localhost:8000/api/aliquotas_items
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-###VER ALIQUOTAS ITEMS
+###VER ALIQUOTAS_ITEMS
 GET http://localhost:8000/api/aliquotas_items/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzA0MjgsImV4cCI6MTY5MTE3NDAyOCwibmJmIjoxNjkxMTcwNDI4LCJqdGkiOiJWMzFjN2E2d1VQQVRJcVdQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.FUfuTXobOEIWtZ0Q_wxIpLmq50Ffgvfq9B57ZIJTe1Y
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR ALIQUOTAS ITEMS
+####ADICIONAR ALIQUOTAS_ITEMS
 POST http://localhost:8000/api/aliquotas_items
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODU3MDQsImV4cCI6MTY5MTA4OTMwNCwibmJmIjoxNjkxMDg1NzA0LCJqdGkiOiJNNnc0ZU10ZndBWnpZNFdNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.PEJ7E8qR1NylU8xk8Jbc2ka2QlgRDNpw-WP6Ka6hbF8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
-    "nome": "icms",
-    "descritivo": null,
-    "aliquota_id": 1,
-    "porcentagem": 0.00
+    "nome":"Loren Epsun",
+    "aliquota_id":1,
+    "descritivo":"Loren Epsun",
+    "porcentagem":1.1
+
 }
-####MUDAR ALIQUOTAS ITEMS
+####MUDAR ALIQUOTAS_ITEMS
 POST http://localhost:8000/api/aliquotas_items/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzA0MjgsImV4cCI6MTY5MTE3NDAyOCwibmJmIjoxNjkxMTcwNDI4LCJqdGkiOiJWMzFjN2E2d1VQQVRJcVdQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.FUfuTXobOEIWtZ0Q_wxIpLmq50Ffgvfq9B57ZIJTe1Y
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
-    "nome": "icms A",
-    "descritivo": null,
-    "aliquota_id": 1,
-    "porcentagem": 0.25
+    "nome":"Loren Epsun",
+    "aliquota_id":1,
+    "descritivo":"Loren Epsun",
+    "porcentagem":1.1
+
 }
-####APAGAR ALIQUOTAS ITEMS
+
+####APAGAR ALIQUOTAS_ITEMS
 POST http://localhost:8000/api/aliquotas_items/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwODU3MDQsImV4cCI6MTY5MTA4OTMwNCwibmJmIjoxNjkxMDg1NzA0LCJqdGkiOiJNNnc0ZU10ZndBWnpZNFdNIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.PEJ7E8qR1NylU8xk8Jbc2ka2QlgRDNpw-WP6Ka6hbF8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 

@@ -10,7 +10,7 @@ class AliquotasItem extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["aliquota_id","descritivo","nome","porcentagem"];
+    protected $fillable = ["nome","aliquota_id","descritivo","porcentagem"];
 
     protected $searchableFields = ["*"];
 

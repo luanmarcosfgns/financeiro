@@ -7,6 +7,10 @@
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
     </div>
+    <div v-if="type==='decimal' ||type === 'double'" :class="classList">
+        <label class="p-2" for="nome">{{label}}</label>
+        <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control decimal" v-model="valueInput">
+    </div>
     <div v-if="type==='date'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" type="date" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
@@ -70,7 +74,7 @@ export default {
            let helpers =  new Helpers();
            helpers.empty()
 
-           if (this.type === 'string') {
+           if (this.type === 'string' || this.type === 'double' || this.type === 'decimal') {
                this.typeInput = 'text'
            }
            if (!helpers.empty(this.value)){

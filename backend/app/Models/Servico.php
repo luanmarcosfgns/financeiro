@@ -10,7 +10,7 @@ class Servico extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["aliquota_id","ativo","business_id","categoria_id","descritivo","nome","preco"];
+    protected $fillable = ["nome","descritivo","ecommerce","preco","aliquota_id","categoria_id","ativo","business_id"];
 
     protected $searchableFields = ["*"];
 
@@ -24,6 +24,10 @@ class Servico extends Model
         return $this->belongsTo(Categoria::class);
     }
     
+    public function Entrevista()
+    {
+        return $this->hasMany(Entrevista::class);
+    }
     public function ServicosAnexo()
     {
         return $this->hasMany(ServicosAnexo::class);

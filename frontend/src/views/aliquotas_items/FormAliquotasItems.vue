@@ -1,8 +1,7 @@
 <template>
     <input-form class-list="col-md-12" type="string" label="Nome " value="" name="nome"/>
     <input-form class-list="col-md-12" type="text" label="Descritivo " value="" name="descritivo"/>
-    <input-form class-list="col-md-12" type="tinyint" label="Ativo " value="" name="ativo"/>
-
+    <input-form class-list="col-md-12" type="decimal" label="Porcentagem " value="" name="porcentagem"/>
 
 </template>
 
@@ -12,23 +11,23 @@ import RequestHelper from "@/services/RequestHelper";
 
 
 export default {
-    name: "FormAliquotas",
+    name: "FormAliquotasItems",
     components: {InputForm},
     data() {
-        return {aliquotas: null}
+        return {aliquotas_items: null}
     },
     methods: {
-        async getAliquotas() {
+        async getAliquotasItems() {
             let request = new RequestHelper();
-            this.aliquotas = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas/list', {});
-            this.aliquotas = await this.aliquotas.data;
+            this.aliquotas_items = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items/list', {});
+            this.aliquotas_items = await this.aliquotas_items.data;
 
         },
 
 
     },
     created() {
-        this.getAliquotas();
+        this.getAliquotasItems();
     }
 }
 </script>

@@ -10,7 +10,7 @@ class Aliquota extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["ativo","business_id","descritivo","nome"];
+    protected $fillable = ["nome","descritivo","ativo","business_id"];
 
     protected $searchableFields = ["*"];
 

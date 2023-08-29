@@ -11,7 +11,7 @@ class ViewMold
     public static function buildView($table)
     {
        $views = self::mold();
-       $tableUppercase = ucfirst($table);
+       $tableUppercase = self::setTableUppercase($table);
         $columns = self::setColumns($table);
         $tdColumns = self:: buidTdColumns($columns);
         $thColumns = self:: buidThColumns($columns);
@@ -475,5 +475,18 @@ where TABLE_NAME = ':table'
         $numberArray = count($dirArray);
         $dirArray[($numberArray-1)]= 'frontend';
         return implode('/',$dirArray);
+    }
+
+    private static function setTableUppercase($table):string
+    {
+        $listModelName = explode('_',$table);
+        $numberListName = count($listModelName);
+        $modelName = "";
+        foreach ($listModelName as $i => $word) {
+            $modelName .= ucfirst($word);
+
+        }
+        return $modelName;
+
     }
 }
