@@ -18,7 +18,9 @@
         <div class="card-body">
             <div class="row">
                 <FormCategorias></FormCategorias>
-                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                <div class="col-md-4">
+                    <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                </div>
             </div>
         </div>
     </layout-page>

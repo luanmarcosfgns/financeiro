@@ -25,8 +25,13 @@ export default {
         async name() {
             let request = new RequestHelper();
 
-            let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {});
+            let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view:true});
             let nomeCompleto = await resposeRequest.data.name;
+            let business_id = await resposeRequest.data.business_id;
+            let helper = new Helpers();
+            if(helper.empty(business_id)){
+                location.href='/business/create'
+            }
             let row = await nomeCompleto.split(' ');
             let helpers = await new Helpers();
             for (let i=0;i<10; i++){

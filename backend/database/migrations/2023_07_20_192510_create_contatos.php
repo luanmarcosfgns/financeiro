@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('contatos', function (Blueprint $table) {
             $table->id();
             $table->string('nome',300);
-            $table->string('razao',300);
+            $table->string('razao',300)->nullable();
             $table->date('nascimento')->nullable();
             $table->enum('estado_civil',['solteiro','casado','divorciado','viuvo'])->nullable();
             $table->enum('sexo',['masculino','feminino'])->nullable();
@@ -26,8 +26,8 @@ return new class extends Migration
             $table->longText('descritivo')->nullable();
             $table->boolean('ativo')->default(true);
             $table->bigInteger('business_id');
-            $table->bigInteger('profissao');
-            $table->bigInteger('endereco_id');
+            $table->string('profissao',150);
+
             $table->timestamps();
         });
     }

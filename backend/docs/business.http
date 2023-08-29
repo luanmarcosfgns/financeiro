@@ -1,54 +1,57 @@
 
-###LISTAR NEGOCIOS
+###LIST BUSINESS
 GET http://localhost:8000/api/business
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA5OTk3ODMsImV4cCI6MTY5MTAwMzM4MywibmJmIjoxNjkwOTk5NzgzLCJqdGkiOiJWQ1IwNjI5YUp6VGo2Rk9YIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Nxbg24G_I6fUWhM6V3Sr14UNpiX2mSoEeFc2GzVLnt8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-###VER NEGOCIOS
+###VER BUSINESS
 GET http://localhost:8000/api/business/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA5OTk3ODMsImV4cCI6MTY5MTAwMzM4MywibmJmIjoxNjkwOTk5NzgzLCJqdGkiOiJWQ1IwNjI5YUp6VGo2Rk9YIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Nxbg24G_I6fUWhM6V3Sr14UNpiX2mSoEeFc2GzVLnt8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR NEGOCIOS
+####ADICIONAR BUSINESS
 POST http://localhost:8000/api/business
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA5OTk3ODMsImV4cCI6MTY5MTAwMzM4MywibmJmIjoxNjkwOTk5NzgzLCJqdGkiOiJWQ1IwNjI5YUp6VGo2Rk9YIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Nxbg24G_I6fUWhM6V3Sr14UNpiX2mSoEeFc2GzVLnt8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
-    "fantasia": "TNET SISTEMAS",
-    "razao": " TNET LTDA",
-    "cnpj_cpf": "1231234345543",
-    "ie_rg": "123456",
-    "endereco": null,
-    "numero": null,
-    "cep": null,
-    "telefone": null,
-    "celular": null
+    "fantasia":"Loren Epsun",
+    "razao":"Loren Epsun",
+    "cnpj_cpf":"Loren Epsun",
+    "ie_rg":"Loren Epsun",
+    "endereco":"Loren Epsun",
+    "numero":"Loren Epsun",
+    "cep":"Loren Epsun",
+    "telefone":"Loren Epsun",
+    "celular":"Loren Epsun"
+
 }
-####MUDAR NEGOCIOS
+####MUDAR BUSINESS
 POST http://localhost:8000/api/business/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA5OTk3ODMsImV4cCI6MTY5MTAwMzM4MywibmJmIjoxNjkwOTk5NzgzLCJqdGkiOiJWQ1IwNjI5YUp6VGo2Rk9YIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Nxbg24G_I6fUWhM6V3Sr14UNpiX2mSoEeFc2GzVLnt8
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
-    "fantasia": "TNET SISTEMASs",
-    "razao": " TNET LTDA",
-    "cnpj_cpf": "1231234345543",
-    "ie_rg": "123456",
-    "endereco": null,
-    "numero": null,
-    "cep": null,
-    "telefone": null,
-    "celular": null
+    "fantasia":"Loren Epsun",
+    "razao":"Loren Epsun",
+    "cnpj_cpf":"Loren Epsun",
+    "ie_rg":"Loren Epsun",
+    "endereco":"Loren Epsun",
+    "numero":"Loren Epsun",
+    "cep":"Loren Epsun",
+    "telefone":"Loren Epsun",
+    "celular":"Loren Epsun"
+
 }
-####APAGAR NEGOCIOS
-POST http://localhost:8000/api/business/2
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTA5OTk3ODMsImV4cCI6MTY5MTAwMzM4MywibmJmIjoxNjkwOTk5NzgzLCJqdGkiOiJWQ1IwNjI5YUp6VGo2Rk9YIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.Nxbg24G_I6fUWhM6V3Sr14UNpiX2mSoEeFc2GzVLnt8
+
+####APAGAR BUSINESS
+POST http://localhost:8000/api/business/1
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 

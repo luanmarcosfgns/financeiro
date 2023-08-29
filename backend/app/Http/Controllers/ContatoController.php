@@ -14,45 +14,42 @@ class ContatoController extends Controller
     if($type=="store"){
         $request->validate(
         [
-            'ativo'=>['nullable','boolean'],
-            'bairro'=>['nullable','max:150','string'],
-            'celular'=>['nullable','max:30','string'],
-            'cep'=>['nullable','max:10','string'],
-            'cidade'=>['nullable','max:150','string'],
-            'cnpj_cpf'=>['nullable','max:18','string'],
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'email'=>['nullable','max:150','string'],
-            'endereco'=>['nullable','max:400','string'],
-            'estado_civil'=>['nullable','max:10'],
+            'nome'=>['required','max:300','string'],
+            'razao'=>['nullable','max:300','string'],
             'nascimento'=>['nullable','date'],
-            'nome'=>['nullable','max:300','string'],
-            'numero'=>['nullable','max:10','string'],
-            'rg'=>['nullable','max:300','string'],
+            'estado_civil'=>['nullable','max:10'],
             'sexo'=>['nullable','max:9'],
-            'telefone'=>['nullable','max:30','string'],
+            'rg_ie'=>['nullable','max:300','string'],
+            'cnpj_cpf'=>['required','max:18','string'],
+            'telefone'=>['required','max:30','string'],
+            'celular'=>['required','max:30','string'],
+            'email'=>['required','max:150','string'],
+            'descritivo'=>['nullable','max:4294967295','string'],
+            'ativo'=>['required','boolean'],
+
+            'profissao'=>['required','max:150','string'],
+            'endereco_id'=>['nullable'],
         ]
         );
     }else{
         $request->validate([
-            'ativo'=>['nullable','boolean'],
-            'bairro'=>['nullable','max:150','string'],
-            'celular'=>['nullable','max:30','string'],
-            'cep'=>['nullable','max:10','string'],
-            'cidade'=>['nullable','max:150','string'],
-            'cnpj_cpf'=>['nullable','max:18','string'],
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'email'=>['nullable','max:150','string'],
-            'endereco'=>['nullable','max:400','string'],
-            'estado_civil'=>['nullable','max:10'],
+            'nome'=>['required','max:300','string'],
+            'razao'=>['nullable','max:300','string'],
             'nascimento'=>['nullable','date'],
-            'nome'=>['nullable','max:300','string'],
-            'numero'=>['nullable','max:10','string'],
-            'rg'=>['nullable','max:300','string'],
+            'estado_civil'=>['nullable','max:10'],
             'sexo'=>['nullable','max:9'],
-            'telefone'=>['nullable','max:30','string'],
+            'rg_ie'=>['nullable','max:300','string'],
+            'cnpj_cpf'=>['required','max:18','string'],
+            'telefone'=>['required','max:30','string'],
+            'celular'=>['required','max:30','string'],
+            'email'=>['required','max:150','string'],
+            'descritivo'=>['nullable','max:4294967295','string'],
+            'ativo'=>['required','boolean'],
+            'profissao'=>['required','max:150','string'],
+            'endereco_id'=>['nullable'],
         ]);
     }
-        return $request->only(["ativo","bairro","celular","cep","cidade","cnpj_cpf","descritivo","email","endereco","estado_civil","nascimento","nome","numero","rg","sexo","telefone"]);
+        return $request->only(["nome","razao","nascimento","estado_civil","sexo","rg_ie","cnpj_cpf","telefone","celular","email","descritivo","ativo","business_id","profissao","endereco_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -60,9 +57,11 @@ class ContatoController extends Controller
     public function index(Request $request): JsonResponse
     {
 
-        $search = $request->get("search", '');
+        $search = $request->get("search", "");
+        if ($search == null) {
+            $search = "";
+        }
         $contatos = Contato::search($search)
-            ->where('business_id',auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($contatos);
@@ -86,12 +85,11 @@ class ContatoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id): JsonResponse
+    public function show(Request $request, $id):JsonResponse
     {
-        $contato = Contato::where('id', $id)
-            ->where('business_id', auth()->user()->business_id)
-            ->firstOrFail();
-        return response()->json($contato);
+        $contato = Contato::find($id);
+
+       return response()->json($contato);
     }
 
 
@@ -103,9 +101,7 @@ class ContatoController extends Controller
        $id
     ): JsonResponse{
 
-        $contato =  Contato::where('id', $id)
-            ->where('business_id', auth()->user()->business_id)
-            ->firstOrFail();
+        $contato = Contato::find($id);
         $validated = $this->validated("update",$request);
 
         $contato->update($validated);
@@ -118,10 +114,7 @@ class ContatoController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-       $contato =  Contato::where('id', $id)
-        ->where('business_id', auth()->user()->business_id)
-        ->firstOrFail();
-
+        $contato = Contato::find($id);
         $contato->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

@@ -18,7 +18,9 @@
         <div class="card-body">
             <div class="row">
                 <FormContatos></FormContatos>
-                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                <div class="col-md-4">
+                    <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                </div>
             </div>
         </div>
     </layout-page>
@@ -33,40 +35,37 @@ import toastr from "toastr/build/toastr.min";
 export default {
     name: "CreateContatos",
     components: {FormContatos, LayoutPage, ButtonWidget},
-    methods:{
-        async sendForm(){
+    methods: {
+        async sendForm() {
             let dataForm = {
-              ativo: document.getElementById('ativo').value,
-bairro: document.getElementById('bairro').value,
-business_id: document.getElementById('business_id').value,
-celular: document.getElementById('celular').value,
-cep: document.getElementById('cep').value,
-cidade: document.getElementById('cidade').value,
-cnpj_cpf: document.getElementById('cnpj_cpf').value,
-descritivo: document.getElementById('descritivo').value,
-email: document.getElementById('email').value,
-endereco: document.getElementById('endereco').value,
-estado_civil: document.getElementById('estado_civil').value,
-nascimento: document.getElementById('nascimento').value,
-nome: document.getElementById('nome').value,
-numero: document.getElementById('numero').value,
-rg_ie: document.getElementById('rg_ie').value,
-sexo: document.getElementById('sexo').value,
-telefone: document.getElementById('telefone').value,
+                nome: document.getElementById('nome').value,
+                razao: document.getElementById('razao').value,
+                nascimento: document.getElementById('nascimento').value,
+                estado_civil: document.getElementById('estado_civil').value,
+                sexo: document.getElementById('sexo').value,
+                rg_ie: document.getElementById('rg_ie').value,
+                cnpj_cpf: document.getElementById('cnpj_cpf').value,
+                telefone: document.getElementById('telefone').value,
+                celular: document.getElementById('celular').value,
+                email: document.getElementById('email').value,
+                descritivo: document.getElementById('descritivo').value,
+                ativo: document.getElementById('ativo').value,
+                profissao: document.getElementById('profissao').value,
+                endereco_id: document.getElementById('endereco_id').value,
 
 
             }
-            if(!dataForm.parent_id){
+            if (!dataForm.parent_id) {
                 delete dataForm.parent_id
             }
-            let request =  new RequestHelper();
-            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos',dataForm);
-            if(response.data?.id){
-                location.href = './'+response.data.id+'/edit';
-            }else{
-                if (response.response.data?.message){
+            let request = new RequestHelper();
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos', dataForm);
+            if (response.data?.id) {
+                location.href = './' + response.data.id + '/edit';
+            } else {
+                if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);
-                }else{
+                } else {
                     toastr.error('Houve um problema ao inserir');
                 }
 

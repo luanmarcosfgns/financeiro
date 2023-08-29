@@ -17,6 +17,8 @@ import CreateCategorias from "@/views/categorias/CreateCategorias.vue";
 import EditCategorias from "@/views/categorias/EditCategorias.vue";
 import CreateContatos from "@/views/contatos/CreateContatos.vue";
 import EditContatos from "@/views/contatos/EditContatos.vue";
+import createBusiness from "@/views/business/CreateBusiness.vue";
+import EditBusiness from "@/views/business/EditBusiness.vue";
 
 
 const routes = [
@@ -43,6 +45,22 @@ const routes = [
         path: '/business/index',
         name: 'indexBusiness',
         component: IndexBusiness,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/business/create',
+        name: 'createBusiness',
+        component: createBusiness,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/business/:id/edit',
+        name: 'editBusiness',
+        component: EditBusiness,
         meta: {
             auth: true
         }
@@ -154,6 +172,7 @@ router.beforeEach((to) => {
     if (!middleware.logout(to)) {
         middleware.routeExists(to);
         middleware.validateHash(to);
+        middleware.uniqueConfiguration(to);
     }
     middleware.finishLoading();
 

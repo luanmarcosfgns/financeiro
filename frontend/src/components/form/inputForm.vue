@@ -1,7 +1,22 @@
 <template>
+    <div v-if="type==='hidden'">
+
+        <input  type="hidden" :name="name" :id="name" :class="name" class="form-control" :value="value" >
+    </div>
     <div v-if="type==='string'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
+    </div>
+    <div v-if="type==='date'" :class="classList">
+        <label class="p-2" for="nome">{{label}}</label>
+        <input :placeholder="placeholder" type="date" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
+    </div>
+    <div v-if="type==='tinyint'" :class="classList">
+        <label class="p-2" for="nome">{{label}}</label>
+        <select  :name="name" :id="name" :class="name" class="form-control" v-model="valueInput" >
+           <option value="1">Sim</option>
+           <option value="0">Não</option>
+        </select>
     </div>
     <div v-if="type==='text'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
@@ -9,7 +24,7 @@
 
         </textarea>
     </div>
-    <div v-if="type==='select'" :class="classList">
+    <div v-if="type==='select'" :class="classList" class="form-group">
         <label class="p-2" for="nome">{{label}}</label>
         <select  :name="name" :id="name" :class="name" class="form-control" v-model="valueInput" >
             <option v-if="placeholder!=udefined"  >
@@ -62,7 +77,7 @@ export default {
                 this.valueInput =  this.value;
            }
 
-           console.log(this.items);
+
 
        }
    }

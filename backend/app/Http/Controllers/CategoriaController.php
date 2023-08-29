@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,11 @@ class CategoriaController extends Controller
         if (!empty($request->parent_id)) {
             $categoriasModel->where('parent_id', $request->parent_id);
         }
+        $categoriasModel->select('categorias.id',
+            'categorias.nome',
+            'categorias.parent_id',
+            DB::raw('CONCAT(categorias.id,".",categorias.parent_id) as item')
+        )->orderBy('item');
         $categorias = $categoriasModel->paginate(1000);
 
         return response()->json($categorias);
@@ -113,7 +119,10 @@ class CategoriaController extends Controller
      */
     public function list(): JsonResponse
     {
-        $categorias = Categoria::where('business_id', auth()->user()->business_id)->select('id', 'nome as message')->get('message','id');
+        $categorias = Categoria::where('business_id', auth()->user()->business_id)
+            ->whereNull('parent_id')
+            ->select('id', 'nome as message')
+            ->get('message','id');
         return response()->json($categorias);
     }
 

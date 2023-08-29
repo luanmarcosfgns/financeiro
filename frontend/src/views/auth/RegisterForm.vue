@@ -98,10 +98,13 @@ export default {
 
             axios.post(process.env.VUE_APP_API_HOST_NAME + '/api/auth/register', data)
                 .then(function () {
-                    toastr.info('Verifique a sua caixa de email para concluir o cadastro!');
+                    toastr.info('Registro realizado com sucesso! Realize seu login.');
                     document.getElementById('email').value = '';
                     document.getElementById('password').value = '';
                     document.getElementById('name').value = '';
+                    setTimeout(function(){
+                        location.href = '/login';
+                    },3500)
                 }).catch(function (error) {
                 console.log(error);
                 toastr.error(error.response.data.message);

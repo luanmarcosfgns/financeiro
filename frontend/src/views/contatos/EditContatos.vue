@@ -12,15 +12,39 @@
                         </button-widget>
                     </div>
                 </div>
-
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button @click="tabContatosOpen" class="nav-link active" data-bs-toggle="tab"
+                                    data-bs-target="#home-tab-pane" type="button" role="tab"
+                                    aria-controls="home-tab-pane" aria-selected="true">Fomulário
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button @click="tabEnderecosOpen" class="nav-link" data-bs-toggle="tab"
+                                    data-bs-target="#enderecos-tab-pane" type="button" role="tab"
+                                    aria-controls="enderecos-tab-pane" aria-selected="false">Endereços
+                            </button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row" v-if="tabContatos">
                 <FormContatos></FormContatos>
-                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                <div class="col-md-4">
+                    <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                </div>
             </div>
+            <div class="col-md-12" v-if="tabEnderecos">
+                <IndexEnderecos></IndexEnderecos>
+
+            </div>
+
+
         </div>
+
     </layout-page>
 
 </template>
@@ -31,52 +55,49 @@ import RequestHelper from "@/services/RequestHelper";
 import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import LayoutPage from "@/components/page/layoutPage.vue";
 import toastr from "toastr/build/toastr.min";
+import IndexEnderecos from "@/views/enderecos/IndexEnderecos.vue";
+
+
 
 export default {
     name: "EditContatos",
-    components: {LayoutPage, ButtonWidget, FormContatos},
+    components: {  IndexEnderecos, LayoutPage, ButtonWidget, FormContatos},
     methods: {
         async edit(id) {
             let request = new RequestHelper();
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/' + id, {});
-            // document.getElementById('ativo').value = response.data.ativo;
-            document.getElementById('bairro').value = response.data.bairro;
-            document.getElementById('business_id').value = response.data.business_id;
-            document.getElementById('celular').value = response.data.celular;
-            document.getElementById('cep').value = response.data.cep;
-            document.getElementById('cidade').value = response.data.cidade;
-            document.getElementById('cnpj_cpf').value = response.data.cnpj_cpf;
-            document.getElementById('descritivo').value = response.data.descritivo;
-            document.getElementById('email').value = response.data.email;
-            document.getElementById('endereco').value = response.data.endereco;
-            document.getElementById('estado_civil').value = response.data.estado_civil;
-            // document.getElementById('nascimento').value = response.data.nascimento;
             document.getElementById('nome').value = response.data.nome;
-            document.getElementById('numero').value = response.data.numero;
-            document.getElementById('rg_ie').value = response.data.rg_ie;
+            document.getElementById('razao').value = response.data.razao;
+            document.getElementById('nascimento').value = response.data.nascimento;
+            document.getElementById('estado_civil').value = response.data.estado_civil;
             document.getElementById('sexo').value = response.data.sexo;
+            document.getElementById('rg_ie').value = response.data.rg_ie;
+            document.getElementById('cnpj_cpf').value = response.data.cnpj_cpf;
             document.getElementById('telefone').value = response.data.telefone;
+            document.getElementById('celular').value = response.data.celular;
+            document.getElementById('email').value = response.data.email;
+            document.getElementById('descritivo').value = response.data.descritivo;
+            document.getElementById('ativo').value = response.data.ativo;
+            document.getElementById('profissao').value = response.data.profissao;
+
 
         },
         async sendForm() {
             let dataForm = {
-                ativo: document.getElementById('ativo').value,
-                bairro: document.getElementById('bairro').value,
-                business_id: document.getElementById('business_id').value,
-                celular: document.getElementById('celular').value,
-                cep: document.getElementById('cep').value,
-                cidade: document.getElementById('cidade').value,
-                cnpj_cpf: document.getElementById('cnpj_cpf').value,
-                descritivo: document.getElementById('descritivo').value,
-                email: document.getElementById('email').value,
-                endereco: document.getElementById('endereco').value,
-                estado_civil: document.getElementById('estado_civil').value,
-                nascimento: document.getElementById('nascimento').value,
                 nome: document.getElementById('nome').value,
-                numero: document.getElementById('numero').value,
-                rg_ie: document.getElementById('rg_ie').value,
+                razao: document.getElementById('razao').value,
+                nascimento: document.getElementById('nascimento').value,
+                estado_civil: document.getElementById('estado_civil').value,
                 sexo: document.getElementById('sexo').value,
+                rg_ie: document.getElementById('rg_ie').value,
+                cnpj_cpf: document.getElementById('cnpj_cpf').value,
                 telefone: document.getElementById('telefone').value,
+                celular: document.getElementById('celular').value,
+                email: document.getElementById('email').value,
+                descritivo: document.getElementById('descritivo').value,
+                ativo: document.getElementById('ativo').value,
+                profissao: document.getElementById('profissao').value,
+
 
                 _method: 'PUT'
 
@@ -96,10 +117,29 @@ export default {
                 }
 
             }
+        },
+        tabContatosOpen() {
+            this.tabContatos = true;
+            this.tabEnderecos = false;
+        },
+        tabEnderecosOpen() {
+            this.tabContatos = false;
+            this.tabEnderecos = true;
+        },
+        modalAdd() {
+            document.getElementById('cadastrar').classList.remove('d-none')
+
         }
     },
     created() {
         this.edit(this.$route.params.id)
+    },
+    data() {
+        return {
+            tabContatos: true,
+            tabEnderecos: false,
+            visible: false,
+        }
     }
 }
 </script>

@@ -15,7 +15,7 @@ class BusinessController extends Controller
         $request->validate(
         [
             'fantasia'=>['required','max:255','string'],
-            'razao'=>['required','max:255','string'],
+            'razao'=>['nullable','max:255','string'],
             'cnpj_cpf'=>['required','max:255','string'],
             'ie_rg'=>['nullable','max:255','string'],
             'endereco'=>['nullable','max:255','string'],
@@ -68,6 +68,7 @@ class BusinessController extends Controller
         $validated = $this->validated("store",$request);
 
         $busine = Business::create($validated);
+        auth()->user()->update(['business_id'=>$busine->id]);
 
          return response()->json($busine);
     }

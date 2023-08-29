@@ -64,10 +64,40 @@ class CrudCommand extends Command
 
         }
         elseif($type=='view'){
-            ViewMold::buildView($table);
+            if( ViewMold::buildView($table)){
+                echo "Generated View ☑️ ".PHP_EOL;
+            }else{
+                echo "Houve um problema de execução verifique no Log";
+            }
+        }
+        elseif($type=='all'){
+            if(ModelMold::buildModel($table)){
+                echo "Generated Model ☑️ ".PHP_EOL;
+            }else{
+                echo "Houve um problema de execução verifique no Log";
+            }
+
+            if( ControllerMold::buildController($table)){
+                echo "Generated Controller ☑️ ".PHP_EOL;
+            }else{
+                echo "Houve um problema de execução verifique no Log";
+            }
+
+            if( HttpMold::buildHttp($table)){
+                echo "Generated HTTP teste ☑️ ".PHP_EOL;
+            }else{
+                echo "Houve um problema de execução verifique no Log";
+            }
+
+            if( ViewMold::buildView($table)){
+                echo "Generated View ☑️ ".PHP_EOL;
+            }else{
+                echo "Houve um problema de execução verifique no Log";
+            }
         }else{
             echo "Comand not found";
         }
+
 
     }
 }

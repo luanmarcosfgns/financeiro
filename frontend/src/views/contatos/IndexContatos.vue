@@ -22,34 +22,24 @@
         </div>
 
         <div class="card-body">
-            <table class="table">
+            <table class="table table-striped">
                 <thead>
                 <tr>
                     <th>#</th>
-                                        <th>Ativo</th>
-                    <th>Bairro</th>
-                    <th>Business_id</th>
+                    <th>Nome</th>
+                    <th>CPF/CNPJ</th>
                     <th>Celular</th>
-                    <th>Cep</th>
-                    <th>Cidade</th>
-                    <th>Cnpj_cpf</th>
-                    <th>Descritivo</th>
-
+                    <th>Email</th>
                     <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="row in rows" :key="row.id">
                     <td>{{ row.id }}</td>
-                                        <td>{{row.ativo}}</td>
-                    <td>{{row.bairro}}</td>
-                    <td>{{row.business_id}}</td>
-                    <td>{{row.celular}}</td>
-                    <td>{{row.cep}}</td>
-                    <td>{{row.cidade}}</td>
-                    <td>{{row.cnpj_cpf}}</td>
-                    <td>{{row.descritivo}}</td>
-
+                    <td class="w-25">{{ row.nome }}</td>
+                    <td>{{ row.cnpj_cpf }}</td>
+                    <td>{{ row.celular }}</td>
+                    <td>{{ row.email }}</td>
                     <td>
                         <div class="btn-group btn-sm" role="group" aria-label="Basic example">
                             <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
@@ -61,6 +51,9 @@
                         </div>
 
                     </td>
+                </tr>
+                <tr v-if="rows==null">
+                    <td colspan="10" class="text-center"> Não há dados</td>
                 </tr>
                 </tbody>
             </table>
@@ -81,9 +74,7 @@ export default {
     components: {ButtonWidget, LayoutPage},
     data() {
         return {
-            rows: '<tr>' +
-                '<td class="text-center" colspan="3">Não há dados</td>' +
-                '</tr>',
+            rows: null,
             search: null
         }
     },
@@ -112,15 +103,15 @@ export default {
 
 
         },
-        async deleteRow(id){
+        async deleteRow(id) {
             let requestHelper = new RequestHelper();
-            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/'+id);
-           if(dataRow.data.success){
-               this.list();
-               toastr.success('Apagado com sucesso');
-           }else{
-               toastr.error('Houve um problema ao apagar');
-           }
+            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/' + id);
+            if (dataRow.data.success) {
+                this.list();
+                toastr.success('Apagado com sucesso');
+            } else {
+                toastr.error('Houve um problema ao apagar');
+            }
         }
 
     },

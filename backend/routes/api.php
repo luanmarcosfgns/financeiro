@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContatoController;
+use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\ServicosAnexoController;
 use App\Http\Controllers\SessionController;
@@ -30,6 +31,7 @@ Route::group([
     'middleware' => 'auth'],
     function ($router) {
             Route::resource('contatos',ContatoController::class)->except(['create','edit']);
+            Route::resource('enderecos',EnderecoController::class)->except(['create','edit']);
             Route::resource('usuarios', UsuariosController::class)->except(['create','edit']);
             Route::resource('business', BusinessController::class)->except(['create','edit']);
         Route::get('categorias/list', [CategoriaController::class,'list']);

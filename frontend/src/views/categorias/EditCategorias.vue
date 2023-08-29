@@ -18,7 +18,9 @@
         <div class="card-body">
             <div class="row">
                 <FormCategorias></FormCategorias>
-                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                <div class="col-md-4">
+                    <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+                </div>
             </div>
         </div>
     </layout-page>
@@ -31,47 +33,54 @@ import RequestHelper from "@/services/RequestHelper";
 import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import LayoutPage from "@/components/page/layoutPage.vue";
 import toastr from "toastr/build/toastr.min";
+import Helpers from "@/services/Helpers";
 
 export default {
     name: "EditCategorias",
     components: {LayoutPage, ButtonWidget, FormCategorias},
-    methods:{
-       async edit(id){
+    methods: {
+        async edit(id) {
             let request = new RequestHelper();
-            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias/'+id,{});
-           console.log(response.data.descritivo);
+            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias/' + id, {});
+            let helpers = new Helpers();
             document.getElementById('nome').value = response.data.nome;
             document.getElementById('descritivo').value = response.data.descritivo;
-            document.getElementById('parent_id').value = response.data.parent_id;
+            let parents = document.getElementById('parent_id');
+            if (helpers.empty(response.data.parent_id)) {
+                parents.setAttribute('readonly', 'readonly')
+                parents.parentNode.classList.add('d-none');
+            }
+            parents.value = response.data.parent_id;
+
         },
-        async sendForm(){
+        async sendForm() {
             let dataForm = {
                 nome: document.getElementById('nome').value,
                 descritivo: document.getElementById('descritivo').value,
                 parent_id: document.getElementById('parent_id').value,
-                _method:'PUT'
+                _method: 'PUT'
 
             }
-            if(!dataForm.parent_id){
+            if (!dataForm.parent_id) {
                 delete dataForm.parent_id
             }
-            let request =  new RequestHelper();
-            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias/'+this.$route.params.id,dataForm);
-            if(response.data?.id){
-               toastr.success('Salvo com sucesso')
-            }else{
-                if (response.response.data?.message){
+            let request = new RequestHelper();
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias/' + this.$route.params.id, dataForm);
+            if (response.data?.id) {
+                toastr.success('Salvo com sucesso')
+            } else {
+                if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);
-                }else{
+                } else {
                     toastr.error('Houve um problema ao inserir');
                 }
 
             }
         }
     },
-  created() {
-    this.edit(this.$route.params.id)
-  }
+    created() {
+        this.edit(this.$route.params.id)
+    }
 }
 </script>
 

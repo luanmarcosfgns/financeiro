@@ -51,6 +51,7 @@ class ViewMold
         WriteArchive::now($form,'Form'.$tableUppercase.'.vue',$dir);
         WriteArchive::now($edit,'Edit'.$tableUppercase.'.vue',$dir);
         WriteArchive::now($create,'Create'.$tableUppercase.'.vue',$dir);
+     return true;
     }
     public static function mold()
     {
@@ -103,6 +104,9 @@ class ViewMold
 
                     </td>
                 </tr>
+                 <tr v-if="rows==null">
+                    <td colspan="3" class="text-center"> Não há dados</td>
+                </tr>
                 </tbody>
             </table>
 
@@ -122,9 +126,7 @@ export default {
     components: {ButtonWidget, LayoutPage},
     data() {
         return {
-            rows: \'<tr>\' +
-                \'<td class="text-center" colspan="3">Não há dados</td>\' +
-                \'</tr>\',
+            rows: null,
             search: null
         }
     },

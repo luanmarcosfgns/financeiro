@@ -31,11 +31,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
+                <tr v-for="row in rows" :key="row.id" :class="row.parent_id==null?'table-active':''">
+                    <td :class="row.parent_id!==null?'ps-4':''">
+                        <i v-if="row.parent_id==null" class="bi bi-caret-right-fill"></i>
+                        {{ row.id }}
+                    </td>
                     <td>{{ row.nome }}</td>
                     <td>
-                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                        <div class="btn-group btn-sm " role="group" aria-label="Basic example">
                             <router-link class="btn btn-success" :to="'./'+row.id+'/edit'">
                                 <i class="bi bi-pencil-square"></i>
                             </router-link>
@@ -45,6 +48,9 @@
                         </div>
 
                     </td>
+                </tr>
+                <tr v-if="rows==null">
+                    <td colspan="3" class="text-center"> Não há dados</td>
                 </tr>
                 </tbody>
             </table>
@@ -66,9 +72,7 @@ export default {
     components: {ButtonWidget, LayoutPage},
     data() {
         return {
-            rows: '<tr>' +
-                '<td class="text-center" colspan="3">Não há dados</td>' +
-                '</tr>',
+            rows: null,
             search: null
         }
     },

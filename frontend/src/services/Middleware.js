@@ -1,4 +1,5 @@
 import Helpers from "@/services/Helpers";
+import RequestHelper from "@/services/RequestHelper";
 
 export default class Middleware {
 
@@ -33,5 +34,17 @@ export default class Middleware {
         setTimeout(function(){
             document.getElementsByClassName('loading-page')[0].classList.add('d-none');
         },1000)
+    }
+
+   async uniqueConfiguration(to) {
+        if(to.href=='/business/create'){
+            let request = new RequestHelper();
+            let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view:true});
+            let business_id = await resposeRequest.data.business_id;
+            let helper = new Helpers();
+            if (!helper.empty(business_id)) {
+                location.href = '/business/'+business_id+'/edit';
+            }
+        }
     }
 }
