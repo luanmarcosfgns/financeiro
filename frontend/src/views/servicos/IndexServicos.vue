@@ -27,7 +27,6 @@
                 <tr>
                     <th>#</th>
                     <th>Nome</th>
-
                     <th>Ecommerce</th>
                     <th>Preco</th>
                     <th>Ativo</th>
