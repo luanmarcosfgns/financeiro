@@ -30,19 +30,21 @@ Route::group([
 Route::group([
     'middleware' => 'auth'],
     function ($router) {
-            Route::resource('contatos',ContatoController::class)->except(['create','edit']);
-            Route::resource('enderecos',EnderecoController::class)->except(['create','edit']);
-            Route::resource('users', UsuariosController::class)->except(['create','edit']);
-            Route::resource('business', BusinessController::class)->except(['create','edit']);
-        Route::get('categorias/list', [CategoriaController::class,'list']);
-        Route::resource('categorias', CategoriaController::class)->except(['create','edit']);
-            Route::resource('aliquotas', AliquotaController::class)->except(['create','edit']);
-            Route::resource('aliquotas_items', AliquotasItemController::class)->except(['create','edit']);
-            Route::resource('servicos', ServicoController::class)->except(['create','edit']);
-            Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
-            Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create','edit']);
-            Route::resource('sessions', SessionController::class)->except(['create','edit']);
-            Route::resource('vendas', VendaController::class)->except(['create','edit']);
-            Route::resource('vendas_pagamentos', VendasPagamentoController::class)->except(['create','edit']);
-            Route::resource('vendas_servicos', VendasServicoController::class)->except(['create','edit']);
-    });
+        Route::get('aliquotas/list', [AliquotaController::class, 'list']);
+        Route::get('categorias/list', [CategoriaController::class, 'list']);
+        Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
+        Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);
+        Route::resource('users', UsuariosController::class)->except(['create', 'edit']);
+        Route::resource('business', BusinessController::class)->except(['create', 'edit']);
+        Route::resource('categorias', CategoriaController::class)->except(['create', 'edit']);
+        Route::resource('aliquotas', AliquotaController::class)->except(['create', 'edit']);
+        Route::resource('aliquotas_items', AliquotasItemController::class)->except(['create', 'edit']);
+        Route::resource('servicos', ServicoController::class)->except(['create', 'edit']);
+        Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
+        Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
+        Route::resource('sessions', SessionController::class)->except(['create', 'edit']);
+        Route::resource('vendas', VendaController::class)->except(['create', 'edit']);
+        Route::resource('vendas_pagamentos', VendasPagamentoController::class)->except(['create', 'edit']);
+        Route::resource('vendas_servicos', VendasServicoController::class)->except(['create', 'edit']);
+
+});

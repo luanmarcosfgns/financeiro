@@ -1,43 +1,47 @@
 
-###LISTAR SERVIÇOS
-GET http://localhost:8000/api/servicos_anexos?servico_id=1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzE1NTAsImV4cCI6MTY5MTE3NTE1MCwibmJmIjoxNjkxMTcxNTUwLCJqdGkiOiJFRHMxdjRyRXh6dGFNaGdZIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pz3CbCOAEBmZG9yg35ILnbGUjdAdnV1zcE399d5QMnE
+###LIST SERVICOS_ANEXOS
+GET http://localhost:8000/api/servicos_anexos
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-###VER SERVIÇOS
+###VER SERVICOS_ANEXOS
 GET http://localhost:8000/api/servicos_anexos/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzE1NTAsImV4cCI6MTY5MTE3NTE1MCwibmJmIjoxNjkxMTcxNTUwLCJqdGkiOiJFRHMxdjRyRXh6dGFNaGdZIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.pz3CbCOAEBmZG9yg35ILnbGUjdAdnV1zcE399d5QMnE
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR SERVIÇOS
+####ADICIONAR SERVICOS_ANEXOS
 POST http://localhost:8000/api/servicos_anexos
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwOTQ4NDcsImV4cCI6MTY5MTA5ODQ0NywibmJmIjoxNjkxMDk0ODQ3LCJqdGkiOiJER3lNRVJybU9yWXBCQmxvIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.c_ttr8m7q10Vix3OLRJ2nEOrQauX_VKsKfEMb5onY04
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
-    "image_video":"Loren Epsun",
+    "anexo":"file",
+    "extensao":"Loren Epsun",
+    "tipo":"value",
     "servico_id":1
 
 }
-####MUDAR SERVIÇOS
+####MUDAR SERVICOS_ANEXOS
 POST http://localhost:8000/api/servicos_anexos/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwOTQ4NDcsImV4cCI6MTY5MTA5ODQ0NywibmJmIjoxNjkxMDk0ODQ3LCJqdGkiOiJER3lNRVJybU9yWXBCQmxvIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.c_ttr8m7q10Vix3OLRJ2nEOrQauX_VKsKfEMb5onY04
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
-    "image_video":"Loren Epsun",
+    "anexo":"file",
+    "extensao":"Loren Epsun",
+    "tipo":"value",
     "servico_id":1
 
 }
 
-####APAGAR SERVIÇOS
-POST http://localhost:8000/api/servicos_anexos/2
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTEwOTQ4NDcsImV4cCI6MTY5MTA5ODQ0NywibmJmIjoxNjkxMDk0ODQ3LCJqdGkiOiJER3lNRVJybU9yWXBCQmxvIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.c_ttr8m7q10Vix3OLRJ2nEOrQauX_VKsKfEMb5onY04
+####APAGAR SERVICOS_ANEXOS
+POST http://localhost:8000/api/servicos_anexos/1
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 

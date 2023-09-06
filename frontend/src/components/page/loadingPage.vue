@@ -2,6 +2,7 @@
 <div class="loading-page">
     <div class="page">
         <span class="loader"></span>
+
     </div>
 
 </div>
@@ -18,7 +19,6 @@ export default {
 .page{
     width: 100vw;
     height: 100vh;
-
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -26,8 +26,10 @@ export default {
 }
 .loading-page{
     position: absolute;
-    width: 100%;
-    height: 100%;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     background-color: #edf2f7;
     z-index: 99999;
 }

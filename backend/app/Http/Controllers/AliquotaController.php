@@ -98,4 +98,14 @@ class AliquotaController extends Controller
        return response()->json(["success"=>true,"message"=>"Removed success"]);
     }
 
+    public function list(): JsonResponse
+    {
+
+        $categorias = Aliquota::where('business_id', auth()->user()->business_id)
+            ->where('ativo', true)
+            ->select('id', 'nome as message')
+            ->get('message', 'id');
+        return response()->json($categorias);
+    }
+
 }

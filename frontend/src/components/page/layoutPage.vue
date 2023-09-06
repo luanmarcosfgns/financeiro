@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="content-wrapper">
-                <nav class="navbar bg-body-tertiary" style="z-index: 1">
+                <nav class="navbar bg-body-tertiary" style="z-index: 1;">
                     <div class="container-fluid">
                         <a aria-controls="offcanvasScrolling" class="navbar-brand ps-2 " data-bs-target="#sideBar"
                            data-bs-toggle="collapse" href="#">
@@ -121,7 +121,7 @@
             </div>
         </div>
         <div class="col-md-8 offset-md-2" style="z-index: 0;">
-            <div class="page-wrapper bg-gra-02 p-t-130 p-b-100 font-poppins">
+            <div class="page-wrapper bg-gra-02 p-t-130  font-poppins">
                 <div class="wrapper wrapper--w680 p-4 ">
                     <div class="card card-4">
                         <slot></slot>

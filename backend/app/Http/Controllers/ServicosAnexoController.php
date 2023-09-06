@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Aliquota;
-use App\Models\Servico;
 use App\Models\ServicosAnexo;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -16,17 +14,20 @@ class ServicosAnexoController extends Controller
     if($type=="store"){
         $request->validate(
         [
-            'image_video'=>['required','max:255','string'],
+            'anexo'=>['required','max:6990507'],
+
+            'tipo'=>['required','max:9'],
             'servico_id'=>['required'],
         ]
         );
     }else{
         $request->validate([
-            'image_video'=>['required','max:255','string'],
+            'anexo'=>['required','max:6990507'],
+            'tipo'=>['required','max:9'],
             'servico_id'=>['required'],
         ]);
     }
-        return $request->only(["image_video","servico_id"]);
+        return $request->only(["anexo","tipo","servico_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -38,16 +39,7 @@ class ServicosAnexoController extends Controller
         if ($search == null) {
             $search = "";
         }
-        if (empty($request->servico_id)) {
-            abort(404,'Not Found');
-        }
-
-        $countServico = Servico::where('id',$request->servico_id)->where('business_id',auth()->user()->business_id)->count();
-        if($countServico==0){
-            abort(404, 'Not Found');
-        }
         $servicos_anexos = ServicosAnexo::search($search)
-            ->where('servico_id',$request->servico_id)
             ->paginate(1000);
 
         return response()->json($servicos_anexos);
@@ -72,7 +64,7 @@ class ServicosAnexoController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
+        $servicos_anexo = ServicosAnexo::find($id);
 
        return response()->json($servicos_anexo);
     }
@@ -86,7 +78,7 @@ class ServicosAnexoController extends Controller
        $id
     ): JsonResponse{
 
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
+        $servicos_anexo = ServicosAnexo::find($id);
         $validated = $this->validated("update",$request);
 
         $servicos_anexo->update($validated);
@@ -99,7 +91,7 @@ class ServicosAnexoController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::findOrFail($id);
+        $servicos_anexo = ServicosAnexo::find($id);
         $servicos_anexo->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);

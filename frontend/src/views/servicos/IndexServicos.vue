@@ -22,7 +22,7 @@
         </div>
 
         <div class="card-body">
-            <table class="table">
+            <table class="table table-responsive">
                 <thead>
                 <tr>
                     <th>#</th>
@@ -40,9 +40,9 @@
                 <tr v-for="row in rows" :key="row.id">
                     <td>{{ row.id }}</td>
                     <td>{{ row.nome }}</td>
-                    <td>{{ row.ecommerce }}</td>
+                    <td>{{ row.ecommerce?'Sim':'Não' }}</td>
                     <td>{{ row.preco }}</td>
-                    <td>{{ row.ativo }}</td>
+                    <td>{{ row.ativo?'Sim':'Não' }}</td>
                     <td>
                         <div class="btn-group btn-sm" role="group" aria-label="Basic example">
                             <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">

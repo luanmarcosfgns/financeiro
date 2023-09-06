@@ -120,7 +120,7 @@ class CategoriaController extends Controller
     public function list(): JsonResponse
     {
         $categorias = Categoria::where('business_id', auth()->user()->business_id)
-            ->whereNull('parent_id')
+            ->whereNotNull('parent_id')
             ->select('id', 'nome as message')
             ->get('message','id');
         return response()->json($categorias);

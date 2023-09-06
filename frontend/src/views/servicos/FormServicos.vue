@@ -21,20 +21,26 @@ export default {
     name: "FormServicos",
     components: {InputForm},
     data() {
-        return {servicos: null}
+        return {
+            aliquota: null,
+            categoria: null
+        }
     },
     methods: {
-        async getServicos() {
+        async getAliquotas() {
             let request = new RequestHelper();
-            this.servicos = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/servicos/list', {});
-            this.servicos = await this.servicos.data;
+            this.aliquota = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas/list', {});
+            this.aliquota = await this.aliquota.data;
+            this.categoria = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias/list', {});
+            this.categoria = await this.categoria.data;
+
 
         },
 
 
     },
     created() {
-        this.getServicos();
+        this.getAliquotas();
     }
 }
 </script>

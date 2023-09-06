@@ -33,31 +33,30 @@ import toastr from "toastr/build/toastr.min";
 export default {
     name: "CreateServicos",
     components: {FormServicos, LayoutPage, ButtonWidget},
-    methods:{
-        async sendForm(){
+    methods: {
+        async sendForm() {
             let dataForm = {
-              nome: document.getElementById('nome').value,
-descritivo: document.getElementById('descritivo').value,
-ecommerce: document.getElementById('ecommerce').value,
-preco: document.getElementById('preco').value,
-aliquota_id: document.getElementById('aliquota_id').value,
-categoria_id: document.getElementById('categoria_id').value,
-ativo: document.getElementById('ativo').value,
-business_id: document.getElementById('business_id').value,
+                nome: document.getElementById('nome').value,
+                descritivo: document.getElementById('descritivo').value,
+                ecommerce: document.getElementById('ecommerce').value,
+                preco: document.getElementById('preco').value,
+                aliquota_id: document.getElementById('aliquota_id').value,
+                categoria_id: document.getElementById('categoria_id').value,
+                ativo: document.getElementById('ativo').value,
 
 
             }
-            if(!dataForm.parent_id){
+            if (!dataForm.parent_id) {
                 delete dataForm.parent_id
             }
-            let request =  new RequestHelper();
-            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/servicos',dataForm);
-            if(response.data?.id){
-                location.href = './'+response.data.id+'/edit';
-            }else{
-                if (response.response.data?.message){
+            let request = new RequestHelper();
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/servicos', dataForm);
+            if (response.data?.id) {
+                location.href = './' + response.data.id + '/edit';
+            } else {
+                if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);
-                }else{
+                } else {
                     toastr.error('Houve um problema ao inserir');
                 }
 

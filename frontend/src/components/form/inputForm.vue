@@ -1,20 +1,39 @@
 <template>
     <div v-if="type==='hidden'">
-
         <input  type="hidden" :name="name" :id="name" :class="name" class="form-control" :value="value" >
     </div>
+
+    <div v-if="type==='blob'" :class="classList">
+        <div class="row">
+            <div class="col-md-12">
+                <label class="p-2" for="nome">{{label}}</label>
+            </div>
+            <div class="col-md-12 p-4">
+                <img :id="'img-'+name" src="@/assets/no-image.png"  width="100">
+            </div>
+            <div class="col-md-12">
+                <input :placeholder="placeholder" type="file" @change="setImageAndValue" data-value="" :name="name" :id="name" :class="name" class="form-control" >
+            </div>
+
+        </div>
+    </div>
+
+
     <div v-if="type==='string'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
     </div>
+
     <div v-if="type==='decimal' ||type === 'double'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control decimal" v-model="valueInput">
     </div>
+
     <div v-if="type==='date'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <input :placeholder="placeholder" type="date" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
     </div>
+
     <div v-if="type==='tinyint'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <select  :name="name" :id="name" :class="name" class="form-control" v-model="valueInput" >
@@ -22,12 +41,14 @@
            <option value="0">Não</option>
         </select>
     </div>
+
     <div v-if="type==='text'" :class="classList">
         <label class="p-2" for="nome">{{label}}</label>
         <textarea :placeholder="placeholder" :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
 
         </textarea>
     </div>
+
     <div v-if="type==='select'" :class="classList" class="form-group">
         <label class="p-2" for="nome">{{label}}</label>
         <select  :name="name" :id="name" :class="name" class="form-control" v-model="valueInput" >
@@ -41,6 +62,7 @@
             </template>
 
         </select>
+
     </div>
 
 </template>
@@ -77,13 +99,33 @@ export default {
            if (this.type === 'string' || this.type === 'double' || this.type === 'decimal') {
                this.typeInput = 'text'
            }
+
+
            if (!helpers.empty(this.value)){
                 this.valueInput =  this.value;
            }
 
+       },
 
+       setImageAndValue(){
+           let fileInput = document.getElementById(this.name);
+           let extention = fileInput.files[0].type;
+           let imageDisplay = document.querySelector('#img-'+this.name);
+           if(extention.includes('image')){
+               let selectedFile = fileInput.files[0];
+               let fileReader = new FileReader();
+               fileReader.onload = function(event) {
+                   imageDisplay.src = event.target.result;
+                   fileInput.dataset.value=event.target.result;
+               }
+               fileReader.readAsDataURL(selectedFile);
 
-       }
+           }else{
+               imageDisplay.src = require('@/assets/documento.png');
+           }
+
+       },
+
    }
 }
 </script>
