@@ -60,13 +60,16 @@ export default {
     },
     methods: {
         async list() {
-            let dataRequest = {};
+            let dataRequest = {
+                servico_id:this.$route.params.id
+            };
             let requestHelper = new RequestHelper();
             let helpers = new Helpers();
 
             if (!helpers.empty(this.search)) {
                 dataRequest = {
-                    search: this.search
+                    search: this.search,
+                    servico_id:this.$route.params.id
                 };
             }
 

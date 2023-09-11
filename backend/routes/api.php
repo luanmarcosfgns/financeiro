@@ -7,6 +7,8 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\EnderecoController;
+use App\Http\Controllers\EntrevistaController;
+use App\Http\Controllers\PerguntaController;
 use App\Http\Controllers\ServicoController;
 use App\Http\Controllers\ServicosAnexoController;
 use App\Http\Controllers\SessionController;
@@ -46,5 +48,7 @@ Route::group([
         Route::resource('vendas', VendaController::class)->except(['create', 'edit']);
         Route::resource('vendas_pagamentos', VendasPagamentoController::class)->except(['create', 'edit']);
         Route::resource('vendas_servicos', VendasServicoController::class)->except(['create', 'edit']);
+        Route::resource('entrevistas', EntrevistaController::class)->except(['create', 'edit']);
+        Route::resource('perguntas', PerguntaController::class)->except(['create', 'edit']);
 
 });

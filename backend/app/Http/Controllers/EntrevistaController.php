@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServicosAnexo;
+use App\Models\Entrevista;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
 
-class ServicosAnexoController extends Controller
+class EntrevistaController extends Controller
 {
     public function validated($type,$request){
     if($type=="store"){
         $request->validate(
         [
-            'anexo'=>['required','max:6990507'],
-
-            'tipo'=>['required','max:9'],
+            'ativo'=>['required','boolean'],
+            'descritivo'=>['required','max:4294967295','string'],
+            'nome'=>['required','max:150','string'],
             'servico_id'=>['required'],
         ]
         );
     }else{
         $request->validate([
-            'anexo'=>['required','max:6990507'],
-            'tipo'=>['required','max:9'],
+            'ativo'=>['required','boolean'],
+            'descritivo'=>['required','max:4294967295','string'],
+            'nome'=>['required','max:150','string'],
             'servico_id'=>['required'],
         ]);
     }
-        return $request->only(["anexo","tipo","servico_id"]);
+        return $request->only(["ativo","business_id","descritivo","nome","servico_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -39,11 +40,11 @@ class ServicosAnexoController extends Controller
         if ($search == null) {
             $search = "";
         }
-        $servicos_anexos = ServicosAnexo::search($search)
+        $entrevistas = Entrevista::search($search)
             ->where('servico_id',$request->servico_id)
             ->paginate(1000);
 
-        return response()->json($servicos_anexos);
+        return response()->json($entrevistas);
     }
 
 
@@ -55,9 +56,10 @@ class ServicosAnexoController extends Controller
     {
 
         $validated = $this->validated("store",$request);
-        $servicos_anexo = ServicosAnexo::create($validated);
+        $validated['business_id'] = auth()->user()->business_id;
+        $entrevista = Entrevista::create($validated);
 
-         return response()->json($servicos_anexo);
+         return response()->json($entrevista);
     }
 
     /**
@@ -65,9 +67,9 @@ class ServicosAnexoController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::find($id);
+        $entrevista = Entrevista::find($id);
 
-       return response()->json($servicos_anexo);
+       return response()->json($entrevista);
     }
 
 
@@ -79,12 +81,12 @@ class ServicosAnexoController extends Controller
        $id
     ): JsonResponse{
 
-        $servicos_anexo = ServicosAnexo::find($id);
+        $entrevista = Entrevista::find($id);
         $validated = $this->validated("update",$request);
 
-        $servicos_anexo->update($validated);
+        $entrevista->update($validated);
 
-         return response()->json($servicos_anexo);
+         return response()->json($entrevista);
     }
 
     /**
@@ -92,8 +94,8 @@ class ServicosAnexoController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $servicos_anexo = ServicosAnexo::find($id);
-        $servicos_anexo->delete();
+        $entrevista = Entrevista::find($id);
+        $entrevista->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
     }

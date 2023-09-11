@@ -39,7 +39,7 @@
                     <td>{{ row.nome }}</td>
                     <td>
                         <div class="btn-group btn-sm " role="group" aria-label="Basic example">
-                            <router-link class="btn btn-success" :to="'./'+row.id+'/edit'">
+                            <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
                                 <i class="bi bi-pencil-square"></i>
                             </router-link>
                             <button class="btn btn-danger" @click="deleteRow(row.id)">

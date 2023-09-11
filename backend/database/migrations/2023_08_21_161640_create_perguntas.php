@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('perguntas', function (Blueprint $table) {
             $table->id();
             $table->longText('enunciado');
-            $table->enum('tipo_resposta',['multipla','unica','descritiva','inteira','dedcimal','datada']);
+            $table->enum('tipo_resposta',['multipla','unica','descritiva','inteira','decimal','datada']);
             $table->integer('ordem');
             $table->json('opcoes');
             $table->bigInteger('business_id');
+            $table->bigInteger('entrevista_id');
             $table->timestamps();
         });
     }

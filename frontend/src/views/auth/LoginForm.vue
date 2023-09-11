@@ -80,7 +80,13 @@ export default {
                 password: password,
                 save: save
             };
-            axios.post(process.env.VUE_APP_API_HOST_NAME + '/api/auth/login', data)
+            axios.post(process.env.VUE_APP_API_HOST_NAME + '/api/auth/login', data,{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("HASH")}`,
+                    Accept: 'application/json',
+                    "Content-Type": 'application/json'
+                }
+            })
                 .then(function (response) {
                     localStorage.setItem('HASH',response.data.data.token);
                     location.href = '/painel'

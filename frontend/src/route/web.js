@@ -27,6 +27,8 @@ import EditAliquotas from "@/views/aliquotas/EditAliquotas.vue";
 import EditAliquotasItems from "@/views/aliquotas_items/EditAliquotasItems.vue";
 import CreateUsers from "@/views/users/CreateUsers.vue";
 import EditUsers from "@/views/users/EditUsers.vue";
+import EditEntrevistas from "@/views/entrevistas/EditEntrevistas.vue";
+import EditPerguntas from "@/views/perguntas/EditPerguntas.vue";
 
 
 const routes = [
@@ -215,6 +217,22 @@ const routes = [
         path: '/users/:id/edit',
         name: 'editUsers',
         component: EditUsers,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/entrevistas/:id/edit',
+        name: 'editEntrevistas',
+        component: EditEntrevistas,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/perguntas/:id/edit',
+        name: 'editPerguntas',
+        component: EditPerguntas,
         meta: {
             auth: true
         }

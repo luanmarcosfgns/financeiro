@@ -1,7 +1,11 @@
 <template>
-
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 ps-4 pt-3 ">
+            <div class="float-start">
+                <h5> Entrevistas</h5>
+            </div>
+
+
             <div class="float-end">
                 <button type="button" class="btn btn-primary" @click="modalAdd">
                     Adicionar
@@ -10,24 +14,25 @@
         </div>
 
     </div>
-
     <table class="table">
         <thead>
         <tr>
             <th>#</th>
+            <th>Ativo</th>
             <th>Nome</th>
-            <th>Porcentagem</th>
             <th>Ações</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="row in rows" :key="row.id">
             <td>{{ row.id }}</td>
+            <td>{{ row.ativo }}</td>
             <td>{{ row.nome }}</td>
-            <td>{{ row.porcentagem.replaceAll('.',',') }}</td>
+
+
             <td>
                 <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                    <router-link class="btn btn-danger" :to="'/aliquotasitems/'+row.id+'/edit'">
+                    <router-link class="btn btn-danger" :to="'/entrevistas/'+row.id+'/edit'">
                         <i class="bi bi-pencil-square"></i>
                     </router-link>
                     <button class="btn btn-danger" @click="deleteRow(row.id)">
@@ -38,14 +43,13 @@
             </td>
         </tr>
         <tr v-if="rows==null">
-            <td colspan="3" class="text-center"> Não há dados</td>
+            <td colspan="4" class="text-center"> Não há dados</td>
         </tr>
         </tbody>
     </table>
-    <ModalWidget id="cadastrar">
-        <create-aliquotas-items></create-aliquotas-items>
+    <ModalWidget id="cadastrarEntrevista">
+        <create-entrevistas></create-entrevistas>
     </ModalWidget>
-
 </template>
 <script>
 
@@ -53,11 +57,11 @@ import RequestHelper from "@/services/RequestHelper";
 import Helpers from "@/services/Helpers";
 import toastr from "toastr/build/toastr.min";
 import ModalWidget from "@/components/widget/modalWidget.vue";
-import CreateAliquotasItems from "@/views/aliquotas_items/CreateAliquotasItems.vue";
+import CreateEntrevistas from "@/views/entrevistas/CreateEntrevistas.vue";
 
 export default {
-    name: "IndexAliquotasItems",
-    components: {CreateAliquotasItems, ModalWidget},
+    name: "IndexEntrevistas",
+    components: {CreateEntrevistas, ModalWidget},
     data() {
         return {
             rows: null,
@@ -66,22 +70,20 @@ export default {
     },
     methods: {
         async list() {
-
-
             let dataRequest = {
-                aliquota_id:this.$route.params.id
+                servico_id:this.$route.params.id
             };
             let requestHelper = new RequestHelper();
             let helpers = new Helpers();
 
             if (!helpers.empty(this.search)) {
                 dataRequest = {
-                    search: this.search,
-                    aliquota_id:this.$route.params.id
+                    servico_id:this.$route.params.id,
+                    search: this.search
                 };
             }
 
-            let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items', dataRequest);
+            let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/entrevistas', dataRequest);
 
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
@@ -94,7 +96,7 @@ export default {
         },
         async deleteRow(id) {
             let requestHelper = new RequestHelper();
-            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items/' + id);
+            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/entrevistas/' + id);
             if (dataRow.data.success) {
                 this.list();
                 toastr.success('Apagado com sucesso');
@@ -103,7 +105,7 @@ export default {
             }
         },
         modalAdd(){
-            document.getElementById('cadastrar').classList.remove('d-none')
+            document.getElementById('cadastrarEntrevista').classList.remove('d-none')
         }
 
     },

@@ -41,6 +41,7 @@ class AliquotasItemController extends Controller
             $search = "";
         }
         $aliquotas_items = AliquotasItem::search($search)
+            ->where('aliquota_id',$request->aliquota_id)
             ->paginate(1000);
 
         return response()->json($aliquotas_items);
