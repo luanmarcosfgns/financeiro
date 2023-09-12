@@ -15,9 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('contato_id');
             $table->longText('descritivo')->nullable();
-            $table->decimal('valor_total')->default(0.00);
-            $table->json('impostos_totais');
             $table->bigInteger('business_id');
+            $table->bigInteger('user_id');
             $table->timestamps();
         });
     }

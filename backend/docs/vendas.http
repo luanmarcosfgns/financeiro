@@ -1,48 +1,49 @@
 
-###LISTAR VENDAS
+###LIST VENDAS
 GET http://localhost:8000/api/vendas
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNjI1MTUsImV4cCI6MTY5MTE2NjExNSwibmJmIjoxNjkxMTYyNTE1LCJqdGkiOiJjYkwzelZ3OEhQNjJ0TDZQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZAQ5haXsZYeQLRr01AotKfFn4exloW-D_4p2IN2JIck
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 ###VER VENDAS
 GET http://localhost:8000/api/vendas/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNjI1MTUsImV4cCI6MTY5MTE2NjExNSwibmJmIjoxNjkxMTYyNTE1LCJqdGkiOiJjYkwzelZ3OEhQNjJ0TDZQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZAQ5haXsZYeQLRr01AotKfFn4exloW-D_4p2IN2JIck
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR SERVIÇOS
+####ADICIONAR VENDAS
 POST http://localhost:8000/api/vendas
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNjI1MTUsImV4cCI6MTY5MTE2NjExNSwibmJmIjoxNjkxMTYyNTE1LCJqdGkiOiJjYkwzelZ3OEhQNjJ0TDZQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZAQ5haXsZYeQLRr01AotKfFn4exloW-D_4p2IN2JIck
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "contato_id":1,
     "descritivo":"Loren Epsun",
+    "valor_total":1.1,
     "impostos_totais":"[]",
-    "valor_total":1.1
+    "business_id":1
 
 }
 ####MUDAR VENDAS
 POST http://localhost:8000/api/vendas/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNjI1MTUsImV4cCI6MTY5MTE2NjExNSwibmJmIjoxNjkxMTYyNTE1LCJqdGkiOiJjYkwzelZ3OEhQNjJ0TDZQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZAQ5haXsZYeQLRr01AotKfFn4exloW-D_4p2IN2JIck
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
-    "business_id":1,
     "contato_id":1,
     "descritivo":"Loren Epsun",
+    "valor_total":1.1,
     "impostos_totais":"[]",
-    "valor_total":1.1
+    "business_id":1
 
 }
 
 ####APAGAR VENDAS
-POST http://localhost:8000/api/vendas/2
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNjI1MTUsImV4cCI6MTY5MTE2NjExNSwibmJmIjoxNjkxMTYyNTE1LCJqdGkiOiJjYkwzelZ3OEhQNjJ0TDZQIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.ZAQ5haXsZYeQLRr01AotKfFn4exloW-D_4p2IN2JIck
+POST http://localhost:8000/api/vendas/1
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 

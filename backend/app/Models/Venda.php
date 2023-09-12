@@ -10,7 +10,7 @@ class Venda extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["business_id","contato_id","descritivo","impostos_totais","valor_total"];
+    protected $fillable = ["contato_id","descritivo","valor_total","impostos_totais","business_id"];
 
     protected $searchableFields = ["*"];
 
@@ -20,6 +20,10 @@ class Venda extends Model
         return $this->belongsTo(Contato::class);
     }
     
+    public function Resposta()
+    {
+        return $this->hasMany(Resposta::class);
+    }
     public function VendasPagamento()
     {
         return $this->hasMany(VendasPagamento::class);

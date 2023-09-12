@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5>Adicionar Contatos</h5>
+                        <h5>Adicionar Vendas</h5>
                     </div>
                     <div class="float-end">
                         <button-widget cor="azul" href="./index" tamanho="M">
@@ -15,42 +15,30 @@
 
             </div>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <FormContatos></FormContatos>
-                <div class="col-md-4">
-                    <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
-                </div>
+        <FormVendas></FormVendas>
+        <div class="row">
+            <div class="col-md-12 p-4">
+                <button class="btn btn-primary" type="button" @click="sendForm">Finalizar Venda</button>
             </div>
         </div>
+
     </layout-page>
 </template>
 <script>
 import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import LayoutPage from "@/components/page/layoutPage.vue";
-import FormContatos from "@/views/contatos/FormContatos.vue";
+import FormVendas from "@/views/vendas/FormVendas.vue";
 import RequestHelper from "@/services/RequestHelper";
 import toastr from "toastr/build/toastr.min";
 
 export default {
-    name: "CreateContatos",
-    components: {FormContatos, LayoutPage, ButtonWidget},
+    name: "CreateVendas",
+    components: {FormVendas, LayoutPage, ButtonWidget},
     methods: {
         async sendForm() {
             let dataForm = {
-                nome: document.getElementById('nome').value,
-                razao: document.getElementById('razao').value,
-                nascimento: document.getElementById('nascimento').value,
-                estado_civil: document.getElementById('estado_civil').value,
-                sexo: document.getElementById('sexo').value,
-                rg_ie: document.getElementById('rg_ie').value,
-                cnpj_cpf: document.getElementById('cnpj_cpf').value,
-                telefone: document.getElementById('telefone').value,
-                celular: document.getElementById('celular').value,
-                email: document.getElementById('email').value,
+                contato_id: document.getElementById('contato_id').value,
                 descritivo: document.getElementById('descritivo').value,
-                ativo: document.getElementById('ativo').value,
-                profissao: document.getElementById('profissao').value,
 
 
             }
@@ -58,7 +46,7 @@ export default {
                 delete dataForm.parent_id
             }
             let request = new RequestHelper();
-            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos', dataForm);
+            let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas', dataForm);
             if (response.data?.id) {
                 location.href = './' + response.data.id + '/edit';
             } else {

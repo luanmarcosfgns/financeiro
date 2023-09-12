@@ -14,23 +14,23 @@ class VendaController extends Controller
     if($type=="store"){
         $request->validate(
         [
-
             'contato_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'impostos_totais'=>['required','json'],
             'valor_total'=>['required','numeric'],
+            'impostos_totais'=>['required','json'],
+            'business_id'=>['required'],
         ]
         );
     }else{
         $request->validate([
-
             'contato_id'=>['required'],
             'descritivo'=>['nullable','max:4294967295','string'],
-            'impostos_totais'=>['required','json'],
             'valor_total'=>['required','numeric'],
+            'impostos_totais'=>['required','json'],
+            'business_id'=>['required'],
         ]);
     }
-        return $request->only(["contato_id","descritivo","impostos_totais","valor_total"]);
+        return $request->only(["contato_id","descritivo","valor_total","impostos_totais","business_id"]);
     }
     /**
      * Display a listing of the resource.
@@ -43,7 +43,7 @@ class VendaController extends Controller
             $search = "";
         }
         $vendas = Venda::search($search)
-            ->where('business_id', auth()->user()->business_id)
+            ->where('business_id',auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($vendas);
@@ -58,7 +58,7 @@ class VendaController extends Controller
     {
 
         $validated = $this->validated("store",$request);
-        $validated['business_id'] = auth()->user()->business_id;
+
         $venda = Venda::create($validated);
 
          return response()->json($venda);
@@ -69,8 +69,7 @@ class VendaController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $venda = Venda::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $venda = Venda::find($id);
 
        return response()->json($venda);
     }
@@ -84,8 +83,7 @@ class VendaController extends Controller
        $id
     ): JsonResponse{
 
-        $venda = Venda::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $venda = Venda::find($id);
         $validated = $this->validated("update",$request);
 
         $venda->update($validated);
@@ -98,8 +96,7 @@ class VendaController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $venda = Venda::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $venda = Venda::find($id);
         $venda->delete();
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
