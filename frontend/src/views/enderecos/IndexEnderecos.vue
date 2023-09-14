@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="float-end">
                 <button type="button" class="btn btn-primary" @click="modalAdd">
                     Adicionar
@@ -10,7 +10,7 @@
 
     </div>
     <div class="row">
-        <div class="col-md-12 ps-4 pt-3 ">
+        <div class="col-12 ps-4 pt-3 ">
             <div class="w-50">
                 <input id="search" class="form-control" @change="list()" placeholder="Digite sua pesquisa"
                        type="text" v-model="search">

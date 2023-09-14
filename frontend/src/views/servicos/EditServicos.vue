@@ -2,7 +2,7 @@
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Editar Serviços</h5>
                     </div>
@@ -12,7 +12,7 @@
                         </button-widget>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button id="tabServicosOpenId" @click="tabServicosOpen" class="nav-link active"
@@ -43,15 +43,15 @@
         <div class="card-body">
             <div class="row" :class="tabServicos?'':'d-none'">
                 <FormServicos></FormServicos>
-                <div class="col-md-4">
+                <div class="col-4">
                     <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
                 </div>
 
             </div>
-            <div class="col-md-12" :class="tabAnexos?'':'d-none'">
+            <div class="col-12" :class="tabAnexos?'':'d-none'">
                 <index-servicos-anexos></index-servicos-anexos>
             </div>
-            <div class="col-md-12" :class="tabEntrevistas?'':'d-none'">
+            <div class="col-12" :class="tabEntrevistas?'':'d-none'">
                 <index-entrevistas></index-entrevistas>
             </div>
         </div>

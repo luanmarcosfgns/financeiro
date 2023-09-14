@@ -2,7 +2,7 @@
 
 
     <div class="row">
-        <div class="col-md-12 ps-4 pt-3 ">
+        <div class="col-12 ps-4 pt-3 ">
             <div class="float-start">
                 <h5> Perguntas</h5>
             </div>

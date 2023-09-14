@@ -1,12 +1,12 @@
 <template>
-    <input-form class-list="col-md-12" type="string" label="Nome " value="" name="nome"/>
-    <input-form class-list="col-md-12" type="text" label="Descritivo " value="" name="descritivo"/>
-    <input-form class-list="col-md-4" type="tinyint" label="Ecommerce " value="" name="ecommerce"/>
-    <input-form class-list="col-md-4" type="double" label="Preco " value="" name="preco"/>
-    <input-form placeholder="Selecione Aliquota " class-list="col-md-4" type="select" :items="aliquota"
+    <input-form class-list="col-12" type="string" label="Nome " value="" name="nome"/>
+    <input-form class-list="col-12" type="text" label="Descritivo " value="" name="descritivo"/>
+    <input-form class-list="col-4" type="tinyint" label="Ecommerce " value="" name="ecommerce"/>
+    <input-form class-list="col-4" type="double" label="Preco " value="" name="preco"/>
+    <input-form placeholder="Selecione Aliquota " class-list="col-4" type="select" :items="aliquota"
                 label="Aliquota " value="" name="aliquota_id"/>
-    <input-form class-list="col-md-4" type="tinyint" label="Ativo " value="" name="ativo"/>
-    <input-form placeholder="Selecione Categoria " class-list="col-md-6" type="select" :items="categoria"
+    <input-form class-list="col-4" type="tinyint" label="Ativo " value="" name="ativo"/>
+    <input-form placeholder="Selecione Categoria " class-list="col-6" type="select" :items="categoria"
                 label="Categoria " value="" name="categoria_id"/>
 
 

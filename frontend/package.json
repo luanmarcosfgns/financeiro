@@ -15,7 +15,8 @@
     "core-js": "^3.8.3",
     "toastr": "^2.1.4",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vue-select": "^3.20.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",

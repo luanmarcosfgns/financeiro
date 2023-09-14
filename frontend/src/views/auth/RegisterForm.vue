@@ -2,7 +2,7 @@
 
     <div class=" p-5">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-header pt-5 pb-4">
                         <div>

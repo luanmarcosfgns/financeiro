@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Servico;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -47,6 +48,7 @@ class ServicoController extends Controller
             $search = "";
         }
         $servicos = Servico::search($search)
+            ->where('business_id', auth()->user()->business_id)
             ->paginate(1000);
 
         return response()->json($servicos);
@@ -104,5 +106,20 @@ class ServicoController extends Controller
 
        return response()->json(["success"=>true,"message"=>"Removed success"]);
     }
+    public function list()
+    {
+        $model = Servico::select('id as code', DB::raw('CONCAT(id,"-",nome,"\n") as label'))
+            ->where('business_id', auth()->user()->business_id);
+        if (!empty(request()->search)) {
+            $model->search(request()->search);
+        }
+        if (!empty(request()->id)) {
+            return response()->json($model->find(request()->id));
+        }
+        $data = $model->get();
+
+        return response()->json($data);
+    }
+
 
 }

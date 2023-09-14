@@ -5,13 +5,13 @@
 
     <div v-if="type==='blob'" :class="classList">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <label class="p-2" for="nome">{{ label }}</label>
             </div>
-            <div class="col-md-12 p-4">
+            <div class="col-12 p-4">
                 <img :id="'img-'+name" src="@/assets/no-image.png" width="100">
             </div>
-            <div class="col-md-12">
+            <div class="col-12">
                 <input :placeholder="placeholder" type="file" @change="setImageAndValue" data-value="" :name="name"
                        :id="name" :class="name" class="form-control">
             </div>
@@ -92,19 +92,52 @@
             </template>
 
         </select>
-
     </div>
+    <div v-if="type==='select2'" :class="classList" class="form-group">
+
+        <div class="row">
+            <div class="col-12">
+                <label class="p-2" :for="name">{{ label }}</label>
+            </div>
+            <div class="col-3">
+
+                <input placeholder="Digite o código" :type="typeInput" :name="name" :id="name"
+                       @input="setSelect2()"
+                       :class="name"
+                       class="form-control decimal" v-model="valueInput">
+            </div>
+            <div class="col-9">
+                <input @input="readSelect2" class="form-control dropdown-toggle" type="text"
+                       placeholder="Ou digite a pesquisa"
+                       :name="'search-'+name"
+                       :id="'search-'+name">
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="dropdown-item-select2" :id="'dropdown-'+name">
+                            <li v-for="row in rows" :key="row" @click="setSelect2(row.code)">{{row.label}}</li>
+                        </ul>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
 
 </template>
 
 <script>
 
 import Helpers from "@/services/Helpers";
+import RequestHelper from "@/services/RequestHelper";
+
 
 export default {
     name: "inputForm",
     props: {
         name: String,
+        url: String,
         placeholder: String,
         type: String,
         value: String,
@@ -115,17 +148,18 @@ export default {
     data() {
         return {
             typeInput: null,
-            valueInput: null
+            valueInput: null,
+            rows: null
         }
     },
     created() {
         this.onReadComponent();
-        if(this.type=='json'){
-          var interval =   setInterval(()=>{
-                if(this.readRow()){
+        if (this.type == 'json') {
+            var interval = setInterval(() => {
+                if (this.readRow()) {
                     clearInterval(interval);
                 }
-            },100)
+            }, 100)
         }
 
 
@@ -207,6 +241,65 @@ export default {
             document.getElementById('row' + this.name).innerHTML = html;
 
         },
+        async readSelect2() {
+
+            if (this.url && this.type == 'select2') {
+                document.getElementById('dropdown-'+this.name).classList.add('d-none');
+                let request = new RequestHelper();
+                console.log('search-' + this.name)
+                var searchTimeout;
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(async () => {
+                    let search = document.getElementById('search-' + this.name).value;
+                    let payload = {
+                        search: search,
+                    };
+                    if (search != undefined) {
+                        payload = {
+                            search: search
+                        }
+                    }
+
+                    let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
+
+                    if(response.data.length==1){
+                        document.getElementById('search-' + this.name).value =  response.data[0].label
+                        document.getElementById(this.name).value =  response.data[0].code
+                        document.getElementById('dropdown-'+this.name).classList.add('d-none');
+                    }else if(response.data.length>1){
+                        this.rows = response.data;
+                        document.getElementById('dropdown-'+this.name).classList.remove('d-none');
+                    }else{
+                        document.getElementById('dropdown-'+this.name).classList.add('d-none');
+                    }
+                });
+
+            }
+        },
+       async setSelect2(id = null){
+           document.getElementById('dropdown-'+this.name).classList.add('d-none');
+            let timeout;
+            timeout = setTimeout(async ()=>{
+                if(id==null){
+                    id = document.getElementById(this.name).value;
+                }else{
+                   document.getElementById(this.name).value = id;
+                }
+
+                let payload = {
+                    id: id,
+                }
+
+                let request = new RequestHelper();
+                let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
+                if(response.data.code != undefined &&  response.data.label != undefined){
+                    document.getElementById('search-'+this.name).value = response.data.label;
+                    clearTimeout(timeout)
+
+                }
+
+            },500);
+        }
 
 
     }
@@ -215,5 +308,30 @@ export default {
 </script>
 
 <style scoped>
+.dropdown-item-select2 {
+    list-style: none;
 
+    position: absolute;
+
+
+}
+
+.dropdown-item-select2 li {
+    padding: 8px;
+    border-bottom: 0.1px solid #dee2e6;
+    border-left: 0.1px solid #dee2e6;
+    border-right: 0.1px solid #dee2e6;
+    overflow-wrap: break-word;
+    width: 210px;
+    background-color: white;
+
+
+}
+.dropdown-item-select2 li:hover{
+
+    background-color: rgba(166, 177, 197, 0.98);
+    cursor:pointer ;
+
+
+}
 </style>

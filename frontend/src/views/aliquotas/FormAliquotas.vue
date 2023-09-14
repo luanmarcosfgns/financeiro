@@ -1,7 +1,7 @@
 <template>
-    <input-form class-list="col-md-12" type="string" label="Nome " value="" name="nome"/>
-    <input-form class-list="col-md-12" type="text" label="Descritivo " value="" name="descritivo"/>
-    <input-form class-list="col-md-12" type="tinyint" label="Ativo " value="" name="ativo"/>
+    <input-form class-list="col-12" type="string" label="Nome " value="" name="nome"/>
+    <input-form class-list="col-12" type="text" label="Descritivo " value="" name="descritivo"/>
+    <input-form class-list="col-12" type="tinyint" label="Ativo " value="" name="ativo"/>
 
 
 </template>

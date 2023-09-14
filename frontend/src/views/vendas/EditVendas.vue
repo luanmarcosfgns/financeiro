@@ -2,7 +2,7 @@
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Editar Vendas</h5>
                     </div>
@@ -16,11 +16,14 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="row">
                 <FormVendas></FormVendas>
-                <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
+            <div class="row">
+                <div class="col-12 p-4">
+                    <button class="btn btn-primary" type="button" @click="sendForm">Finalizar Venda</button>
+                </div>
             </div>
-        </div>
+            </div>
+
     </layout-page>
 
 </template>
@@ -41,16 +44,12 @@ export default {
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + id, {});
             document.getElementById('contato_id').value = response.data.contato_id;
             document.getElementById('descritivo').value = response.data.descritivo;
-            document.getElementById('valor_total').value = response.data.valor_total;
-            document.getElementById('impostos_totais').value = response.data.impostos_totais;
 
         },
         async sendForm() {
             let dataForm = {
                 contato_id: document.getElementById('contato_id').value,
                 descritivo: document.getElementById('descritivo').value,
-                valor_total: document.getElementById('valor_total').value,
-                impostos_totais: document.getElementById('impostos_totais').value,
                 _method: 'PUT'
 
             }

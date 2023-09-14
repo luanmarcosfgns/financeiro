@@ -60,7 +60,7 @@ class ViewMold
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5> :tableUppercase</h5>
                     </div>
@@ -183,7 +183,7 @@ export default {
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Adicionar :tableUppercase</h5>
                     </div>
@@ -281,7 +281,7 @@ export default {
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Editar :tableUppercase</h5>
                     </div>
@@ -423,12 +423,12 @@ where TABLE_NAME = ':table'
 
 
             if($column->type=='varchar'){
-                $html .= '<input-form class-list="col-md-12"  type="string" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-12"  type="string" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif ($column->type=='longtext'){
-                $html .= '<input-form class-list="col-md-12"  type="text" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-12"  type="text" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif (strpos($column->name,'_id')){
                 $table = str_replace('_id','',$column->name);
-                $html .='  <input-form placeholder="Selecione ' .$label.'" class-list="col-md-12" type="select" :items="' .$table.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .='  <input-form placeholder="Selecione ' .$label.'" class-list="col-12" type="select" :items="' .$table.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }elseif ($column->type=='enum'){
                 $enum =  str_replace('enum(','',$column->type_column);
                 $enum =  str_replace(')','',$enum);
@@ -442,9 +442,9 @@ where TABLE_NAME = ':table'
                 }
                 $data .= ']';
 
-                $html .='  <input-form placeholder="Selecione '.$label.'" class-list="col-md-12" type="select" :items="' .$data.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .='  <input-form placeholder="Selecione '.$label.'" class-list="col-12" type="select" :items="' .$data.'" label="' .$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }else{
-                $html .= '<input-form class-list="col-md-12"  type="'.$column->type.'" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
+                $html .= '<input-form class-list="col-12"  type="'.$column->type.'" label="'.$label.'" value="" name="'.$column->name.'"/>'.PHP_EOL;
             }
 
         }

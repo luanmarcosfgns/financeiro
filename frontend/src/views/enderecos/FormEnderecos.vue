@@ -1,10 +1,10 @@
 <template>
     <input-form type="hidden" name="contato_id" :value="contatoId"/>
-    <input-form class-list="col-md-6" type="string" label="Endereço " value="" name="endereco"/>
-    <input-form class-list="col-md-6" type="string" label="Número " value="" name="numero"/>
-    <input-form class-list="col-md-4" type="string" label="Bairro " value="" name="bairro"/>
-    <input-form class-list="col-md-4" type="string" label="Cidade " value="" name="cidade"/>
-    <input-form class-list="col-md-4" type="string" label="Cep " value="" name="cep"/>
+    <input-form class-list="col-6" type="string" label="Endereço " value="" name="endereco"/>
+    <input-form class-list="col-6" type="string" label="Número " value="" name="numero"/>
+    <input-form class-list="col-4" type="string" label="Bairro " value="" name="bairro"/>
+    <input-form class-list="col-4" type="string" label="Cidade " value="" name="cidade"/>
+    <input-form class-list="col-4" type="string" label="Cep " value="" name="cep"/>
 
 </template>
 

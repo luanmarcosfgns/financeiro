@@ -34,6 +34,8 @@ Route::group([
     function ($router) {
         Route::get('aliquotas/list', [AliquotaController::class, 'list']);
         Route::get('categorias/list', [CategoriaController::class, 'list']);
+        Route::get('contatos/list', [ContatoController::class, 'list']);
+        Route::get('servicos/list', [ServicoController::class, 'list']);
         Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
         Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);
         Route::resource('users', UsuariosController::class)->except(['create', 'edit']);

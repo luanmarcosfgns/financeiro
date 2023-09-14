@@ -1,9 +1,9 @@
 <template>
 
-    <input-form class-list="col-md-12" type="text" label="Enunciado " value="" name="enunciado"/>
-    <input-form class-list="col-md-12" type="json" label="Opcoes " value="" name="opcoes"/>
-    <input-form class-list="col-md-12" type="int" label="Ordem " value="" name="ordem"/>
-    <input-form placeholder="Selecione Tipo Resposta " class-list="col-md-12" :class="visible_tipo_resposta" type="select"
+    <input-form class-list="col-12" type="text" label="Enunciado " value="" name="enunciado"/>
+    <input-form class-list="col-12" type="json" label="Opcoes " value="" name="opcoes"/>
+    <input-form class-list="col-12" type="int" label="Ordem " value="" name="ordem"/>
+    <input-form placeholder="Selecione Tipo Resposta " class-list="col-12" :class="visible_tipo_resposta" type="select"
                 :items="[{id:'multipla',message:'multipla',},{id:'unica',message:'unica',},{id:'descritiva',message:'descritiva',},{id:'inteira',message:'inteira',},{id:'decimal',message:'decimal',},{id:'datada',message:'datada',},]"
                 label="Tipo Resposta " value="" name="tipo_resposta"/>
 

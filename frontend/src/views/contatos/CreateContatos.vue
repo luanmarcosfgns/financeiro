@@ -2,7 +2,7 @@
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Adicionar Contatos</h5>
                     </div>
@@ -18,7 +18,7 @@
         <div class="card-body">
             <div class="row">
                 <FormContatos></FormContatos>
-                <div class="col-md-4">
+                <div class="col-4">
                     <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
                 </div>
             </div>

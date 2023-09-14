@@ -1,13 +1,13 @@
 <template>
-    <input-form class-list="col-md-6" type="string" label="Nome pessoal ou empresa " value="" name="fantasia"/>
-    <input-form class-list="col-md-6" type="string" label="Razão social (opcional)" value="" name="razao"/>
-    <input-form class-list="col-md-4" type="string" label="CNPJ/CPF " value="" name="cnpj_cpf"/>
-    <input-form class-list="col-md-4" type="string" label="Incrição Estadual ou RG " value="" name="ie_rg"/>
-    <input-form class-list="col-md-4" type="string" label="Logradouro" value="" name="endereco"/>
-    <input-form class-list="col-md-2" type="string" label="Número " value="" name="numero"/>
-    <input-form class-list="col-md-2" type="string" label="CEP " value="" name="cep"/>
-    <input-form class-list="col-md-4" type="string" label="Telefone (opcional) " value="" name="telefone"/>
-    <input-form class-list="col-md-4" type="string" label="Celular" value="" name="celular"/>
+    <input-form class-list="col-6" type="string" label="Nome pessoal ou empresa " value="" name="fantasia"/>
+    <input-form class-list="col-6" type="string" label="Razão social (opcional)" value="" name="razao"/>
+    <input-form class-list="col-4" type="string" label="CNPJ/CPF " value="" name="cnpj_cpf"/>
+    <input-form class-list="col-4" type="string" label="Incrição Estadual ou RG " value="" name="ie_rg"/>
+    <input-form class-list="col-4" type="string" label="Logradouro" value="" name="endereco"/>
+    <input-form class-list="col-2" type="string" label="Número " value="" name="numero"/>
+    <input-form class-list="col-2" type="string" label="CEP " value="" name="cep"/>
+    <input-form class-list="col-4" type="string" label="Telefone (opcional) " value="" name="telefone"/>
+    <input-form class-list="col-4" type="string" label="Celular" value="" name="celular"/>
 
 </template>
 

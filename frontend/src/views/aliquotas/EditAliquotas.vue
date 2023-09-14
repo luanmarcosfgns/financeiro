@@ -2,7 +2,7 @@
     <layout-page>
         <div class="card-header">
             <div class="row">
-                <div class="col-md-12 ps-4 pt-3 ">
+                <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
                         <h5>Editar Aliquotas</h5>
                     </div>
@@ -12,7 +12,7 @@
                         </button-widget>
                     </div>
                 </div>
-                <div class="col-md-12">
+                <div class="col-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <button @click="tabAliquotasOpen" class="nav-link active" data-bs-toggle="tab"
