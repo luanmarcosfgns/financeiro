@@ -25,18 +25,14 @@
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Ações</th>
                     <th>#</th>
                     <th>Nome</th>
                     <th>Ativo</th>
-                    <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
-                    <td>{{ row.nome }}</td>
-                    <td>{{ row.ativo==1?'Sim':'Não' }}</td>
-
                     <td>
                         <div class="btn-group btn-sm" role="group" aria-label="Basic example">
                             <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
@@ -48,6 +44,9 @@
                         </div>
 
                     </td>
+                    <td>{{ row.id }}</td>
+                    <td>{{ row.nome }}</td>
+                    <td>{{ row.ativo==1?'Sim':'Não' }}</td>
                 </tr>
                 <tr v-if="rows==null">
                     <td colspan="3" class="text-center"> Não há dados</td>
@@ -94,8 +93,8 @@ export default {
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else if (!helpers.empty(dataRow.response?.data)) {
-                toastr.error('Houve um problema');
+            } else {
+                toastr.info('Nenhum resultado encontrado');
             }
 
 

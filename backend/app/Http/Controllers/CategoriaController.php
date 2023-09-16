@@ -51,7 +51,7 @@ class CategoriaController extends Controller
         $categoriasModel->select('categorias.id',
             'categorias.nome',
             'categorias.parent_id',
-            DB::raw('CONCAT(categorias.id,".",categorias.parent_id) as item')
+            DB::raw('IF(categorias.parent_id IS NULL,CONCAT(categorias.id,0),CONCAT(categorias.parent_id,categorias.id)) as item')
         )->orderBy('item');
         $categorias = $categoriasModel->paginate(1000);
 
@@ -120,8 +120,8 @@ class CategoriaController extends Controller
     public function list(): JsonResponse
     {
         $categorias = Categoria::where('business_id', auth()->user()->business_id)
-            ->whereNotNull('parent_id')
-            ->select('id', 'nome as message')
+            ->whereNull('parent_id')
+            ->select('id', DB::raw('CONCAT(id,"-",nome) as message'))
             ->get('message','id');
         return response()->json($categorias);
     }

@@ -102,8 +102,8 @@ export default {
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else if (!helpers.empty(dataRow.response?.data)) {
-                toastr.error('Houve um problema');
+            } else  {
+                toastr.info('Nenhum resultado encontrado');
             }
 
 

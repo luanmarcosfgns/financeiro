@@ -2,7 +2,6 @@
     <div v-if="type==='hidden'">
         <input type="hidden" :name="name" :id="name" :class="name" class="form-control" :value="value">
     </div>
-
     <div v-if="type==='blob'" :class="classList">
         <div class="row">
             <div class="col-12">
@@ -18,26 +17,21 @@
 
         </div>
     </div>
-
-
     <div v-if="type==='string'" :class="classList">
         <label class="p-2" for="nome">{{ label }}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name" class="form-control"
                v-model="valueInput">
     </div>
-
     <div v-if="type==='decimal' ||type === 'double'" :class="classList">
         <label class="p-2" for="nome">{{ label }}</label>
         <input :placeholder="placeholder" :type="typeInput" :name="name" :id="name" :class="name"
                class="form-control decimal" v-model="valueInput">
     </div>
-
     <div v-if="type==='date'" :class="classList">
         <label class="p-2" for="nome">{{ label }}</label>
         <input :placeholder="placeholder" type="date" :name="name" :id="name" :class="name" class="form-control"
                v-model="valueInput">
     </div>
-
     <div v-if="type==='tinyint'" :class="classList">
         <label class="p-2" for="nome">{{ label }}</label>
         <select :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
@@ -45,7 +39,6 @@
             <option value="0">Não</option>
         </select>
     </div>
-
     <div v-if="type==='text'" :class="classList">
         <label class="p-2" for="nome">{{ label }}</label>
         <textarea :placeholder="placeholder" :name="name" :id="name" :class="name" class="form-control"
@@ -67,7 +60,7 @@
                 <input type="hidden" :name="name" :id="name" :class="name" v-model="valueInput">
             </div>
             <div class="col-2">
-                <button @click="addRow" class="btn btn-primary">+</button>
+                <button @click="addRowSelect" class="btn btn-primary">+</button>
             </div>
             <div class="col-12">
                 <ol :id="'row'+name">
@@ -78,7 +71,6 @@
         </div>
 
     </div>
-
     <div v-if="type==='select'" :class="classList" class="form-group">
         <label class="p-2" for="nome">{{ label }}</label>
         <select :name="name" :id="name" :class="name" class="form-control" v-model="valueInput">
@@ -123,8 +115,6 @@
             </div>
         </div>
     </div>
-
-
 </template>
 
 <script>
@@ -153,39 +143,14 @@ export default {
         }
     },
     created() {
-        let helper = new Helpers();
-        this.onReadComponent();
-        var interval
-        if (this.type == 'json') {
-             interval = setInterval(() => {
 
-                if (this.readRow()) {
-                    clearInterval(interval);
-                }
-            }, 100)
+        this.onReadComponent();
+
+        if (this.type == 'json') {
+            this.readRowSelect();
         }
         if (this.type == 'select2') {
-            let locationUrl = window.location.url;
-             interval = setInterval(() => {
-
-                 try {
-                    if(locationUrl==window.location.url){
-                        if (!helper.empty(document.getElementById(this.name))) {
-                            this.setSelect2(document.getElementById(this.name).value);
-                            clearInterval(interval);
-                        }
-                    }else{
-                        clearInterval()
-                    }
-
-                 }catch (e) {
-                     clearInterval(interval);
-                 }
-
-
-            }, 500)
-
-
+            this.setSelect2(document.getElementById(this.name)?.value);
         }
 
 
@@ -228,7 +193,7 @@ export default {
             }
 
         },
-        addRow() {
+        addRowSelect() {
             let pesquisa = document.getElementById('search' + this.name).value;
             if (pesquisa != '') {
                 if (document.getElementById(this.name).value != '') {
@@ -243,15 +208,18 @@ export default {
             }
 
         },
-        readRow() {
-            console.log('aaaa');
-            let valueSearch = document.getElementById(this.name).value;
-            console.log(this.value);
-            if (valueSearch) {
-                this.listRow(valueSearch)
-                return true;
-            }
-            return false;
+        readRowSelect() {
+            let locationURL = window.location.pathname;
+            let interval = setInterval(() => {
+                let valueSearch = document.getElementById(this.name).value;
+                if (valueSearch && locationURL === window.location.pathname) {
+                    this.listRow(valueSearch)
+                    clearInterval(interval)
+                }
+
+            }, 100)
+
+
         },
         listRow(list) {
             list = list.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '');
@@ -303,28 +271,42 @@ export default {
             }
         },
         async setSelect2(id = null) {
-            document.getElementById('dropdown-' + this.name).classList.add('d-none');
-            let timeout;
-            timeout = setTimeout(async () => {
-                if (id == null) {
-                    id = document.getElementById(this.name).value;
-                } else {
-                    document.getElementById(this.name).value = id;
+            let locationURL = window.location.pathname;
+            let interval = setInterval(() => {
+                if (locationURL !== window.location.pathname) {
+                    clearInterval(interval)
+                    return false;
                 }
+                document.getElementById('dropdown-' + this.name).classList.add('d-none');
+                let timeout;
+                timeout = setTimeout(async () => {
+                    if (id == null) {
+                        id = document.getElementById(this.name)?.value;
+                    } else {
+                        if (id == null || document.getElementById(this.name)) {
+                            clearInterval(interval)
+                            return false;
+                        }
+                        document.getElementById(this.name).value = id;
+                    }
 
-                let payload = {
-                    id: id,
-                }
 
-                let request = new RequestHelper();
-                let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
-                if (response.data.code != undefined && response.data.label != undefined) {
-                    document.getElementById('search-' + this.name).value = response.data.label;
-                    clearTimeout(timeout)
+                    let payload = {
+                        id: id,
+                    }
 
-                }
+                    let request = new RequestHelper();
+                    let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
+                    if (response.data.code != undefined && response.data.label != undefined) {
+                        document.getElementById('search-' + this.name).value = response.data.label;
+                        clearTimeout(timeout)
 
-            }, 500);
+                    }
+
+                }, 500);
+
+            }, 500)
+
         }
 
 

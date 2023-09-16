@@ -15,15 +15,13 @@
         <table class="table">
             <thead>
             <tr>
+                <th>Ações</th>
                 <th>Anexo</th>
                 <th>Tipo</th>
-                <th>Ações</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="row in rows" :key="row.id">
-                <td><img :src="row.anexo" alt="Anexo do Produto"  width="100"></td>
-                <td>{{row.tipo}}</td>
                 <td>
                     <div class="btn-group btn-sm" role="group" aria-label="Basic example">
                         <button class="btn btn-danger" @click="deleteRow(row.id)">
@@ -32,6 +30,9 @@
                     </div>
 
                 </td>
+                <td><img :src="row.anexo" alt="Anexo do Produto"  width="100"></td>
+                <td>{{row.tipo}}</td>
+
             </tr>
             <tr v-if="rows==null">
                 <td colspan="3" class="text-center"> Não há dados</td>
@@ -80,8 +81,8 @@ export default {
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else if (!helpers.empty(dataRow.response?.data)) {
-                toastr.error('Houve um problema');
+            } else  {
+                toastr.info('Nenhum resultado encontrado');
             }
 
 

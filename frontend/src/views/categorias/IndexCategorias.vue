@@ -91,12 +91,12 @@ export default {
             }
 
             let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/categorias', dataRequest);
-
+            console.log(dataRow);
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else if (!helpers.empty(dataRow.response?.data)) {
-                toastr.error('Houve um problema');
+            } else {
+                toastr.info('Nenhum resultado encontrado');
             }
 
 
