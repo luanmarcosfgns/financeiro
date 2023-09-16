@@ -13,7 +13,7 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>
@@ -22,41 +22,46 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>CPF/CNPJ</th>
-                    <th>Celular</th>
-                    <th>Email</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
-                    <td class="w-25">{{ row.nome }}</td>
-                    <td>{{ row.cnpj_cpf }}</td>
-                    <td>{{ row.celular }}</td>
-                    <td>{{ row.email }}</td>
-                    <td>
-                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                            <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
-                                <i class="bi bi-pencil-square"></i>
-                            </router-link>
-                            <button class="btn btn-danger" @click="deleteRow(row.id)">
-                                <i class="bi bi-trash2-fill"></i>
-                            </button>
-                        </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Ações</th>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>CPF/CNPJ</th>
+                        <th>Celular</th>
+                        <th>Email</th>
 
-                    </td>
-                </tr>
-                <tr v-if="rows==null">
-                    <td colspan="10" class="text-center"> Não há dados</td>
-                </tr>
-                </tbody>
-            </table>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="row in rows" :key="row.id">
+                        <td>
+                            <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                                <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
+                                    <i class="bi bi-pencil-square"></i>
+                                </router-link>
+                                <button class="btn btn-danger" @click="deleteRow(row.id)">
+                                    <i class="bi bi-trash2-fill"></i>
+                                </button>
+                            </div>
+
+                        </td>
+                        <td>{{ row.id }}</td>
+                        <td class="w-25">{{ row.nome }}</td>
+                        <td>{{ row.cnpj_cpf }}</td>
+                        <td>{{ row.celular }}</td>
+                        <td>{{ row.email }}</td>
+
+                    </tr>
+                    <tr v-if="rows==null">
+                        <td colspan="10" class="text-center"> Não há dados</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
 
         </div>
 

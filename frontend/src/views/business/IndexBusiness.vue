@@ -13,7 +13,7 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>
@@ -22,48 +22,50 @@
         </div>
 
         <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                                        <th>Fantasia</th>
-                    <th>Razao</th>
-                    <th>Cnpj_cpf</th>
-                    <th>Ie_rg</th>
-                    <th>Endereco</th>
-                    <th>Numero</th>
-                    <th>Cep</th>
-                    <th>Telefone</th>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fantasia</th>
+                        <th>Razao</th>
+                        <th>Cnpj_cpf</th>
+                        <th>Ie_rg</th>
+                        <th>Endereco</th>
+                        <th>Numero</th>
+                        <th>Cep</th>
+                        <th>Telefone</th>
 
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
-                                        <td>{{row.fantasia}}</td>
-                    <td>{{row.razao}}</td>
-                    <td>{{row.cnpj_cpf}}</td>
-                    <td>{{row.ie_rg}}</td>
-                    <td>{{row.endereco}}</td>
-                    <td>{{row.numero}}</td>
-                    <td>{{row.cep}}</td>
-                    <td>{{row.telefone}}</td>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="row in rows" :key="row.id">
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.fantasia }}</td>
+                        <td>{{ row.razao }}</td>
+                        <td>{{ row.cnpj_cpf }}</td>
+                        <td>{{ row.ie_rg }}</td>
+                        <td>{{ row.endereco }}</td>
+                        <td>{{ row.numero }}</td>
+                        <td>{{ row.cep }}</td>
+                        <td>{{ row.telefone }}</td>
 
-                    <td>
-                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                            <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
-                                <i class="bi bi-pencil-square"></i>
-                            </router-link>
-                            <button class="btn btn-danger" @click="deleteRow(row.id)">
-                                <i class="bi bi-trash2-fill"></i>
-                            </button>
-                        </div>
+                        <td>
+                            <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                                <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
+                                    <i class="bi bi-pencil-square"></i>
+                                </router-link>
+                                <button class="btn btn-danger" @click="deleteRow(row.id)">
+                                    <i class="bi bi-trash2-fill"></i>
+                                </button>
+                            </div>
 
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
@@ -112,15 +114,15 @@ export default {
 
 
         },
-        async deleteRow(id){
+        async deleteRow(id) {
             let requestHelper = new RequestHelper();
-            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/business/'+id);
-           if(dataRow.data.success){
-               this.list();
-               toastr.success('Apagado com sucesso');
-           }else{
-               toastr.error('Houve um problema ao apagar');
-           }
+            let dataRow = await requestHelper.deleteAuth(process.env.VUE_APP_API_HOST_NAME + '/api/business/' + id);
+            if (dataRow.data.success) {
+                this.list();
+                toastr.success('Apagado com sucesso');
+            } else {
+                toastr.error('Houve um problema ao apagar');
+            }
         }
 
     },

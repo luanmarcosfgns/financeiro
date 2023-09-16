@@ -1,7 +1,7 @@
 <template>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="float-end">
                 <button type="button" class="btn btn-primary" @click="modalAdd">
                     Adicionar

@@ -33,13 +33,13 @@
         </div>
         <div class="card-body">
             <div class="row">
-                <div v-if="tabAliquotas" class="col-md-12">
+                <div v-if="tabAliquotas" class="col-12">
                     <FormAliquotas></FormAliquotas>
                 </div>
-                <div v-if="tabAliquotaLista" class="col-md-12">
+                <div v-if="tabAliquotaLista" class="col-12">
                     <IndexAliquotasItems></IndexAliquotasItems>
                 </div>
-                <div class="col-md-4">
+                <div class="col-4">
                     <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
                 </div>
             </div>

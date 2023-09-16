@@ -7,9 +7,7 @@
                         <h5>Adicionar Vendas</h5>
                     </div>
                     <div class="float-end">
-                        <button-widget cor="azul" href="./index" tamanho="M">
-                            Voltar
-                        </button-widget>
+                        <a class="btn btn-primary" href="./index">Voltar</a>
                     </div>
                 </div>
 
@@ -18,29 +16,44 @@
         <FormVendas></FormVendas>
         <div class="row">
             <div class="col-12 p-4">
-                <button class="btn btn-primary" type="button" @click="sendForm">Finalizar Venda</button>
+                <button class="btn btn-primary" type="button" @click="sendForm">Finalizar</button>
             </div>
         </div>
 
     </layout-page>
 </template>
 <script>
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
+
 import LayoutPage from "@/components/page/layoutPage.vue";
 import FormVendas from "@/views/vendas/FormVendas.vue";
 import RequestHelper from "@/services/RequestHelper";
 import toastr from "toastr/build/toastr.min";
+import Helpers from "@/services/Helpers";
 
 export default {
     name: "CreateVendas",
-    components: {FormVendas, LayoutPage, ButtonWidget},
+    components: {FormVendas, LayoutPage},
     methods: {
         async sendForm() {
+            let helper = new Helpers();
+            let servicos =  null;
+            if (helper.isJsonString(localStorage.getItem('venda'))) {
+                let venda = JSON.parse(localStorage.getItem('venda'));
+                if (!helper.empty(venda?.servicos)) {
+                    servicos =  venda.servicos;
+                }
+            }
             let dataForm = {
                 contato_id: document.getElementById('contato_id').value,
                 descritivo: document.getElementById('descritivo').value,
+                tipo: document.getElementById('tipo').value,
+                status: document.getElementById('status').value,
+                servicos: servicos
 
 
+            }
+            if(!this.validateForm(dataForm)){
+                return false;
             }
             if (!dataForm.parent_id) {
                 delete dataForm.parent_id
@@ -57,7 +70,37 @@ export default {
                 }
 
             }
+        },
+        async validateForm(dataForm){
+            let helper = new Helpers();
+            if(helper.empty(dataForm?.servicos)){
+                toastr.error('Não há nenhum produto adicionado');
+                return false;
+            }
+            if(helper.empty(dataForm.tipo)){
+                toastr.error('Tipo inválido');
+                return false;
+            }
+            if(helper.empty(dataForm.contato_id)){
+                toastr.error('Selecione um cliente');
+                return false;
+            }
+            if(helper.empty(dataForm.status)){
+                toastr.error('Selecione um status');
+                return false;
+            }
+            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/list', {id:dataForm.contato_id});
+            let request = new RequestHelper();
+            if (helper.empty(response.data.code)) {
+                toastr.error('Selecione um cliente');
+              return false;
+            }
+
+            return true;
         }
+    },
+    created() {
+        console.log(this.$emit)
     }
 }
 </script>

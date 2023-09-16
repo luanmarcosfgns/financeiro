@@ -13,7 +13,7 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>
@@ -22,6 +22,7 @@
         </div>
 
         <div class="card-body">
+            <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
@@ -54,6 +55,7 @@
                 </tr>
                 </tbody>
             </table>
+            </div>
 
         </div>
 

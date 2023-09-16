@@ -13,49 +13,50 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>
 
             </div>
         </div>
+        <div class="table-responsive">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Data</th>
+                        <th>Valor Total</th>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="row in rows" :key="row.id">
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.contato_id }}</td>
+                        <td>{{ row.descritivo }}</td>
+                        <td> R$ {{ row.valor_total.replace('.', ',') }}</td>
+                        <td>
+                            <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                                <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
+                                    <i class="bi bi-pencil-square"></i>
+                                </router-link>
+                                <button class="btn btn-danger" @click="deleteRow(row.id)">
+                                    <i class="bi bi-trash2-fill"></i>
+                                </button>
+                            </div>
 
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Data</th>
-                    <th>Valor Total</th>
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
-                    <td>{{ row.contato_id }}</td>
-                    <td>{{ row.descritivo }}</td>
-                    <td> R$ {{ row.valor_total.replace('.', ',') }}</td>
-                    <td>
-                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                            <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
-                                <i class="bi bi-pencil-square"></i>
-                            </router-link>
-                            <button class="btn btn-danger" @click="deleteRow(row.id)">
-                                <i class="bi bi-trash2-fill"></i>
-                            </button>
-                        </div>
+                        </td>
+                    </tr>
+                    <tr v-if="rows==null">
+                        <td colspan="5" class="text-center"> Não há dados</td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                    </td>
-                </tr>
-                <tr v-if="rows==null">
-                    <td colspan="5" class="text-center"> Não há dados</td>
-                </tr>
-                </tbody>
-            </table>
-
+            </div>
         </div>
 
     </layout-page>

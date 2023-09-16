@@ -7,9 +7,7 @@
                         <h5>Editar Vendas</h5>
                     </div>
                     <div class="float-end">
-                        <button-widget cor="azul" href="../index" tamanho="M">
-                            Voltar
-                        </button-widget>
+                        <a class="btn btn-primary" href="./index">Voltar</a>
                     </div>
                 </div>
 
@@ -19,7 +17,7 @@
                 <FormVendas></FormVendas>
             <div class="row">
                 <div class="col-12 p-4">
-                    <button class="btn btn-primary" type="button" @click="sendForm">Finalizar Venda</button>
+                    <button class="btn btn-primary" type="button" @click="sendForm">Finalizar</button>
                 </div>
             </div>
             </div>
@@ -31,13 +29,13 @@
 <script>
 import FormVendas from "@/views/vendas/FormVendas.vue";
 import RequestHelper from "@/services/RequestHelper";
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
+
 import LayoutPage from "@/components/page/layoutPage.vue";
 import toastr from "toastr/build/toastr.min";
 
 export default {
     name: "EditVendas",
-    components: {LayoutPage, ButtonWidget, FormVendas},
+    components: {LayoutPage, FormVendas},
     methods: {
         async edit(id) {
             let request = new RequestHelper();

@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <FormEnderecos></FormEnderecos>
-        <div class="col-md-4">
+        <div class="col-4">
             <button class="btn btn-primary mt-4" type="button" @click="sendForm">Salvar</button>
         </div>
 

@@ -6,4 +6,13 @@ export default class Helpers{
         }
         return false;
     }
+    isJsonString(str) {
+        try {
+            JSON.parse(str);
+        } catch (e) {
+            return false;
+        }
+        return true;
+    }
+
 }

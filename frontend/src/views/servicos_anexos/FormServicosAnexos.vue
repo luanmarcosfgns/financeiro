@@ -1,6 +1,6 @@
 <template>
-    <input-form class-list="col-md-12" type="blob" label="Anexo " value="" name="anexo"/>
-    <input-form placeholder="Selecione Tipo " class-list="col-md-12" type="select"
+    <input-form class-list="col-12" type="blob" label="Anexo " value="" name="anexo"/>
+    <input-form placeholder="Selecione Tipo " class-list="col-12" type="select"
                 :items="[{id:'produto',message:'produto',},{id:'imagem',message:'imagem',},{id:'documento',message:'documento',},]"
                 label="Tipo " value="" name="tipo"/>
     <input type="hidden" name="servico_id" :value="servico_id">

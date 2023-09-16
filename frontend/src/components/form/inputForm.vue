@@ -114,7 +114,7 @@
                 <div class="row">
                     <div class="col-12">
                         <ul class="dropdown-item-select2" :id="'dropdown-'+name">
-                            <li v-for="row in rows" :key="row" @click="setSelect2(row.code)">{{row.label}}</li>
+                            <li v-for="row in rows" :key="row" @click="setSelect2(row.code)">{{ row.label }}</li>
                         </ul>
                     </div>
                 </div>
@@ -153,13 +153,39 @@ export default {
         }
     },
     created() {
+        let helper = new Helpers();
         this.onReadComponent();
+        var interval
         if (this.type == 'json') {
-            var interval = setInterval(() => {
+             interval = setInterval(() => {
+
                 if (this.readRow()) {
                     clearInterval(interval);
                 }
             }, 100)
+        }
+        if (this.type == 'select2') {
+            let locationUrl = window.location.url;
+             interval = setInterval(() => {
+
+                 try {
+                    if(locationUrl==window.location.url){
+                        if (!helper.empty(document.getElementById(this.name))) {
+                            this.setSelect2(document.getElementById(this.name).value);
+                            clearInterval(interval);
+                        }
+                    }else{
+                        clearInterval()
+                    }
+
+                 }catch (e) {
+                     clearInterval(interval);
+                 }
+
+
+            }, 500)
+
+
         }
 
 
@@ -244,7 +270,7 @@ export default {
         async readSelect2() {
 
             if (this.url && this.type == 'select2') {
-                document.getElementById('dropdown-'+this.name).classList.add('d-none');
+                document.getElementById('dropdown-' + this.name).classList.add('d-none');
                 let request = new RequestHelper();
                 console.log('search-' + this.name)
                 var searchTimeout;
@@ -262,28 +288,28 @@ export default {
 
                     let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
 
-                    if(response.data.length==1){
-                        document.getElementById('search-' + this.name).value =  response.data[0].label
-                        document.getElementById(this.name).value =  response.data[0].code
-                        document.getElementById('dropdown-'+this.name).classList.add('d-none');
-                    }else if(response.data.length>1){
+                    if (response.data.length == 1) {
+                        document.getElementById('search-' + this.name).value = response.data[0].label
+                        document.getElementById(this.name).value = response.data[0].code
+                        document.getElementById('dropdown-' + this.name).classList.add('d-none');
+                    } else if (response.data.length > 1) {
                         this.rows = response.data;
-                        document.getElementById('dropdown-'+this.name).classList.remove('d-none');
-                    }else{
-                        document.getElementById('dropdown-'+this.name).classList.add('d-none');
+                        document.getElementById('dropdown-' + this.name).classList.remove('d-none');
+                    } else {
+                        document.getElementById('dropdown-' + this.name).classList.add('d-none');
                     }
                 });
 
             }
         },
-       async setSelect2(id = null){
-           document.getElementById('dropdown-'+this.name).classList.add('d-none');
+        async setSelect2(id = null) {
+            document.getElementById('dropdown-' + this.name).classList.add('d-none');
             let timeout;
-            timeout = setTimeout(async ()=>{
-                if(id==null){
+            timeout = setTimeout(async () => {
+                if (id == null) {
                     id = document.getElementById(this.name).value;
-                }else{
-                   document.getElementById(this.name).value = id;
+                } else {
+                    document.getElementById(this.name).value = id;
                 }
 
                 let payload = {
@@ -292,17 +318,18 @@ export default {
 
                 let request = new RequestHelper();
                 let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
-                if(response.data.code != undefined &&  response.data.label != undefined){
-                    document.getElementById('search-'+this.name).value = response.data.label;
+                if (response.data.code != undefined && response.data.label != undefined) {
+                    document.getElementById('search-' + this.name).value = response.data.label;
                     clearTimeout(timeout)
 
                 }
 
-            },500);
+            }, 500);
         }
 
 
     }
+
 
 }
 </script>
@@ -327,10 +354,11 @@ export default {
 
 
 }
-.dropdown-item-select2 li:hover{
+
+.dropdown-item-select2 li:hover {
 
     background-color: rgba(166, 177, 197, 0.98);
-    cursor:pointer ;
+    cursor: pointer;
 
 
 }

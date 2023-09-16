@@ -13,7 +13,7 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>

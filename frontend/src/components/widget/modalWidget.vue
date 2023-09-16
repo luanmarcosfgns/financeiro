@@ -1,7 +1,7 @@
 <template>
     <div class="d-none modal-widget">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-12">
                 <div  class="modal-content">
                     <span @click="noVisible" class="close">&times;</span>
                     <slot></slot>

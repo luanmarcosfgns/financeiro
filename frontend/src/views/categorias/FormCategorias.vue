@@ -1,7 +1,7 @@
 <template>
-        <input-form class-list="col-md-12"  type="string" label="Nome" value="" name="nome"/>
-        <input-form class-list="col-md-12" type="text" label="Descritivo" value="" name="descritivo"/>
-        <input-form placeholder="Selecione categorias" class-list="col-md-12" type="select" :items="categorias" label="Categorias" value=""
+        <input-form class-list="col-12"  type="string" label="Nome" value="" name="nome"/>
+        <input-form class-list="col-12" type="text" label="Descritivo" value="" name="descritivo"/>
+        <input-form placeholder="Selecione categorias" class-list="col-12" type="select" :items="categorias" label="Categorias" value=""
                     name="parent_id"/>
 </template>
 

@@ -13,7 +13,7 @@
 
                     <div class="float-end">
                         <button-widget cor="azul" href="./create" tamanho="M">
-                            Adcionar
+                            Adicionar
                         </button-widget>
                     </div>
                 </div>
@@ -22,43 +22,45 @@
         </div>
 
         <div class="card-body">
-            <table class="table table-responsive">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nome</th>
-                    <th>Ecommerce</th>
-                    <th>Preco</th>
-                    <th>Ativo</th>
+            <div class="table-responsive">
+                <table class="table table-responsive">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Ecommerce</th>
+                        <th>Preco</th>
+                        <th>Ativo</th>
 
 
-                    <th>Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="row in rows" :key="row.id">
-                    <td>{{ row.id }}</td>
-                    <td>{{ row.nome }}</td>
-                    <td>{{ row.ecommerce?'Sim':'Não' }}</td>
-                    <td>{{ row.preco }}</td>
-                    <td>{{ row.ativo?'Sim':'Não' }}</td>
-                    <td>
-                        <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                            <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
-                                <i class="bi bi-pencil-square"></i>
-                            </router-link>
-                            <button class="btn btn-danger" @click="deleteRow(row.id)">
-                                <i class="bi bi-trash2-fill"></i>
-                            </button>
-                        </div>
+                        <th>Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="row in rows" :key="row.id">
+                        <td>{{ row.id }}</td>
+                        <td>{{ row.nome }}</td>
+                        <td>{{ row.ecommerce ? 'Sim' : 'Não' }}</td>
+                        <td>{{ row.preco }}</td>
+                        <td>{{ row.ativo ? 'Sim' : 'Não' }}</td>
+                        <td>
+                            <div class="btn-group btn-sm" role="group" aria-label="Basic example">
+                                <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
+                                    <i class="bi bi-pencil-square"></i>
+                                </router-link>
+                                <button class="btn btn-danger" @click="deleteRow(row.id)">
+                                    <i class="bi bi-trash2-fill"></i>
+                                </button>
+                            </div>
 
-                    </td>
-                </tr>
-                <tr v-if="rows==null">
-                    <td colspan="6" class="text-center"> Não há dados</td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                    <tr v-if="rows==null">
+                        <td colspan="6" class="text-center"> Não há dados</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
