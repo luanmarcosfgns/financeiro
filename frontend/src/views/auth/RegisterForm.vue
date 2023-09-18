@@ -120,10 +120,10 @@ export default {
 @import "toastr/build/toastr.css";
 
 #app {
-    background: #0d6efd;
+    background: #3baaa1;
 }
 
 html {
-    background: #0d6efd;
+    background: 3baaa1;
 }
 </style>

@@ -22,7 +22,11 @@ export default {
     },
     methods: {
         noVisible() {
-            document.getElementsByClassName('modal-widget')[0].classList.add('d-none');
+            console.log(  document.getElementsByClassName('modal-widget'));
+            let modalWidgets =  document.getElementsByClassName('modal-widget');
+            for (let i = 0; i<modalWidgets.length;i++){
+                modalWidgets[i].classList.add('d-none')
+            }
         }
         ,
     }

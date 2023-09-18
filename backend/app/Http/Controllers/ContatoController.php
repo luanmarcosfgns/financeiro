@@ -139,4 +139,5 @@ class ContatoController extends Controller
         return response()->json($data);
     }
 
+
 }

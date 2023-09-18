@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('vendas_servicos', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('venda_id');
-            $table->bigInteger('produto_id');
-            $table->decimal('valor')->default(0.00);
+            $table->bigInteger('servico_id');
+            $table->decimal('preco')->default(0.00);
+            $table->decimal('quantidade')->default(0.00);
+            $table->decimal('desconto')->default(0.00);
             $table->json('impostos');
             $table->timestamps();
         });

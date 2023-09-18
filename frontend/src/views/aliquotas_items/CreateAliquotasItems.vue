@@ -41,7 +41,7 @@ export default {
             let request = new RequestHelper();
             let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items', dataForm);
             if (response.data?.id) {
-                location.href = './' + response.data.id + '/edit';
+                location.href = '/aliquotas/' + response.data.aliquota_id + '/edit';
             } else {
                 if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);

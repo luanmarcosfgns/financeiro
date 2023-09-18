@@ -180,4 +180,8 @@ export default {
 body {
     padding: 4px;
 }
+.nav-link{
+    color: #3baaa1 !important;
+    font-weight: bold;
+}
 </style>

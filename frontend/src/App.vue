@@ -27,4 +27,8 @@ export default {
 .toast-info {
     background-color: dodgerblue !important;
 }
+html{
+    background-color: #3baaa1;
+    height: 100% !important;
+}
 </style>

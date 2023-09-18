@@ -44,8 +44,12 @@
                                 <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
                                     <i class="bi bi-pencil-square"></i>
                                 </router-link>
+
                                 <button class="btn btn-danger" @click="deleteRow(row.id)">
                                     <i class="bi bi-trash2-fill"></i>
+                                </button>
+                                <button class="btn btn-danger" @click="generateLink(row.id)">
+                                    <i class="bi bi-link"></i>
                                 </button>
                             </div>
 
@@ -53,7 +57,7 @@
                         <td>{{ row.ativo ? 'Sim' : 'Não' }}</td>
                         <td>{{ row.id }}</td>
                         <td>{{ row.nome }}</td>
-                        <td>R$ {{ new String(row.preco).replace('.',',') }}</td>
+                        <td>R$ {{ new String(row.preco).replace('.', ',') }}</td>
                         <td>{{ row.ecommerce ? 'Sim' : 'Não' }}</td>
 
                     </tr>
@@ -65,7 +69,9 @@
             </div>
 
         </div>
-
+        <ModalWidget id="gerarLink">
+            <link-generate></link-generate>
+        </ModalWidget>
     </layout-page>
 </template>
 <script>
@@ -74,10 +80,12 @@ import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import RequestHelper from "@/services/RequestHelper";
 import Helpers from "@/services/Helpers";
 import toastr from "toastr/build/toastr.min";
+import ModalWidget from "@/components/widget/modalWidget.vue";
+import LinkGenerate from "@/views/servicos/LinkGenerate.vue";
 
 export default {
     name: "IndexServicos",
-    components: {ButtonWidget, LayoutPage},
+    components: {LinkGenerate, ModalWidget, ButtonWidget, LayoutPage},
     data() {
         return {
             rows: null,
@@ -103,7 +111,7 @@ export default {
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else  {
+            } else {
                 toastr.info('Nenhum resultado encontrado');
             }
 
@@ -118,14 +126,26 @@ export default {
             } else {
                 toastr.error('Houve um problema ao apagar');
             }
+        },
+        async generateLink(id) {
+            let requestHelper = new RequestHelper();
+            let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/cotations/' + id+'/link',{});
+            if (dataRow?.data) {
+                document.getElementById('link-generated').value=process.env.VUE_APP_HOST_NAME+dataRow.data.link
+            } else {
+                toastr.error('Houve um problema ao gerar o link');
+                return false
+            }
+
+            document.getElementById('gerarLink').classList.remove('d-none')
         }
 
-    },
-    created() {
-        this.list();
+        },
+        created() {
+            this.list();
 
+        }
     }
-}
 
 </script>
 

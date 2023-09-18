@@ -234,6 +234,9 @@ export default {
             };
             if (!helper.empty(this.servicos)) {
                 venda.servicos = this.servicos
+            }else{
+                venda.servicos =  JSON.parse(localStorage.getItem('venda'))?.servicos;
+
             }
 
             if (!helper.empty(document.getElementById('contato_id')?.value)) {
@@ -251,7 +254,6 @@ export default {
             if (!helper.empty(document.getElementById('descritivo')?.value)) {
                 venda.descritivo = document.getElementById('descritivo').value;
             }
-
 
             localStorage.setItem('venda', undefined);
             localStorage.setItem('venda', JSON.stringify(venda));
@@ -287,6 +289,7 @@ export default {
 
 
     },
+
 
 
 }

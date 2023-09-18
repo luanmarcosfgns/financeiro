@@ -42,6 +42,7 @@ class UserController extends Controller
 
         $input['name'] = $request->name;
         $input['email'] = $request->email;
+        $input['type'] = 'cliente';
         if (!empty($request->password)) {
             $input['password'] = Hash::make($request->password);
         }

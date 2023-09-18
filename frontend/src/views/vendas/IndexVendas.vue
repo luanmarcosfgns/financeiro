@@ -28,8 +28,9 @@
                         <th>Ações</th>
                         <th>#</th>
                         <th>Nome</th>
-                        <th>Data</th>
-                        <th>Valor Total</th>
+                        <th>Status</th>
+                        <th>Tipo</th>
+                        <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,9 +47,10 @@
 
                         </td>
                         <td>{{ row.id }}</td>
-                        <td>{{ row.contato_id }}</td>
-                        <td>{{ row.descritivo }}</td>
-                        <td> R$ {{ row.valor_total.replace('.', ',') }}</td>
+                        <td>{{ row.contato_nome }}</td>
+                        <td>{{ row.status }}</td>
+                        <td>{{ row.tipo  }}</td>
+                        <td> R$ {{ new String(row.total).replace('.',',')  }}</td>
 
                     </tr>
                     <tr v-if="rows==null">
@@ -93,7 +95,7 @@ export default {
             }
 
             let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas', dataRequest);
-
+            console.log(dataRow.data.data)
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 

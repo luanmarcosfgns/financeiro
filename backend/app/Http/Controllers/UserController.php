@@ -16,6 +16,7 @@ class UserController extends Controller
         [
             'name'=>['nullable','max:255','string'],
             'email'=>['nullable','max:255','string'],
+            'type'=>['nullable'],
             'email_verified_at'=>['required',],
             'password'=>['nullable','max:255','string'],
             'business_id'=>['required',],
@@ -24,15 +25,17 @@ class UserController extends Controller
         );
     }else{
         $request->validate([
+            'type'=>['nullable'],
             'name'=>['nullable','max:255','string'],
             'email'=>['nullable','max:255','string'],
+            'type'=>['nullable'],
             'email_verified_at'=>['required'],
             'password'=>['nullable','max:255','string'],
             'business_id'=>['required'],
             'remember_token'=>['required','max:100','string'],
         ]);
     }
-        return $request->only(["name","email","email_verified_at","password","business_id","remember_token"]);
+        return $request->only(["name","email","email_verified_at","password","business_id","remember_token",'type']);
     }
     /**
      * Display a listing of the resource.

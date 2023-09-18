@@ -19,13 +19,17 @@ use App\Http\Controllers\VendasServicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/consultor/{id}', [UsuariosController::class, 'ver']);
+Route::get('/servicos/{id}/view', [ServicoController::class, 'view']);
+Route::get('/perguntas/{servico_id}/view', [PerguntaController::class, 'view']);
+Route::post('/contatos/store', [ContatoController::class, 'store']);
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'], function ($router) {
     Route::post('register', [UserController::class, 'register']);
     Route::post('login', [UserController::class, 'login']);
     Route::post('me', [UserController::class, 'me']);
+
 
 });
 
@@ -36,6 +40,8 @@ Route::group([
         Route::get('categorias/list', [CategoriaController::class, 'list']);
         Route::get('contatos/list', [ContatoController::class, 'list']);
         Route::get('servicos/list', [ServicoController::class, 'list']);
+        Route::get('cotations/{id}/link', [ServicoController::class, 'link']);
+
         Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
         Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);
         Route::resource('users', UsuariosController::class)->except(['create', 'edit']);
@@ -53,4 +59,4 @@ Route::group([
         Route::resource('entrevistas', EntrevistaController::class)->except(['create', 'edit']);
         Route::resource('perguntas', PerguntaController::class)->except(['create', 'edit']);
 
-});
+    });

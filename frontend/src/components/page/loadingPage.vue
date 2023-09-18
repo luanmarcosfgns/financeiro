@@ -36,7 +36,7 @@ export default {
 }
 
 .loader {
-    color: #0d6efd;
+    color: #3baaa1;
     font-size: 10px;
     width: 1em;
     height: 1em;

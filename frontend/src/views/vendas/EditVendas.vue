@@ -7,7 +7,7 @@
                         <h5>Editar Vendas</h5>
                     </div>
                     <div class="float-end">
-                        <a class="btn btn-primary" href="./index">Voltar</a>
+                        <a class="btn btn-primary" href="/vendas/index">Voltar</a>
                     </div>
                 </div>
 
@@ -38,10 +38,15 @@ export default {
     components: {LayoutPage, FormVendas},
     methods: {
         async edit(id) {
+
             let request = new RequestHelper();
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + id, {});
+            localStorage.setItem('venda',JSON.stringify(response.data))
             document.getElementById('contato_id').value = response.data.contato_id;
             document.getElementById('descritivo').value = response.data.descritivo;
+            document.getElementById('status').value = response.data.status;
+            document.getElementById('tipo').value = response.data.tipo;
+
 
         },
         async sendForm() {

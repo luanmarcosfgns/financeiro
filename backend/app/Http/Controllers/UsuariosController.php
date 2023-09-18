@@ -18,6 +18,7 @@ class UsuariosController extends Controller
                     'name' => ['nullable', 'max:255', 'string'],
                     'email' => ['nullable', 'unique:users', 'max:255', 'string'],
                     'password' => ['nullable', 'max:255', 'string'],
+                    'type' => ['nullable'],
 
                 ]
             );
@@ -26,9 +27,10 @@ class UsuariosController extends Controller
                 'name' => ['nullable', 'max:255', 'string'],
                 'email' => ['nullable', 'max:255', 'string'],
                 'password' => ['nullable', 'max:255', 'string'],
+                'type' => ['nullable'],
             ]);
         }
-        return $request->only(["name", "email", "password", "business_id"]);
+        return $request->only(["name", "email", "password", "business_id",'type']);
     }
 
     /**
@@ -56,7 +58,7 @@ class UsuariosController extends Controller
         $validated['business_id'] = auth()->user()->business_id;
         $user = User::create($validated);
 
-        return response()->json($user);
+        return response()->json($user,500);
     }
 
     /**
@@ -112,6 +114,13 @@ class UsuariosController extends Controller
         $user->delete();
 
         return response()->json(["success" => true, "message" => "Removed success"]);
+    }
+    public function ver($id): JsonResponse
+    {
+
+        $user = User::select('users.name')->findOrFail($id);
+
+        return response()->json($user);
     }
 
 }

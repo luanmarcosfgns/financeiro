@@ -211,7 +211,7 @@ export default {
         readRowSelect() {
             let locationURL = window.location.pathname;
             let interval = setInterval(() => {
-                let valueSearch = document.getElementById(this.name).value;
+                let valueSearch = document.getElementById(this.name)?.value;
                 if (valueSearch && locationURL === window.location.pathname) {
                     this.listRow(valueSearch)
                     clearInterval(interval)
@@ -343,5 +343,11 @@ export default {
     cursor: pointer;
 
 
+}
+.form-control {
+    border-top-color: white !important;
+    border-left-color: white !important;
+    border-right-color: white !important;
+    border-radius: 0px;
 }
 </style>

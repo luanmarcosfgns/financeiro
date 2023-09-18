@@ -121,5 +121,20 @@ class ServicoController extends Controller
         return response()->json($data);
     }
 
+    public function link($id)
+    {
+        $user_id = auth()->user()->id;
+        $link =str_replace('==','','/cotations/'.base64_encode('[{"servico_id":'.$id.',"user_id":'.$user_id.'}]'));
+        return response()->json(['link'=>$link]);
+    }
+    public function view( $id):JsonResponse
+    {
+        $servico = Servico::select('servicos.nome')->find($id);
+
+        return response()->json($servico);
+    }
+
+
+
 
 }

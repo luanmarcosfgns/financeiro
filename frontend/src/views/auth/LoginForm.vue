@@ -106,7 +106,7 @@ export default {
 
 <style>
 body {
-    background: #0d6efd;
+    background: #3baaa1;
 }
 
 @import "toastr/build/toastr.css";

@@ -4,11 +4,6 @@
             <div class="float-start">
                 <h5>Adicionar Entrevistas</h5>
             </div>
-            <div class="float-end">
-                <button-widget cor="azul" href="./index" tamanho="M">
-                    Voltar
-                </button-widget>
-            </div>
         </div>
 
     </div>
@@ -19,14 +14,14 @@
     </div>
 </template>
 <script>
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
+
 import FormEntrevistas from "@/views/entrevistas/FormEntrevistas.vue";
 import RequestHelper from "@/services/RequestHelper";
 import toastr from "toastr/build/toastr.min";
 
 export default {
     name: "CreateEntrevistas",
-    components: {FormEntrevistas, ButtonWidget},
+    components: {FormEntrevistas},
     methods: {
         async sendForm() {
             let dataForm = {

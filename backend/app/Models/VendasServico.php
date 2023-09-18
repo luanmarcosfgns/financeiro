@@ -10,16 +10,16 @@ class VendasServico extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["impostos","produto_id","valor","venda_id"];
+    protected $fillable = ["venda_id","servico_id","preco","quantidade","impostos"];
 
     protected $searchableFields = ["*"];
 
-    
+
    public function Venda()
     {
         return $this->belongsTo(Venda::class);
     }
-    
+
 
 
 }

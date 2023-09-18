@@ -31,6 +31,7 @@ import EditEntrevistas from "@/views/entrevistas/EditEntrevistas.vue";
 import EditPerguntas from "@/views/perguntas/EditPerguntas.vue";
 import CreateVendas from "@/views/vendas/CreateVendas.vue";
 import EditVendas from "@/views/vendas/EditVendas.vue";
+import FormCaptations from "@/views/cotacaos/FormCaptations.vue";
 
 
 const routes = [
@@ -198,6 +199,15 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/cotations/:id',
+        name: 'FormCaptations',
+        component: FormCaptations,
+        meta: {
+            auth: false
+        }
+    },
+
 
     {
         path: '/users/index',

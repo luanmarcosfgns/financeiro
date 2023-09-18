@@ -17,8 +17,8 @@ return new class extends Migration
             $table->longText('descritivo')->nullable();
             $table->bigInteger('business_id');
             $table->bigInteger('user_id');
-            $table->bigInteger('tipo');
-            $table->bigInteger('status');
+            $table->string('tipo');
+            $table->string('status');
             $table->timestamps();
         });
     }

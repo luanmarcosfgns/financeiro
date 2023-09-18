@@ -3,6 +3,7 @@
 <input-form class-list="col-12"  type="string" label="Email " value="" name="email"/>
 <input-form class-list="col-12"  type="timestamp" label="Email VerifIEd At " value="" name="email_verified_at"/>
 <input-form class-list="col-12"  type="string" label="Password " value="" name="password"/>
+<input-form class-list="col-12"  type="select" :items="[{id:'admin',message:'Administrador',},{id:'revendedor',message:'Revendedor',},{id:'cliente',message:'Cliente',}]" label="Tipo " value="" name="type"/>
 
 </template>
 

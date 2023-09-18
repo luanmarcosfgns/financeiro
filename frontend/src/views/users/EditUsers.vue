@@ -44,6 +44,7 @@ export default {
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/users/' + id, {});
             document.getElementById('name').value = response.data.name;
             document.getElementById('email').value = response.data.email;
+            document.getElementById('type').value = response.data.type;
 
 
 
@@ -52,7 +53,7 @@ export default {
             let dataForm = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
+                type: document.getElementById('type').value,
 
 
                 _method: 'PUT'

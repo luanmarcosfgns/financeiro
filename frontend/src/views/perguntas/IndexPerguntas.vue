@@ -5,6 +5,7 @@
         <div class="col-12 ps-4 pt-3 ">
             <div class="float-start">
                 <h5> Perguntas</h5>
+
             </div>
 
             <div class="float-end">
@@ -19,6 +20,12 @@
     <div class="table-responsive">
     <table class="table">
         <thead>
+        <tr>
+            <div class="w-100">
+                <input id="search" class="form-control" @change="list()" placeholder="Digite sua pesquisa"
+                       type="text" v-model="search">
+            </div>
+        </tr>
         <tr>
             <th>Ações</th>
             <th>#</th>
@@ -81,7 +88,8 @@ export default {
 
 
             let dataRequest = {
-                entrevista_id:this.$route.params.id
+                entrevista_id:this.$route.params.id,
+
             };
             let requestHelper = new RequestHelper();
             let helpers = new Helpers();

@@ -4,11 +4,6 @@
             <div class="float-start">
                 <h5>Adicionar Perguntas</h5>
             </div>
-            <div class="float-end">
-                <button-widget cor="azul" href="./index" tamanho="M">
-                    Voltar
-                </button-widget>
-            </div>
         </div>
 
     </div>
@@ -19,14 +14,13 @@
 
 </template>
 <script>
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import FormPerguntas from "@/views/perguntas/FormPerguntas.vue";
 import RequestHelper from "@/services/RequestHelper";
 import toastr from "toastr/build/toastr.min";
 
 export default {
     name: "CreatePerguntas",
-    components: {FormPerguntas, ButtonWidget},
+    components: {FormPerguntas},
     methods: {
         async sendForm() {
             let dataForm = {
@@ -44,7 +38,7 @@ export default {
             let request = new RequestHelper();
             let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/perguntas', dataForm);
             if (response.data?.id) {
-                location.href = './' + response.data.id + '/edit';
+                location.href = '/entrevistas/' + this.$route.params.id + '/edit';
             } else {
                 if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);
@@ -53,6 +47,9 @@ export default {
                 }
 
             }
+        },
+        goBack() {
+            history.back();
         }
     }
 }

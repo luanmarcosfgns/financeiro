@@ -39,15 +39,13 @@ export default {
             let request = new RequestHelper();
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/perguntas/' + id, {});
             document.getElementById('enunciado').value = response.data.enunciado;
-            document.getElementById('opcoes').value = response.data.opcoes;
+            document.getElementById('opcoes').value = JSON.stringify(document.getElementById('opcoes').value.split(',')),
             document.getElementById('ordem').value = response.data.ordem;
             document.getElementById('tipo_resposta').value = response.data.tipo_resposta;
 
         },
         async sendForm() {
             let dataForm = {
-
-                entrevista_id:this.$route.params.id,
                 enunciado: document.getElementById('enunciado').value,
                 opcoes: JSON.stringify(document.getElementById('opcoes').value.split(',')),
                 ordem: document.getElementById('ordem').value,

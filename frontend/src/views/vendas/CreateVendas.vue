@@ -36,11 +36,15 @@ export default {
     methods: {
         async sendForm() {
             let helper = new Helpers();
-            let servicos =  null;
+            let servicos = null;
             if (helper.isJsonString(localStorage.getItem('venda'))) {
                 let venda = JSON.parse(localStorage.getItem('venda'));
                 if (!helper.empty(venda?.servicos)) {
-                    servicos =  venda.servicos;
+                    servicos = venda.servicos;
+                    for (let i = 0; i < servicos.length; i++) {
+                        servicos[i].desconto = document.getElementById('desconto[' + servicos[i].id + ']').value;
+                        servicos[i].quantidade = document.getElementById('quantidade[' + servicos[i].id + ']').value;
+                    }
                 }
             }
             let dataForm = {
@@ -52,7 +56,7 @@ export default {
 
 
             }
-            if(!this.validateForm(dataForm)){
+            if (!this.validateForm(dataForm)) {
                 return false;
             }
             if (!dataForm.parent_id) {
@@ -61,6 +65,7 @@ export default {
             let request = new RequestHelper();
             let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas', dataForm);
             if (response.data?.id) {
+                this.resetForm();
                 location.href = './' + response.data.id + '/edit';
             } else {
                 if (response.response.data?.message) {
@@ -71,35 +76,44 @@ export default {
 
             }
         },
-        async validateForm(dataForm){
+        async validateForm(dataForm) {
             let helper = new Helpers();
-            if(helper.empty(dataForm?.servicos)){
+            if (helper.empty(dataForm?.servicos)) {
                 toastr.error('Não há nenhum produto adicionado');
                 return false;
             }
-            if(helper.empty(dataForm.tipo)){
+            if (helper.empty(dataForm.tipo)) {
                 toastr.error('Tipo inválido');
                 return false;
             }
-            if(helper.empty(dataForm.contato_id)){
+            if (helper.empty(dataForm.contato_id)) {
                 toastr.error('Selecione um cliente');
                 return false;
             }
-            if(helper.empty(dataForm.status)){
+            if (helper.empty(dataForm.status)) {
                 toastr.error('Selecione um status');
                 return false;
             }
-            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/list', {id:dataForm.contato_id});
+
             let request = new RequestHelper();
+            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contatos/list', {id: dataForm.contato_id});
             if (helper.empty(response.data.code)) {
                 toastr.error('Selecione um cliente');
-              return false;
+                return false;
             }
 
             return true;
+        },
+        resetForm() {
+            document.getElementById('contato_id').value = '';
+            document.getElementById('descritivo').value = '';
+            document.getElementById('tipo').value = '';
+            document.getElementById('status').value == '';
+            localStorage.removeItem('venda')
         }
     },
     created() {
+        this.resetForm();
         console.log(this.$emit)
     }
 }
