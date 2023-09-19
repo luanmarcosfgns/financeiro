@@ -175,6 +175,7 @@
 import axios from "axios";
 import InputForm from "@/components/form/inputForm.vue";
 import toastr from "toastr/build/toastr.min";
+import Swal from "sweetalert2";
 
 export default {
     name: "FormCaptations",
@@ -227,6 +228,17 @@ export default {
                 'perguntas': perguntas,
                 'user_id':this.userId,
                 'servico_id':this.servicoId
+            }).then(function(response){
+                if(response.data.success){
+                    Swal.fire(
+                        'Muito bem 😁',
+                        'Aguarde enquanto entramos em contato com você!',
+                        'success',
+
+                    ).then(() => {
+                        history.back();
+                    })
+                }
             })
 
 
