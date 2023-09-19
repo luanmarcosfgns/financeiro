@@ -111,8 +111,6 @@ export default {
             if (dataRow.data.data.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else {
-                toastr.info('Nenhum resultado encontrado');
             }
 
 

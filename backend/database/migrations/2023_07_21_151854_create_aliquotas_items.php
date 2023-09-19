@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->bigInteger('aliquota_id');
-            $table->longText('descritivo')->nullable();
-            $table->decimal('porcentagem')->default(0.00);
+            $table->decimal('valor')->default(0.00);
+            $table->decimal('porcentagem_comissao')->default(0.00);
+            $table->decimal('desconto_porcentagem')->default(0.00);
             $table->timestamps();
         });
     }

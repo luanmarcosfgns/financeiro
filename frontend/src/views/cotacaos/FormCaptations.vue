@@ -120,35 +120,41 @@
                 <div class="card-body">
                     <div v-for="pergunta in perguntas" v-bind:key="pergunta.id" class="row">
                         <div class="col-12">
-                            <strong>{{pergunta.ordem}}-{{ pergunta.enunciado }}</strong>
+                            <strong>{{ pergunta.ordem }}-{{ pergunta.enunciado }}</strong>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='multipla'" class="col-12">
-                            <div v-for=" opcao in pergunta.opcoes" :key="opcao">
-                                <label >
+                            <div v-for=" (opcao,i) in pergunta.opcoes" :key="opcao">
+                                <label>
                                     {{ opcao }}
-                                    <input :data-id="pergunta.id" type="checkbox" :name="'resposta['+pergunta.id+']'"    :class="'resposta['+pergunta.id+']'"         class="form-check" :value="i++">
+                                    <input :data-id="pergunta.id" type="checkbox" :name="'resposta['+pergunta.id+']'"
+                                           :class="'resposta['+pergunta.id+']'" class="form-check" :value="i+'-'+opcao">
                                 </label>
                             </div>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='unica'" class="col-12">
                             <div v-for=" (opcao,i) in pergunta.opcoes" :key="opcao">
-                                <label >
+                                <label>
                                     {{ opcao }}
-                                    <input type="radio" :data-id="pergunta.id" :name="'resposta['+pergunta.id+']'" class="form-check" :value="i">
+                                    <input type="radio" :data-id="pergunta.id" :name="'resposta['+pergunta.id+']'"
+                                           class="form-check" :value="i+'-'+opcao">
                                 </label>
                             </div>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='descritiva'" class="col-12">
-                            <input-form :data-id="pergunta.id" type="text" :name="'resposta['+pergunta.id+']'"></input-form>
+                            <input-form :data-id="pergunta.id" type="text"
+                                        :name="'resposta['+pergunta.id+']'"></input-form>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='inteira'" class="col-12">
-                            <input-form :data-id="pergunta.id" type="int" :name="'resposta['+pergunta.id+']'"></input-form>
+                            <input-form :data-id="pergunta.id" type="int"
+                                        :name="'resposta['+pergunta.id+']'"></input-form>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='decimal'" class="col-12">
-                            <input-form :data-id="pergunta.id" type="decimal" :name="'resposta['+pergunta.id+']'"></input-form>
+                            <input-form :data-id="pergunta.id" type="decimal"
+                                        :name="'resposta['+pergunta.id+']'"></input-form>
                         </div>
                         <div v-if="pergunta.tipo_resposta=='datada'" class="col-12">
-                            <input-form :data-id="pergunta.id" type="date" :name="'resposta['+pergunta.id+']'"></input-form>
+                            <input-form :data-id="pergunta.id" type="date"
+                                        :name="'resposta['+pergunta.id+']'"></input-form>
                         </div>
                     </div>
                     <div class="row">
@@ -177,7 +183,9 @@ export default {
         return {
             nameConsultor: '-',
             nameProduto: '-',
-            perguntas: null
+            perguntas: null,
+            servicoId: null,
+            userId:null
         }
     },
     methods: {
@@ -186,6 +194,8 @@ export default {
 
             let params = JSON.parse(atob(this.$route.params.id));
             console.log(params)
+            this.userId = params[0].user_id;
+            this.servicoId = params[0].servico_id
 
             let id = params[0].user_id;
             axios.get(process.env.VUE_APP_API_HOST_NAME + '/api/consultor/' + id).then((response) => {
@@ -196,75 +206,124 @@ export default {
                     id = params[0].servico_id
                     axios.get(process.env.VUE_APP_API_HOST_NAME + '/api/perguntas/' + id + '/view').then((response) => {
                         this.perguntas = response.data
-                        console.log(this.perguntas)
                     })
                 })
             });
 
         },
-        sendForm(){
-            if(this.validateForm()===false){
+        sendForm() {
+            let lead = this.validateFormLead();
+            if (lead === false) {
                 return false;
             }
-            axios.post('/contatos/store',{'contatos':this.validateForm()
-            })
-            let perguntas =  document.getElementsByTagName('input');
-            for (let i in perguntas) {
-                console.log(perguntas[i].value);
-            }
-        },
-        validateForm(){
-            let dataRequest = [];
-           let elementInput =  document.getElementById('nome').value;
-           if(elementInput.length>0){
-               dataRequest.push(elementInput);
 
-           }else{
-               toastr.info('Nome não preenchido');
-               return false;
-           }
-             elementInput =  document.getElementById('cnpj_cpf');
-            if(elementInput.length>0){
+            let perguntas = this.validatePerguntas()
+            if (perguntas===false) {
+                return false;
+            }
+
+            axios.post(process.env.VUE_APP_API_HOST_NAME +'/api/cotations/store', {
+                'lead': lead,
+                'perguntas': perguntas,
+                'user_id':this.userId,
+                'servico_id':this.servicoId
+            })
+
+
+        },
+        validateFormLead() {
+            let dataRequest = [];
+            let elementInput = document.getElementById('nome').value;
+            if (elementInput.length > 0) {
                 dataRequest.push(elementInput);
-            }else{
+
+            } else {
+                toastr.info('Nome não preenchido');
+                return false;
+            }
+            elementInput = document.getElementById('cnpj_cpf').value;
+            if (elementInput.length > 0) {
+                dataRequest.push(elementInput);
+            } else {
                 toastr.info('CNPJ/CPF não preenchido')
                 return false;
             }
-            elementInput =  document.getElementById('telefone');
-            if(elementInput.length>0){
+            elementInput = document.getElementById('telefone').value;
+            if (elementInput.length > 0) {
                 dataRequest.push(elementInput);
-            }else{
+            } else {
                 toastr.info('Telefone não preenchido')
                 return false;
             }
-            elementInput =  document.getElementById('celular');
-            if(elementInput.length>0){
+            elementInput = document.getElementById('celular').value;
+            if (elementInput.length > 0) {
                 dataRequest.push(elementInput);
-            }else{
+            } else {
                 toastr.info('Celular não preenchido')
                 return false;
             }
-            elementInput =  document.getElementById('email');
-            if(elementInput.length>0){
+            elementInput = document.getElementById('email').value;
+            if (elementInput.length > 0) {
                 dataRequest.push(elementInput);
-            }else{
+            } else {
                 toastr.info('Email não preenchido')
                 return false;
             }
-            elementInput =  document.getElementById('profissao');
-            if(elementInput.length>0){
+            elementInput = document.getElementById('profissao').value;
+            if (elementInput.length > 0) {
                 dataRequest.push(elementInput);
-            }else{
+            } else {
                 toastr.info('Profissão não preenchido')
                 return false;
             }
 
             return dataRequest;
+        },
+        validatePerguntas() {
+            var dataQuestionResposta = [];
+            var idsAll = [];
+
+            for (let i in this.perguntas) {
+                let inputs = document.getElementsByName('resposta[' + this.perguntas[i].id + ']');
+                idsAll.push(this.perguntas[i].id);
+                let notNullable = false;
+
+                for (let j = 0; j < inputs.length; j++) {
+
+                    if (inputs[j]?.type && inputs[j]?.value) {
+
+                        if (inputs[j].type == 'radio') {
+                            if (inputs[j].checked) {
+                                notNullable = true
+                                dataQuestionResposta.push([this.perguntas[i].id, inputs[j].value]);
+
+                            }
+                        } else if (inputs[j].type == 'checkbox') {
+
+                            if (inputs[j].checked) {
+                                notNullable = true
+                                dataQuestionResposta.push([this.perguntas[i].id, inputs[j].value]);
+                            }
+
+                        } else {
+                            notNullable = true
+                            dataQuestionResposta.push([this.perguntas[i].id, inputs[j].value]);
+                        }
+                        if (notNullable===false && (j+1) == inputs.length) {
+                            toastr.error('A questão '+this.perguntas[i].ordem+' não foi preenchida')
+                            return false;
+                        }
+                    }
+                }
+
+
+            }
+            return dataQuestionResposta;
         }
     },
     created() {
         this.createForm()
-        console.log(this.perguntas)
+
     }
 }
 </script>
@@ -282,13 +341,12 @@ export default {
 }
 
 
-
 .name-consultor {
     font-weight: 200;
 }
 
 .card-header {
-    background: transparent linear-gradient(270deg, #00a089, #a2d48d) 0 0 no-repeat padding-box ;
+    background: transparent linear-gradient(270deg, #00a089, #a2d48d) 0 0 no-repeat padding-box;
     color: white;
     font-weight: bold;
 }

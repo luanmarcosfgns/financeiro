@@ -8,9 +8,8 @@
             </div>
         </div>
 
-        <div class="col-2 pt-lg-5">
-            <button @click="copy()" class="btn btn-success">
-                <i class="bi bi-clipboard-fill"></i>
+        <div class="col-2 pt-lg-5 p-2">
+            <button @click="copy()" :class="button" v-html="icon">
             </button>
         </div>
 
@@ -24,6 +23,13 @@ import InputForm from "@/components/form/inputForm.vue";
 export default {
     name: "LinkGenerate",
     components: {InputForm},
+    data(){
+        return{
+            icon:'<i class="bi bi-clipboard-fill"></i>',
+            button:'btn btn-success'
+        }
+
+    },
     methods: {
         copy() {
             let link = document.getElementById('link-generated');
@@ -35,6 +41,13 @@ export default {
 
             // Deseleciona o campo de texto (opcional)
             link.blur();
+
+            this.icon = '<i class="bi bi-check-circle-fill"></i>';
+            this.button = 'btn btn-primary'
+            setTimeout(()=>{
+                this.icon = '<i class="bi bi-clipboard-fill"></i>';
+                this.button = 'btn btn-success';
+            },3000)
         }
 
     }

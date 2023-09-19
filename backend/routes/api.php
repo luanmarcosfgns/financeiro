@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ContatoController;
+use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EnderecoController;
 use App\Http\Controllers\EntrevistaController;
 use App\Http\Controllers\PerguntaController;
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/consultor/{id}', [UsuariosController::class, 'ver']);
 Route::get('/servicos/{id}/view', [ServicoController::class, 'view']);
 Route::get('/perguntas/{servico_id}/view', [PerguntaController::class, 'view']);
-Route::post('/contatos/store', [ContatoController::class, 'store']);
+Route::post('/cotations/store', [CotationController::class, 'store']);
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'], function ($router) {

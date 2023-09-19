@@ -15,10 +15,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('venda_id');
             $table->bigInteger('servico_id');
-            $table->decimal('preco')->default(0.00);
-            $table->decimal('quantidade')->default(0.00);
-            $table->decimal('desconto')->default(0.00);
-            $table->json('impostos');
+            $table->decimal('preco')->default(null)->nullable();
+            $table->decimal('desconto')->default(null)->nullable();
+
             $table->timestamps();
         });
     }

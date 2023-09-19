@@ -95,12 +95,9 @@ export default {
             }
 
             let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas', dataRequest);
-            console.log(dataRow.data.data)
-            if (dataRow.data.data.length > 0) {
+            if (dataRow?.data?.data?.length > 0) {
                 this.rows = dataRow.data.data;
 
-            } else {
-                toastr.info('Nenhum resultado encontrado');
             }
 
 
