@@ -46,6 +46,7 @@ class VendaController extends Controller
             'vendas.id as id',
             'vendas.tipo as tipo',
             'vendas.status as status',
+            DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
             DB::raw('(SUM(vendas_servicos.preco)-SUM(vendas_servicos.desconto)) as total')
 
         ])->groupBy('vendas.id');
@@ -58,9 +59,9 @@ class VendaController extends Controller
         if ($search == null) {
           $model->where('contatos.nome','like','%'.$search.'%');
         }
-
-
-
+        if(!empty($request->tipo)){
+            $model->where('vendas.tipo',$request->tipo);
+        }
 
         $vendas = $model->paginate(1000);
 
@@ -154,6 +155,15 @@ class VendaController extends Controller
 
 
         return response()->json(["success" => true, "message" => "Removed success"]);
+    }
+
+    public function tipoVendaTransform($id)
+    {
+        $venda = Venda::find($id);
+        $venda->tipo = 'venda';
+        $venda->save();
+        return response()->json(["success" => true]);
+
     }
 
 }

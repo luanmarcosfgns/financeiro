@@ -16,19 +16,22 @@ class AliquotasItemController extends Controller
         [
             'nome'=>['required','max:255','string'],
             'aliquota_id'=>['required'],
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'porcentagem'=>['required','numeric'],
+
+            'valor'=>['required','numeric'],
+            'porcentagem_comissao'=>['required','numeric'],
+            'desconto_porcentagem'=>['required','numeric'],
         ]
         );
     }else{
         $request->validate([
             'nome'=>['required','max:255','string'],
             'aliquota_id'=>['required'],
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'porcentagem'=>['required','numeric'],
+            'valor'=>['required','numeric'],
+            'porcentagem_comissao'=>['required','numeric'],
+            'desconto_porcentagem'=>['required','numeric'],
         ]);
     }
-        return $request->only(["nome","aliquota_id","descritivo","porcentagem"]);
+        return $request->only(["nome","aliquota_id","valor","porcentagem_comissao","desconto_porcentagem"]);
     }
     /**
      * Display a listing of the resource.

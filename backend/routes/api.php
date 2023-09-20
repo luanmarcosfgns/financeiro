@@ -41,7 +41,9 @@ Route::group([
         Route::get('categorias/list', [CategoriaController::class, 'list']);
         Route::get('contatos/list', [ContatoController::class, 'list']);
         Route::get('servicos/list', [ServicoController::class, 'list']);
+        Route::get('perguntas/list', [PerguntaController::class, 'list']);
         Route::get('cotations/{id}/link', [ServicoController::class, 'link']);
+        Route::put('vendas/{id}/tipoVendaTransform', [VendaController::class, 'tipoVendaTransform']);
 
         Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
         Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);

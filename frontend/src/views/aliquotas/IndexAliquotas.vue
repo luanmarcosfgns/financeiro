@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5> Aliquotas</h5>
+                        <h5> Tabela de Preços</h5>
                     </div>
                     <div class="w-50">
                         <input id="search" class="form-control" @change="list()" placeholder="Digite sua pesquisa"
@@ -49,7 +49,7 @@
                     <td>{{ row.ativo==1?'Sim':'Não' }}</td>
                 </tr>
                 <tr v-if="rows==null">
-                    <td colspan="3" class="text-center"> Não há dados</td>
+                    <td colspan="4" class="text-center"> Não há dados</td>
                 </tr>
                 </tbody>
             </table>

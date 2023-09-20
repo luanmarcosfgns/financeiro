@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5>Editar Aliquotas</h5>
+                        <h5>Editar Tabela de Preços</h5>
                     </div>
                     <div class="float-end">
                         <button-widget cor="azul" href="../index" tamanho="M">
@@ -23,7 +23,7 @@
                         <li class="nav-item" role="presentation">
                             <button @click="tabAliquotaListaOpen" class="nav-link" data-bs-toggle="tab"
                                     data-bs-target="#enderecos-tab-pane" type="button" role="tab"
-                                    aria-controls="enderecos-tab-pane" aria-selected="false">Aliquotas Lista
+                                    aria-controls="enderecos-tab-pane" aria-selected="false">Itens
                             </button>
                         </li>
                     </ul>

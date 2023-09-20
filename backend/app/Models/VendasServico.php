@@ -10,7 +10,7 @@ class VendasServico extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["venda_id","servico_id","preco","quantidade","impostos"];
+    protected $fillable = ["venda_id","servico_id"];
 
     protected $searchableFields = ["*"];
 

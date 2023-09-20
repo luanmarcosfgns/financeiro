@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Servico;
+use App\Models\Venda;
 use App\Models\VendasServico;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -46,11 +48,25 @@ class VendasServicoController extends Controller
             abort(404,'Not Found');
         }
 
-        $countVendasPagamento = Servico::where('id',$request->venda_id)->where('business_id',auth()->user()->business_id)->count();
-        if($countVendasPagamento==0){
+        $countVendas = Venda::where('id',$request->venda_id)
+            ->where('business_id',auth()->user()->business_id)->count();
+
+        if($countVendas==0){
             abort(404, 'Not Found');
         }
-        $vendasServicos = VendasServico::search($search)->where('venda_id',$request->venda_id)->paginate(5);
+        $vendasServicos = VendasServico::where('venda_id',$request->venda_id)
+            ->join('servicos','vendas_servicos.servico_id','=','servicos.id')
+            ->join('vendas','vendas_servicos.venda_id','=','vendas.id')
+            ->leftJoin('categorias','servicos.categoria_id','=','categorias.id')
+            ->select([
+                'vendas_servicos.id',
+                'vendas_servicos.venda_id',
+                'servicos.nome as servico_nome',
+                'servicos.id as servico_id',
+                DB::raw('IF(categorias.nome IS NULL,"Não Informado",categorias.nome) as categoria_nome'),
+
+            ])
+            ->paginate(1000);
 
         return response()->json($vendasServicos);
     }

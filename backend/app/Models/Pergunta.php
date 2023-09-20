@@ -14,13 +14,13 @@ class Pergunta extends Model
 
     protected $searchableFields = ["*"];
 
-    
+
    public function Entrevista()
     {
         return $this->belongsTo(Entrevista::class);
     }
-    
-    public function Resposta()
+
+    public function resposta()
     {
         return $this->hasMany(Resposta::class);
     }

@@ -27,7 +27,7 @@ export default class RequestHelper {
         return  window.axios;
 
     }
-   async postAuth(url, data) {
+   async  postAuth(url, data) {
 
         await axios.post(url, data, {
             headers: {

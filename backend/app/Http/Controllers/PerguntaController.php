@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Entrevista;
 use App\Models\Pergunta;
+use App\Models\Venda;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -124,5 +125,24 @@ class PerguntaController extends Controller
         return response()->json($perguntas);
     }
 
+    public function list(Request $request): JsonResponse
+    {
 
+        $search = $request->get("search", "");
+        if ($search == null) {
+            $search = "";
+        }
+        $perguntas = Venda::join('respostas','respostas.venda_id','vendas.id')
+            ->join('perguntas','perguntas.id','respostas.pergunta_id')
+            ->select([
+                'perguntas.enunciado',
+                'respostas.resposta',
+                'perguntas.ordem'
+            ])
+            ->orderBY('perguntas.ordem')
+            ->where('vendas.id',$request->venda_id)->paginate(1000);
+
+
+        return response()->json($perguntas);
+    }
 }

@@ -10,16 +10,16 @@ class AliquotasItem extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["nome","aliquota_id","descritivo","porcentagem"];
+    protected $fillable = ["nome","aliquota_id","valor","porcentagem_comissao","desconto_porcentagem"];
 
     protected $searchableFields = ["*"];
 
-    
+
    public function Aliquota()
     {
         return $this->belongsTo(Aliquota::class);
     }
-    
+
 
 
 }

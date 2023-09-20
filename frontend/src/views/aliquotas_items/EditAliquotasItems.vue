@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5>Editar Linha de Aliquotas</h5>
+                        <h5>Editar Itens</h5>
                     </div>
                     <div class="float-end">
                         <button class="btn btn-primary" @click="goBack" tamanho="M">
@@ -40,16 +40,18 @@ export default {
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/aliquotas_items/' + id, {});
             document.getElementById('nome').value = response.data.nome;
             this.aliquota_id = response.data.aliquota_id;
-            document.getElementById('descritivo').value = response.data.descritivo;
-            document.getElementById('porcentagem').value = response.data.porcentagem;
+            document.getElementById('valor').value = response.data.valor;
+            document.getElementById('porcentagem_comissao').value = response.data.porcentagem_comissao;
+            document.getElementById('desconto_porcentagem').value = response.data.desconto_porcentagem;
 
         },
         async sendForm() {
             let dataForm = {
                 nome: document.getElementById('nome').value,
                 aliquota_id: this.aliquota_id,
-                descritivo: document.getElementById('descritivo').value,
-                porcentagem: document.getElementById('porcentagem').value,
+                valor: document.getElementById('valor').value,
+                porcentagem_comissao: document.getElementById('porcentagem_comissao').value,
+                desconto_porcentagem: document.getElementById('desconto_porcentagem').value,
                 _method: 'PUT'
 
             }

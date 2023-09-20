@@ -56,6 +56,8 @@
 import axios from "axios";
 import toastr from "toastr/build/toastr.min";
 import registerForm from "@/views/auth/RegisterForm.vue";
+import Middleware from "@/services/Middleware";
+import Helpers from "@/services/Helpers";
 
 
 export default {
@@ -89,7 +91,11 @@ export default {
             })
                 .then(function (response) {
                     localStorage.setItem('HASH',response.data.data.token);
-                    location.href = '/painel'
+                    let url = new Middleware().getRegisterLastRouteBeforeLogin()
+                    if(new Helpers().empty(url)){
+                        url = '/painel'
+                    }
+                    location.href = url;
 
                 }).catch(function (error) {
               if(error.request.status==401){

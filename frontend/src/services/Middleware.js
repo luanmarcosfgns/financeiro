@@ -47,4 +47,13 @@ export default class Middleware {
             }
         }
     }
+    setRegisterLastRouteBeforeLogin(){
+        if(location.pathname !=="/login" && location.pathname !=="/logout"){
+            localStorage.setItem('href',location.href);
+            console.log(localStorage.getItem('href'))
+        }
+    }
+    getRegisterLastRouteBeforeLogin(){
+        return  localStorage.getItem('href');
+    }
 }

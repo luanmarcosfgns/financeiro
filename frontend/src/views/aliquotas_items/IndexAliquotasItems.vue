@@ -17,7 +17,9 @@
             <th>Ações</th>
             <th>#</th>
             <th>Nome</th>
-            <th>Porcentagem</th>
+            <th>Valor base</th>
+            <th>Prêmio %</th>
+            <th>Desconto%</th>
         </tr>
         </thead>
         <tbody>
@@ -35,11 +37,13 @@
             </td>
             <td>{{ row.id }}</td>
             <td>{{ row.nome }}</td>
-            <td>{{ row.porcentagem.replaceAll('.',',') }}</td>
+            <td>{{ row.valor.replaceAll('.',',') }}</td>
+            <td>{{ row.desconto_porcentagem.replaceAll('.',',') }}</td>
+            <td>{{ row.porcentagem_comissao.replaceAll('.',',') }}</td>
 
         </tr>
         <tr v-if="rows==null">
-            <td colspan="3" class="text-center"> Não há dados</td>
+            <td colspan="6" class="text-center"> Não há dados</td>
         </tr>
         </tbody>
     </table>

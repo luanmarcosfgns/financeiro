@@ -14,12 +14,12 @@ class Resposta extends Model
 
     protected $searchableFields = ["*"];
 
-    
+
    public function Contato()
     {
         return $this->belongsTo(Contato::class);
     }
-   public function Pergunta()
+   public function pergunta()
     {
         return $this->belongsTo(Pergunta::class);
     }
@@ -27,7 +27,7 @@ class Resposta extends Model
     {
         return $this->belongsTo(Venda::class);
     }
-    
+
 
 
 }

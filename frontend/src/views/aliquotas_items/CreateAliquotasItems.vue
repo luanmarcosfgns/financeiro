@@ -30,8 +30,9 @@ export default {
             let dataForm = {
                 nome: document.getElementById('nome').value,
                 aliquota_id: this.$route.params.id,
-                descritivo: document.getElementById('descritivo').value,
-                porcentagem: document.getElementById('porcentagem').value,
+                valor: document.getElementById('valor').value,
+                porcentagem_comissao: document.getElementById('porcentagem_comissao').value,
+                desconto_porcentagem: document.getElementById('desconto_porcentagem').value,
 
 
             }

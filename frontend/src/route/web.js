@@ -32,6 +32,7 @@ import EditPerguntas from "@/views/perguntas/EditPerguntas.vue";
 import CreateVendas from "@/views/vendas/CreateVendas.vue";
 import EditVendas from "@/views/vendas/EditVendas.vue";
 import FormCaptations from "@/views/cotacaos/FormCaptations.vue";
+import IndexCotations from "@/views/cotations/IndexCotations.vue";
 
 
 const routes = [
@@ -249,7 +250,14 @@ const routes = [
             auth: true
         }
     },
-
+    {
+        path: '/cotations/index',
+        name: 'indexCotations',
+        component: IndexCotations,
+        meta: {
+            auth: true
+        }
+    },
     {
         path: '/vendas/index',
         name: 'indexVendas',
@@ -292,9 +300,13 @@ router.beforeEach((to) => {
         middleware.validateHash(to);
         middleware.uniqueConfiguration(to);
     }
-    middleware.finishLoading();
+
 
 
 })
-
+router.afterEach(() => {
+    let middleware = new Middleware();
+    middleware.setRegisterLastRouteBeforeLogin();
+    middleware.finishLoading();
+});
 export default router;
