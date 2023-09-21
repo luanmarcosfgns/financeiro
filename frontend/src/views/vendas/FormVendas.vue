@@ -1,19 +1,13 @@
 <template>
     <div class="card-header">
         <div class="row pt-1 pb-5">
-            <div class="col-6">
+            <div class="col-8">
                 <input-form type="select2" url="/api/contatos/list" label="Cliente" name="contato_id"></input-form>
             </div>
-            <div class="col-3">
-                <input-form class-list="col--12" type="select"
-                            :items="[{id:'venda',message:'Venda',},{id:'orcamento',message:'Orçamento',}]"
-                            label="Tipo "
-                            value="venda" name="tipo"/>
-            </div>
-            <div class="col-3">
+            <div class="col-4">
 
-                <input-form placeholder="Selecione status" class-list="col--12" type="select"
-                            :items="[{id:'novo',message:'Novo',},{id:'pendente',message:'Pendente',},{id:'negado',message:'Negado',}]"
+                <input-form placeholder="Selecione status" class-list="col-12" type="select"
+                            :items="[{id:'novo',message:'Novo',},{id:'pendente',message:'Pendente',},{id:'negado',message:'Negado',},{id:'finalizado',message:'Finalizado',}]"
                             label="Status"
                             value="novo" name="status"/>
             </div>
@@ -50,7 +44,7 @@
                         <br>
                         <br>
                         <span>
-                         {{ servico.id }}-{{ servico.nome }}
+                         {{ servico.servico_id }}-{{ servico.servicos_nome }}
                         </span>
                         <br>
                         <button @click="deleteServico(servico.id)" class="btn btn-danger">
@@ -60,32 +54,21 @@
                     </div>
                     <div class="col-6 p-3">
                         <div class="row">
-                            <div class="col-6 p-2">
-                                <strong>Preço:</strong>
-                                <span>
-                            R$
-                        {{ new String(servico.preco).replace('.', ',') }}
-                        </span>
+                            <input-form class-list="col-12" type="select"
+                                        :items="precos[servico.id]" label="Tabela de Preços"
+                                        value="" :name="'table_precos['+servico.id+']'"/>
+                            <div class="col-6">
+                                <input-form label="Preço" placeholder="Preço" type="decimal" :value="servico.preco"
+                                            :name="'preco['+servico.id+']'"></input-form>
                             </div>
-                            <div class="col-6 p-2">
-                                <strong>Valor Total:</strong>
-                                <span>
-                            R$
-                        {{ new String(servico.total).replace('.', ',') }}
-                        </span>
+                            <div class="col-6">
+                                <input-form label="Comissão" placeholder="Comissão" type="decimal" :value="servico.comissao"
+                                            :name="'comissao['+servico.id+']'"></input-form>
                             </div>
+                            <input-form class-list="col-12" label="Desconto%" placeholder="Desconto%" type="decimal" :value="servico.desconto"
+                                        :name="'desconto['+servico.id+']'"></input-form>
                         </div>
 
-
-                        <br>
-                        <span>
-                            <input-form label="Quantidade" placeholder="Quantidade" type="decimal" value="1.00"
-                                        :name="'quantidade['+servico.id+']'"></input-form>
-                        </span>
-                        <span>
-                            <input-form label="Desconto%" placeholder="Desconto%" type="decimal" value="0.00"
-                                        :name="'desconto['+servico.id+']'"></input-form>
-                        </span>
 
                     </div>
                 </div>
@@ -105,7 +88,15 @@
 
         </div>
         <div class="row">
-            <div class="offset-6 col-6 p-4">
+            <div class="col-6">
+                <div class="row">
+                    <div class="col-12">
+                        <strong>Comissão:</strong>
+                        <h3>{{new String(totalComissao.toFixed(2)).replace('.', ',')}}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 p-4">
                 <h1 class="float-end">R$ {{ new String(totalVenda.toFixed(2)).replace('.', ',') }}</h1>
             </div>
         </div>
@@ -122,141 +113,36 @@ import Helpers from "@/services/Helpers";
 export default {
     name: "FormVendas",
     components: {InputForm},
+    props: {
+        vendaEdit:JSON
+    },
     data() {
         return {
             vendas: null,
             servicos: [],
-            totalVenda: 0
+            totalVenda: 0,
+            totalComissao:0,
+            precos:[]
         }
     },
     methods: {
         async addProdutos() {
             let id = document.getElementById('produto_id').value;
-            let label = document.getElementById('search-produto_id').value;
-            let addNewRow = true;
 
-            if (id != undefined && id != '' && label != undefined && label != '') {
+
+                let helper = new Helpers();
                 let request = new RequestHelper();
                 let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/servicos/' + id, {});
-                if (response.data.id == id) {
-                    for (let i = 0; i < this.servicos.length; i++) {
-                        if (this.servicos[i].id == id) {
-                            let quantidade = parseFloat(this.servicos[i].quantidade) + 1;
-                            document.getElementById('quantidade[' + this.servicos[i].id + ']').value = quantidade;
-
-
-                            addNewRow = false;
-                        }
-                    }
-                    if (addNewRow) {
-
-                        response.data.quantidade = 1;
-                        response.data.desconto = 0;
-                        response.data.total = response.data.preco;
-                        this.servicos.push(response.data);
-
-                        id = '';
-                    }
-
-                }
+                if (!helper.empty(response?.data?.id)) {
+                    this.servicos.push(response.data);
+                    id = '';
 
             }
+            this.getTotalVenda();
+            this.getTotalComissao();
+            this.getTabelaPreco();
             document.getElementById('produto_id').value = '';
             document.getElementById('search-produto_id').value = '';
-            console.log(this.servicos)
-        },
-        setQuantidadeDesconto() {
-            let helper = new Helpers();
-            for (let i = 0; i < this.servicos.length; i++) {
-                if (!helper.empty(this.servicos[i])) {
-                    this.servicos[i].quantidade = document.getElementById('quantidade[' + this.servicos[i].id + ']').value;
-                    this.servicos[i].desconto = document.getElementById('desconto[' + this.servicos[i].id + ']').value;
-
-                    let totalSemDesconto = this.servicos[i].quantidade * this.servicos[i].preco;
-
-                    let ValorDesconto = ((totalSemDesconto * this.servicos[i].desconto) / 100);
-                    let ValorComDesconto = totalSemDesconto - ValorDesconto;
-
-
-                    this.servicos[i].total = (ValorComDesconto).toFixed(2);
-                }
-
-
-            }
-        },
-        setTotalVenda() {
-            let helper = new Helpers();
-            this.totalVenda = 0;
-            for (let i = 0; i < this.servicos.length; i++) {
-                if (!helper.empty(this.servicos[i])) {
-                    this.totalVenda += parseFloat(this.servicos[i].total);
-                }
-
-            }
-        },
-        async loadPDV() {
-            let helper = new Helpers();
-
-
-            if (helper.isJsonString(localStorage.getItem('venda'))) {
-                let venda = JSON.parse(localStorage.getItem('venda'));
-                console.log(venda)
-                if (!helper.empty(venda?.servicos)) {
-                    this.servicos = venda.servicos;
-                }
-                if (!helper.empty(venda?.contato_id)) {
-                    document.getElementById('contato_id').value = venda.contato_id;
-                }
-                if (!helper.empty(venda?.tipo)) {
-                    document.getElementById('tipo').value = venda.tipo;
-                }
-
-                if (!helper.empty(venda?.status)) {
-                    document.getElementById('status').value = venda.status;
-                }
-                if (!helper.empty(venda?.descritivo)) {
-                    document.getElementById('descritivo').value = venda.descritivo;
-                }
-                console.log(venda)
-
-            }
-            localStorage.removeItem('venda');
-
-        },
-        setDataPDV() {
-            let helper = new Helpers();
-            let venda = {
-                servicos: null,
-                contato_id: null,
-                tipo: null,
-                status: null,
-                descritivo: null,
-            };
-            if (!helper.empty(this.servicos)) {
-                venda.servicos = this.servicos
-            }else{
-                venda.servicos =  JSON.parse(localStorage.getItem('venda'))?.servicos;
-
-            }
-
-            if (!helper.empty(document.getElementById('contato_id')?.value)) {
-                venda.contato_id = document.getElementById('contato_id').value;
-            }
-
-            if (!helper.empty(document.getElementById('tipo')?.value)) {
-
-                venda.tipo = document.getElementById('tipo')?.value;
-            }
-
-            if (!helper.empty(document.getElementById('status')?.value)) {
-                venda.status = document.getElementById('status').value;
-            }
-            if (!helper.empty(document.getElementById('descritivo')?.value)) {
-                venda.descritivo = document.getElementById('descritivo').value;
-            }
-
-            localStorage.setItem('venda', undefined);
-            localStorage.setItem('venda', JSON.stringify(venda));
 
         },
         deleteServico(id) {
@@ -271,21 +157,114 @@ export default {
             }
 
             this.servicos = data;
+        },
+        getCliente(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                document.getElementById('contato_id').value = this.vendas.contato_id;
+
+            }
+
+        },
+        getStatus(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                document.getElementById('status').value = this.vendas.status;
+
+            }
+
+
+        },
+        getServicos(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+               if(!helper.empty(this.vendas?.servicos)){
+                   this.servicos = this.vendas.servicos
+               }
+            }
+        },
+        getDescritivo(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                document.getElementById('descritivo').value = this.vendas.descritivo;
+
+            }
+        },
+        getTotalVenda(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                if(!helper.empty(this.vendas?.servicos)){
+                    this.servicos = this.vendas.servicos
+                    for (let i in this.servicos) {
+                        let total = parseFloat(this.servicos[i].preco);
+
+                        let porcentagem_desconto = parseFloat(this.servicos[i].desconto);
+                        this.totalVenda = total- parseFloat((total*porcentagem_desconto)/100)
+                        if(isNaN( this.totalVenda)){
+                            this.totalVenda = 0;
+                        }
+                    }
+
+                }
+            }
+
+        },
+        getTotalComissao(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                if(!helper.empty(this.vendas?.servicos)){
+                    this.servicos = this.vendas.servicos
+                    for (let i in this.servicos) {
+
+                        let total = parseFloat(this.servicos[i].preco);
+                        let porcentagem_comissao = parseFloat(this.servicos[i].comissao);
+                        this.totalComissao = parseFloat((total*porcentagem_comissao)/100)
+                        if(isNaN( this.totalComissao)){
+                            this.totalComissao = 0;
+                        }
+
+                    }
+
+                }
+            }
+
+        },
+        getTabelaPreco(){
+            let helper = new Helpers();
+            if(!helper.empty(this.vendaEdit?.data)){
+                this.vendas = this.vendaEdit.data;
+                if(!helper.empty(this.vendas?.servicos)){
+                    this.servicos = this.vendas.servicos
+                    for (let i in this.servicos) {
+                       let aliquotas =  this.servicos[i].aliquotas;
+                       let data = []
+                        for (let j in aliquotas) {
+                           data.push({id:aliquotas[j].id,message:aliquotas[j].message});
+                        }
+                        this.precos[this.servicos[i].id] = data;
+                    }
+
+                }
+            }
+
         }
 
     },
     mounted() {
-        this.loadPDV();
-        let locationUrl = window.location.url;
-        let interval = setInterval(() => {
-            if (locationUrl == window.location.url) {
-                this.setQuantidadeDesconto()
-                this.setTotalVenda()
-                this.setDataPDV()
-            } else {
-                clearInterval(interval);
-            }
-        }, 500);
+        this.getCliente();
+        this.getStatus();
+        this.getServicos();
+        this.getDescritivo();
+        this.getTotalVenda();
+        this.getTotalVenda();
+        this.getTotalComissao();
+        this.getTabelaPreco();
 
 
     },

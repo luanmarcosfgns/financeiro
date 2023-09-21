@@ -30,7 +30,6 @@
                         <th>Nome</th>
                         <th>Status</th>
                         <th>Tipo</th>
-                        <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,7 +49,6 @@
                         <td>{{ row.contato_nome }}</td>
                         <td>{{ row.status }}</td>
                         <td>{{ row.tipo  }}</td>
-                        <td> R$ {{ new String(row.total).replace('.',',')  }}</td>
 
                     </tr>
                     <tr v-if="rows==null">
@@ -84,12 +82,15 @@ export default {
         async list() {
 
 
-            let dataRequest = {};
+            let dataRequest = {
+                tipo:'venda'
+            };
             let requestHelper = new RequestHelper();
             let helpers = new Helpers();
 
             if (!helpers.empty(this.search)) {
                 dataRequest = {
+                    tipo:'venda',
                     search: this.search
                 };
             }

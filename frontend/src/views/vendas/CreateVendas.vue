@@ -50,7 +50,6 @@ export default {
             let dataForm = {
                 contato_id: document.getElementById('contato_id').value,
                 descritivo: document.getElementById('descritivo').value,
-                tipo: document.getElementById('tipo').value,
                 status: document.getElementById('status').value,
                 servicos: servicos
 
@@ -107,12 +106,12 @@ export default {
         resetForm() {
             document.getElementById('contato_id').value = '';
             document.getElementById('descritivo').value = '';
-            document.getElementById('tipo').value = '';
+
             document.getElementById('status').value == '';
             localStorage.removeItem('venda')
         }
     },
-    created() {
+    mounted() {
         this.resetForm();
         console.log(this.$emit)
     }

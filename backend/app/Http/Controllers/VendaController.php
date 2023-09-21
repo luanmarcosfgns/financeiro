@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aliquota;
+use App\Models\AliquotasItem;
+use App\Models\Servico;
 use App\Models\Venda;
 use App\Models\VendasServico;
 use Illuminate\Support\Facades\DB;
@@ -39,28 +42,28 @@ class VendaController extends Controller
     public function index(Request $request): JsonResponse
     {
         $model = Venda::where('vendas.business_id', auth()->user()->business_id)
-        ->join('vendas_servicos','vendas.id','=','vendas_servicos.venda_id')
-        ->join('contatos','contatos.id','=','vendas.contato_id')
-        ->select([
-            'contatos.nome as contato_nome',
-            'vendas.id as id',
-            'vendas.tipo as tipo',
-            'vendas.status as status',
-            DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
-            DB::raw('(SUM(vendas_servicos.preco)-SUM(vendas_servicos.desconto)) as total')
+            ->join('vendas_servicos', 'vendas.id', '=', 'vendas_servicos.venda_id')
+            ->join('contatos', 'contatos.id', '=', 'vendas.contato_id')
+            ->select([
+                'contatos.nome as contato_nome',
+                'vendas.id as id',
+                'vendas.tipo as tipo',
+                'vendas.status as status',
+                DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
+                DB::raw('(SUM(vendas_servicos.preco)-SUM(vendas_servicos.desconto)) as total')
 
-        ])->groupBy('vendas.id');
+            ])->groupBy('vendas.id');
 
-        if(auth()->user()->type=='revendedor'){
+        if (auth()->user()->type == 'revendedor') {
             $model = $model->where('vendas.user_id', auth()->user()->id);
         }
 
         $search = $request->get("search", "");
         if ($search == null) {
-          $model->where('contatos.nome','like','%'.$search.'%');
+            $model->where('contatos.nome', 'like', '%' . $search . '%');
         }
-        if(!empty($request->tipo)){
-            $model->where('vendas.tipo',$request->tipo);
+        if (!empty($request->tipo)) {
+            $model->where('vendas.tipo', $request->tipo);
         }
 
         $vendas = $model->paginate(1000);
@@ -85,12 +88,12 @@ class VendaController extends Controller
             if ($validated['servicos']) {
                 foreach ($servicos as $servico) {
                     VendasServico::create([
-                        'venda_id' =>$venda['id'],
-                        'servico_id' =>$servico['id'],
-                        'preco' =>$servico['preco'],
-                        'quantidade' =>$servico['quantidade'],
-                        'desconto' =>$servico['desconto']??0,
-                        'impostos' =>'[]',
+                        'venda_id' => $venda['id'],
+                        'servico_id' => $servico['id'],
+                        'preco' => $servico['preco'],
+                        'quantidade' => $servico['quantidade'],
+                        'desconto' => $servico['desconto'] ?? 0,
+                        'impostos' => '[]',
 
                     ]);
                 }
@@ -101,7 +104,7 @@ class VendaController extends Controller
             return response()->json($venda);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => $e->getMessage().$e->getLine()]);
+            return response()->json(['success' => false, 'message' => $e->getMessage() . $e->getLine()]);
         }
 
     }
@@ -112,15 +115,37 @@ class VendaController extends Controller
     public function show(Request $request, $id): JsonResponse
     {
         $venda = Venda::find($id);
-       $servicos =  VendasServico::join('servicos','servicos.id','vendas_servicos.servico_id')
-        ->select([
-            'servicos.id',
-            'vendas_servicos.preco',
-            'vendas_servicos.quantidade',
-            'vendas_servicos.desconto',
-            'vendas_servicos.impostos',
-        ])->where('vendas_servicos.venda_id',$venda->id)->get();
-       $venda->servicos = $servicos;
+        $servicos = VendasServico::join('servicos', 'servicos.id', 'vendas_servicos.servico_id')
+            ->select([
+                'vendas_servicos.venda_id',
+                'vendas_servicos.servico_id',
+                'servicos.nome as servicos_nome',
+                'vendas_servicos.preco',
+                'vendas_servicos.desconto',
+                'vendas_servicos.comissao',
+                DB::raw(' "" as aliquotas')
+            ])->where('vendas_servicos.venda_id', $venda->id)->get();
+        $countServicos = count($servicos);
+
+        for ($i = 0; $i < $countServicos; $i++) {
+
+            $servicos[$i]->aliquotas = Servico::join('aliquotas', 'aliquotas.id', 'servicos.aliquota_id')
+                ->join('aliquotas_items', 'aliquotas_items.aliquota_id', 'aliquotas.id')
+                ->select(['aliquotas_items.id',
+                    DB::raw('CONCAT(aliquotas_items.id,
+                    "-",
+                    aliquotas_items.nome,
+                    " desconto maximo %:",
+                    aliquotas_items.desconto_porcentagem,
+                    " comissao %:",aliquotas_items.porcentagem_comissao) as message'),
+                    'aliquotas_items.desconto_porcentagem',
+                    'aliquotas_items.porcentagem_comissao',
+                    'aliquotas_items.valor'
+                ])
+                ->where('servicos.id', $servicos[$i]->servico_id)
+                ->get();
+        }
+        $venda->servicos = $servicos;
 
 
         return response()->json($venda);
@@ -150,7 +175,7 @@ class VendaController extends Controller
     public function destroy(Request $request, $id): JsonResponse
     {
         $venda = Venda::find($id);
-        VendasServico::where('venda_id',$venda->id)->delete();
+        VendasServico::where('venda_id', $venda->id)->delete();
         $venda->delete();
 
 

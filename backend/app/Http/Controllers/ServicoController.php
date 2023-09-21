@@ -74,7 +74,38 @@ class ServicoController extends Controller
      */
     public function show(Request $request, $id):JsonResponse
     {
-        $servico = Servico::find($id);
+        $servico = Servico::select([
+            'servicos.id',
+            'servicos.nome',
+            'servicos.nome as servicos_nome',
+            'servicos.id as servico_id',
+            'servicos.descritivo',
+            'servicos.ecommerce',
+            'servicos.preco',
+            'servicos.aliquota_id',
+            'servicos.categoria_id',
+            'servicos.ativo',
+            'servicos.business_id',
+            'servicos.created_at',
+            'servicos.updated_at',
+
+        ])->find($id);
+        $servico->aliquotas = Servico::join('aliquotas', 'aliquotas.id', 'servicos.aliquota_id')
+            ->join('aliquotas_items', 'aliquotas_items.aliquota_id', 'aliquotas.id')
+            ->select(['aliquotas_items.id',
+                DB::raw('CONCAT(aliquotas_items.id,
+                    "-",
+                    aliquotas_items.nome,
+                    " desconto maximo %:",
+                    aliquotas_items.desconto_porcentagem,
+                    " comissao %:",aliquotas_items.porcentagem_comissao) as message'),
+                'aliquotas_items.desconto_porcentagem',
+                'aliquotas_items.porcentagem_comissao',
+                'aliquotas_items.valor'
+            ])
+            ->where('servicos.id', $servico->id)
+            ->get();
+
 
        return response()->json($servico);
     }

@@ -4,29 +4,7 @@ import axios from "axios";
 export default class RequestHelper {
     constructor() {
     }
-    async putAuth(url, data) {
 
-        await axios.put(url, data, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("HASH")}`,
-                Accept: 'application/json',
-                "Content-Type": 'application/json'
-            }
-        })
-            .then((response) => {
-                window.axios = response;
-            }).catch((error) => {
-                window.axios = error;
-                if (error?.request.status == 403 || error?.request.status == 401) {
-                    window.axios = false;
-                    localStorage.setItem('HASH', undefined);
-                    location.href = '/login'
-
-                }
-            });
-        return  window.axios;
-
-    }
    async  postAuth(url, data) {
 
         await axios.post(url, data, {
@@ -39,13 +17,8 @@ export default class RequestHelper {
             .then((response) => {
                 window.axios = response;
             }).catch((error) => {
+                this.invalidHash(error);
                 window.axios = error;
-                if (error?.request.status == 403 || error?.request.status == 401) {
-                    window.axios = false;
-                    localStorage.setItem('HASH', undefined);
-                    location.href = '/login'
-
-                }
         });
         return  window.axios;
 
@@ -76,13 +49,8 @@ export default class RequestHelper {
             .then((response) => {
                 window.axios = response;
             }).catch((error) => {
+                this.invalidHash(error);
                 window.axios = error;
-                if (error?.request.status == 403 || error?.request.status == 401) {
-                    window.axios = false;
-                    localStorage.setItem('HASH', undefined);
-                    location.href = '/login'
-
-                }
             });
         return  window.axios;
     }
@@ -99,16 +67,19 @@ export default class RequestHelper {
             .then((response) => {
                 window.axios = response;
             }).catch((error) => {
+                this.invalidHash(error);
                 window.axios = error;
-                if (error?.request.status == 403 || error?.request.status == 401) {
-                    window.axios = false;
-                    localStorage.setItem('HASH', undefined);
-                    location.href = '/login'
-
-                }
             });
         return  window.axios;
 
+    }
+    invalidHash(error){
+        if (error?.request?.status == 403 || error?.request?.status == 401) {
+            window.axios = false;
+            localStorage.removeItem('HASH');
+            location.href = '/login'
+
+        }
     }
 }
 

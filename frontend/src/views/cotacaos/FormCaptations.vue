@@ -63,14 +63,14 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="col-6">
+                        <div class=" col-sm-12 ps-5">
                             <strong>Consultor</strong>
                             <h1 class="name-consultor" v-if="nameConsultor">
                                 {{ nameConsultor }}
                             </h1>
                         </div>
-                        <div class="col-5">
-                            <h2 v-if="nameProduto">{{ nameProduto }}</h2>
+                        <div class="col-sm-12 ps-5">
+                            <h2 class="name-produto" v-if="nameProduto">{{ nameProduto }}</h2>
                         </div>
                     </div>
                 </div>
@@ -361,5 +361,10 @@ export default {
     background: transparent linear-gradient(270deg, #00a089, #a2d48d) 0 0 no-repeat padding-box;
     color: white;
     font-weight: bold;
+}
+@media screen and (max-width: 800px) {
+    .name-consultor,.name-produto {
+        font-size: 100%;
+    }
 }
 </style>

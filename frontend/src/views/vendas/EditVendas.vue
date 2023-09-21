@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-                <FormVendas></FormVendas>
+                <FormVendas :vendaEdit="vendas" v-if="vendas!==null"></FormVendas>
             <div class="row">
                 <div class="col-12 p-4">
                     <button class="btn btn-primary" type="button" @click="sendForm">Finalizar</button>
@@ -36,16 +36,15 @@ import toastr from "toastr/build/toastr.min";
 export default {
     name: "EditVendas",
     components: {LayoutPage, FormVendas},
+    data(){
+        return {
+            vendas:null
+        }
+    },
     methods: {
         async edit(id) {
-
             let request = new RequestHelper();
-            let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + id, {});
-            localStorage.setItem('venda',JSON.stringify(response.data))
-            document.getElementById('contato_id').value = response.data.contato_id;
-            document.getElementById('descritivo').value = response.data.descritivo;
-            document.getElementById('status').value = response.data.status;
-            document.getElementById('tipo').value = response.data.tipo;
+           this.vendas = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + id, {});
 
 
         },
