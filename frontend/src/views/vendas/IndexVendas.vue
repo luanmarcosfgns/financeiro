@@ -11,11 +11,7 @@
                                type="text" v-model="search">
                     </div>
 
-                    <div class="float-end">
-                        <button-widget cor="azul" href="./create" tamanho="M">
-                            Adicionar
-                        </button-widget>
-                    </div>
+
                 </div>
 
             </div>
@@ -64,14 +60,13 @@
 </template>
 <script>
 import LayoutPage from "@/components/page/layoutPage.vue";
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
 import RequestHelper from "@/services/RequestHelper";
 import Helpers from "@/services/Helpers";
 import toastr from "toastr/build/toastr.min";
 
 export default {
     name: "IndexVendas",
-    components: {ButtonWidget, LayoutPage},
+    components: { LayoutPage},
     data() {
         return {
             rows: null,

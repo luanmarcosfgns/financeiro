@@ -52,6 +52,8 @@ export default {
             let dataForm = {
                 contato_id: document.getElementById('contato_id').value,
                 descritivo: document.getElementById('descritivo').value,
+                status: document.getElementById('status').value,
+                servicos:this.buildServicos(),
                 _method: 'PUT'
 
             }
@@ -70,6 +72,29 @@ export default {
                 }
 
             }
+        },
+        buildServicos(){
+            let servicos = new Array();
+            let ids = document.getElementsByClassName('id');
+            for (let i = 0; i < ids.length; i++) {
+               let id =  ids[i].value;
+                let preco = document.getElementById('preco['+id+']').value;
+                let comissao = document.getElementById('comissao_input['+id+']').value;
+                let desconto = document.getElementById('desconto['+id+']').value;
+                let table_precos = document.getElementById('table_precos['+id+']').value;
+
+                servicos.push(
+                    {
+                        venda_id: this.$route.params.id,
+                        servico_id: id,
+                        preco:preco,
+                        comissao:comissao,
+                        desconto:desconto,
+                        aliquotas_item_id:table_precos
+                    }
+                )
+            }
+            return servicos;
         }
     },
     created() {

@@ -93,7 +93,6 @@ class VendaController extends Controller
                         'preco' => $servico['preco'],
                         'quantidade' => $servico['quantidade'],
                         'desconto' => $servico['desconto'] ?? 0,
-                        'impostos' => '[]',
 
                     ]);
                 }
@@ -117,12 +116,14 @@ class VendaController extends Controller
         $venda = Venda::find($id);
         $servicos = VendasServico::join('servicos', 'servicos.id', 'vendas_servicos.servico_id')
             ->select([
+                'vendas_servicos.id',
                 'vendas_servicos.venda_id',
                 'vendas_servicos.servico_id',
                 'servicos.nome as servicos_nome',
                 'vendas_servicos.preco',
                 'vendas_servicos.desconto',
                 'vendas_servicos.comissao',
+                'vendas_servicos.aliquotas_item_id',
                 DB::raw(' "" as aliquotas')
             ])->where('vendas_servicos.venda_id', $venda->id)->get();
         $countServicos = count($servicos);
@@ -163,8 +164,21 @@ class VendaController extends Controller
 
         $venda = Venda::find($id);
         $validated = $this->validated("update", $request);
-
         $venda->update($validated);
+
+        $servicos = $validated['servicos'] ?? false;
+        if ($servicos) {
+            foreach ($servicos as $servico) {
+
+               $venda =  VendasServico::where('servico_id',$servico['servico_id'])->where('venda_id',$id)->first();
+               $venda->update([
+                   'preco' => $servico['preco'],
+                   'desconto' => $servico['desconto'] ?? 0,
+                   'comissao' => $servico['comissao'] ?? 0,
+                   'aliquotas_item_id' => $servico['aliquotas_item_id'] ?? 0,]);
+            }
+
+        }
 
         return response()->json($venda);
     }

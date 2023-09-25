@@ -41,7 +41,7 @@
                         <div id="sideBar"
                              aria-labelledby="staticBackdropLabel" class="offcanvas offcanvas-start overflow-auto"
                              data-bs-backdrop="static"
-                             style="top:56px; z-index: 2; width: 190px; position: absolute">
+                             style="top:56px; z-index: 2; width: 200px; position: absolute">
                             <ul class="nav flex-column ">
 
                                 <li class="nav-item p-2  border border-1 ">

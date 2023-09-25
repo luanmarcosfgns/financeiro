@@ -29,7 +29,7 @@ import CreateUsers from "@/views/users/CreateUsers.vue";
 import EditUsers from "@/views/users/EditUsers.vue";
 import EditEntrevistas from "@/views/entrevistas/EditEntrevistas.vue";
 import EditPerguntas from "@/views/perguntas/EditPerguntas.vue";
-import CreateVendas from "@/views/vendas/CreateVendas.vue";
+
 import EditVendas from "@/views/vendas/EditVendas.vue";
 import FormCaptations from "@/views/cotacaos/FormCaptations.vue";
 import IndexCotations from "@/views/cotations/IndexCotations.vue";
@@ -262,14 +262,6 @@ const routes = [
         path: '/vendas/index',
         name: 'indexVendas',
         component: IndexVendas,
-        meta: {
-            auth: true
-        }
-    },
-    {
-        path: '/vendas/create',
-        name: 'createVendas',
-        component: CreateVendas,
         meta: {
             auth: true
         }

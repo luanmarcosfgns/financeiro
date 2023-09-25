@@ -68,7 +68,7 @@ class AliquotasItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id):JsonResponse
+    public function show( $id):JsonResponse
     {
         $aliquotas_item = AliquotasItem::find($id);
 
