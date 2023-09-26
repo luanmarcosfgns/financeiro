@@ -54,6 +54,7 @@ export default {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 type: document.getElementById('type').value,
+                password: document.getElementById('password').value,
 
 
                 _method: 'PUT'
