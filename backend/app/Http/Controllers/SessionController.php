@@ -154,7 +154,10 @@ class SessionController extends Controller
                     'link',
                 )
                 ->get();
-            $sessions[$i]->type='carrossel';
+            if (count($sessions[$i]->sub_sessions)>0){
+                $sessions[$i]->type='carrossel';
+            }
+
         }
         return response()->json($sessions);
     }

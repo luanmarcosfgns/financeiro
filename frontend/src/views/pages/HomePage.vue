@@ -33,44 +33,56 @@
             <div class="row">
                 <div v-if="inicio===true" class="col-12">
                     <div v-for="sessionsRow in sessionsRows" v-bind:key="sessionsRow">
-                        <div v-if="sessionsRow.type==='carrossel'" :id="'carrosel_'+sessionsRow.id"
-                             class="carousel slide">
 
-                            <div class="carousel-indicators">
-                                <button v-for="(sub_sessions, i) in sessionsRow.sub_sessions" v-bind:key="sub_sessions"
-                                        type="button" :data-bs-target="'#carrosel_'+sessionsRow.id"
-                                        :data-bs-slide-to="i" class="active" aria-current="true"
-                                        :aria-label="'Slide'+i"></button>
+                        <div class="row" v-if="sessionsRow.type==='carrossel'">
+                            <div class="col-12">
+                                <div :id="'carrosel_'+sessionsRow.id"
+                                     class="carousel slide">
 
-                            </div>
-                            <div class="carousel-inner">
-                                <div v-for="(sub_sessions, i) in sessionsRow.sub_sessions" v-bind:key="sub_sessions"
-                                     class="carousel-item " :class="i==0?'active':''">
-                                    <a :href="sub_sessions.link">
-                                        <img :src="sub_sessions.image_video" class="d-block w-100" alt="...">
-                                    </a>
+                                    <div class="carousel-indicators">
+                                        <button v-for="(sub_sessions, i) in sessionsRow.sub_sessions"
+                                                v-bind:key="sub_sessions"
+                                                type="button" :data-bs-target="'#carrosel_'+sessionsRow.id"
+                                                :data-bs-slide-to="i" class="active" aria-current="true"
+                                                :aria-label="'Slide'+i"></button>
+
+                                    </div>
+                                    <div class="carousel-inner">
+                                        <div v-for="(sub_sessions, i) in sessionsRow.sub_sessions"
+                                             v-bind:key="sub_sessions"
+                                             class="carousel-item " :class="i==0?'active':''">
+                                            <a :href="sub_sessions.link">
+                                                <img :src="sub_sessions.image_video" class="d-block w-100" alt="...">
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                    <button class="carousel-control-prev" type="button"
+                                            :data-bs-target="'#carrosel_'+sessionsRow.id" data-bs-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Previous</span>
+                                    </button>
+                                    <button class="carousel-control-next" type="button"
+                                            :data-bs-target="'#carrosel_'+sessionsRow.id" data-bs-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="visually-hidden">Next</span>
+                                    </button>
                                 </div>
+                            </div>
 
-                            </div>
-                            <button class="carousel-control-prev" type="button"
-                                    :data-bs-target="'#carrosel_'+sessionsRow.id" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button"
-                                    :data-bs-target="'#carrosel_'+sessionsRow.id" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
                         </div>
-                        <div v-if="sessionsRow.type==='panel'" class="row">
-                            <div :class="sessionsRow.image_video==null?'col-12':'col-6'">
-                                {{ sessionsRow.descritivo }}
+                        <div class="row" v-if="sessionsRow.type==='panel'">
+                            <div  class="row">
+                                <div :class="sessionsRow.image_video==null?'col-12':'col-6'">
+                                    {{ sessionsRow.descritivo }}
+                                </div>
+                                <div v-if="sessionsRow.image_video==null" class="col-6">
+                                    <img :src="sessionsRow.image_video" alt="">
+                                </div>
                             </div>
-                            <div v-if="sessionsRow.image_video==null" class="col-6">
-                                <img :src="sessionsRow.image_video" alt="">
-                            </div>
+
                         </div>
+
                     </div>
 
                 </div>
@@ -83,9 +95,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            aaa
-        </div>
+
     </main>
 
 
