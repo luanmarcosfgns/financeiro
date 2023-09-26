@@ -33,6 +33,9 @@ import EditPerguntas from "@/views/perguntas/EditPerguntas.vue";
 import EditVendas from "@/views/vendas/EditVendas.vue";
 import FormCaptations from "@/views/cotacaos/FormCaptations.vue";
 import IndexCotations from "@/views/cotations/IndexCotations.vue";
+import EditSessions from "@/views/sessions/EditSessions.vue";
+import CreateSessions from "@/views/sessions/CreateSessions.vue";
+import IndexSessions from "@/views/sessions/IndexSessions.vue";
 
 
 const routes = [
@@ -71,6 +74,31 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/sessoes/index',
+        name: 'indexSessions',
+        component: IndexSessions,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/sessoes/create',
+        name: 'createSessions',
+        component: CreateSessions,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        path: '/sessoes/:id/edit',
+        name: 'editSessions',
+        component: EditSessions,
+        meta: {
+            auth: true
+        }
+    },
+
     {
         path: '/business/index',
         name: 'indexBusiness',
@@ -171,11 +199,7 @@ const routes = [
             auth: true
         }
     },
-    {
-        path: '/home',
-        name: 'home',
-        component: HomePage
-    },
+
     {
         path: '/servicos/index',
         name: 'indexServicos',
@@ -274,6 +298,11 @@ const routes = [
             auth: true
         }
     },
+    {
+        path: '/home/:hash',
+        name: 'home',
+        component: HomePage
+    },
 
     {
         path: '/404',
@@ -283,6 +312,7 @@ const routes = [
         path: '/',
         redirect: '/login'
     }
+
 ];
 const router = createRouter({history: createWebHistory(), routes});
 router.beforeEach((to) => {

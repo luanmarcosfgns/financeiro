@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Aliquota;
 use App\Models\Session;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -10,26 +12,32 @@ use Illuminate\Http\JsonResponse;
 
 class SessionController extends Controller
 {
-    public function validated($type,$request){
-    if($type=="store"){
-        $request->validate(
-        [
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'image_video'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
-            'parent_id'=>['nullable'],
-        ]
-        );
-    }else{
-        $request->validate([
-            'descritivo'=>['nullable','max:4294967295','string'],
-            'image_video'=>['nullable','max:4294967295','string'],
-            'nome'=>['required','max:255','string'],
-            'parent_id'=>['nullable'],
-        ]);
+    public function validated($type, $request)
+    {
+        if ($type == "store") {
+            $request->validate(
+                [
+                    'nome' => ['required', 'max:255', 'string'],
+                    'descritivo' => ['nullable', 'max:4294967295', 'string'],
+                    'image_video' => ['nullable', 'max:4294967295', 'string'],
+                    'parent_id' => ['nullable'],
+                    'link' => ['nullable'],
+
+                ]
+            );
+        } else {
+            $request->validate([
+                'nome' => ['required', 'max:255', 'string'],
+                'descritivo' => ['nullable', 'max:4294967295', 'string'],
+                'image_video' => ['nullable', 'max:4294967295', 'string'],
+                'parent_id' => ['nullable'],
+                'link' => ['nullable'],
+
+            ]);
+        }
+        return $request->only(["nome", "descritivo", "image_video", "parent_id", 'link']);
     }
-        return $request->only(["descritivo","image_video","nome","parent_id"]);
-    }
+
     /**
      * Display a listing of the resource.
      */
@@ -41,12 +49,19 @@ class SessionController extends Controller
             $search = "";
         }
         $sessions = Session::search($search)
-            ->where('business_id', auth()->user()->business_id)
-            ->paginate(1000);
+            ->select([
+                'sessions.id',
+                'sessions.nome',
+                'sessions.descritivo',
+                'sessions.image_video',
+                'sessions.parent_id',
+                'sessions.business_id',
+                'sessions.created_at',
+                DB::raw('IF(sessions.parent_id IS NULL,CONCAT(sessions.id,0),CONCAT(sessions.parent_id,sessions.id)) as item')
+            ])->orderBy('item')->paginate(1000);
 
         return response()->json($sessions);
     }
-
 
 
     /**
@@ -55,22 +70,22 @@ class SessionController extends Controller
     public function store(Request $request): JsonResponse
     {
 
-        $validated = $this->validated("store",$request);
+        $validated = $this->validated("store", $request);
         $validated['business_id'] = auth()->user()->business_id;
+
         $session = Session::create($validated);
 
-         return response()->json($session);
+        return response()->json($session);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, $id):JsonResponse
+    public function show(Request $request, $id): JsonResponse
     {
-        $session = Session::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $session = Session::find($id);
 
-       return response()->json($session);
+        return response()->json($session);
     }
 
 
@@ -78,16 +93,17 @@ class SessionController extends Controller
      * Update the specified resource in storage.
      */
     public function update(
-       Request $request,
-       $id
-    ): JsonResponse{
+        Request $request,
+                $id
+    ): JsonResponse
+    {
 
-        $session = Session::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
-        $validated = $this->validated("update",$request);
+        $session = Session::find($id);
+        $validated = $this->validated("update", $request);
+
         $session->update($validated);
 
-         return response()->json($session);
+        return response()->json($session);
     }
 
     /**
@@ -95,11 +111,53 @@ class SessionController extends Controller
      */
     public function destroy(Request $request, $id): JsonResponse
     {
-        $session = Session::where('business_id', auth()->user()->business_id)
-            ->where('id', $id)->firstOrFail();
+        $session = Session::find($id);
         $session->delete();
 
-       return response()->json(["success"=>true,"message"=>"Removed success"]);
+        return response()->json(["success" => true, "message" => "Removed success"]);
     }
+
+    public function list(): JsonResponse
+    {
+
+        $sessions = Session::where('business_id', auth()->user()->business_id)
+            ->select('id', 'nome as message')
+            ->get('message', 'id');
+        return response()->json($sessions);
+    }
+
+    public function listSite($id): JsonResponse
+    {
+        $id = base64_decode($id);
+        $sessions = Session::where('business_id', $id)
+            ->whereNull('parent_id')
+            ->select(
+                'id',
+                'nome',
+                'descritivo',
+                'image_video',
+                'parent_id',
+                DB::raw('"panel" as type'),
+                DB::raw('"" as sub_sessions'),
+            )
+            ->get();
+        $countSessions = count($sessions);
+
+        for ($i = 0; $i < $countSessions; $i++) {
+            $sessions[$i]->sub_sessions = Session::where('business_id', $id)
+                ->where('parent_id',$sessions[$i]->id)
+                ->select(
+                    'id',
+                    'nome',
+                    'descritivo',
+                    'image_video',
+                    'link',
+                )
+                ->get();
+            $sessions[$i]->type='carrossel';
+        }
+        return response()->json($sessions);
+    }
+
 
 }

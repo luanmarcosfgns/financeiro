@@ -33,11 +33,20 @@ Route::group([
 
 
 });
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'site'], function ($router) {
+    Route::get('categorias/list/{id}', [CategoriaController::class, 'listSite']);
+    Route::get('/sessions/list/{id}', [SessionController::class,'listSite']);
+
+
+});
 
 Route::group([
     'middleware' => 'auth'],
     function ($router) {
         Route::get('aliquotas/list', [AliquotaController::class, 'list']);
+        Route::get('sessions/list', [SessionController::class, 'list']);
         Route::get('categorias/list', [CategoriaController::class, 'list']);
         Route::get('contatos/list', [ContatoController::class, 'list']);
         Route::get('servicos/list', [ServicoController::class, 'list']);

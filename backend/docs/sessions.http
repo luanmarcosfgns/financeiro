@@ -1,47 +1,49 @@
 
-###LISTAR SERVIÇOS
+###LIST SESSIONS
 GET http://localhost:8000/api/sessions
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzEyMTMsImV4cCI6MTY5MTE3NDgxMywibmJmIjoxNjkxMTcxMjEzLCJqdGkiOiJheWZmdmJJcTBmNFNxVWNhIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.DMq2cANxSUVdoGzH93pdYo08HQMN11OffqDt64-39Qg
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-###VER SERVIÇOS
+###VER SESSIONS
 GET http://localhost:8000/api/sessions/1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNzEyMTMsImV4cCI6MTY5MTE3NDgxMywibmJmIjoxNjkxMTcxMjEzLCJqdGkiOiJheWZmdmJJcTBmNFNxVWNhIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.DMq2cANxSUVdoGzH93pdYo08HQMN11OffqDt64-39Qg
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
-####ADICIONAR SERVIÇOS
+####ADICIONAR SESSIONS
 POST http://localhost:8000/api/sessions
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
+    "nome":"Loren Epsun",
     "descritivo":"Loren Epsun",
     "image_video":"Loren Epsun",
-    "nome":"Loren Epsun",
-    "parent_id":1
+    "parent_id":1,
+    "business_id":1
 
 }
-####MUDAR SERVIÇOS
-POST http://localhost:8000/api/sessions/4
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
+####MUDAR SESSIONS
+POST http://localhost:8000/api/sessions/1
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 
 {
     "_method": "PUT",
+    "nome":"Loren Epsun",
     "descritivo":"Loren Epsun",
     "image_video":"Loren Epsun",
-    "nome":"Loren Epsun",
-    "parent_id":1
+    "parent_id":1,
+    "business_id":1
 
 }
 
-####APAGAR SERVIÇOS
-POST http://localhost:8000/api/sessions/6
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE2OTExNTk1MDYsImV4cCI6MTY5MTE2MzEwNiwibmJmIjoxNjkxMTU5NTA2LCJqdGkiOiJuYW9mMktBajJPRFNkYzJOIiwic3ViIjoiMSIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.TmffjYoYkdfdexhk3URmfLgECu5xMWuPe4geMNPQXbM
+####APAGAR SESSIONS
+POST http://localhost:8000/api/sessions/1
+Authorization: Bearer :hash
 Content-Type: application/json
 Accept: application/json
 

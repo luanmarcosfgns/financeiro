@@ -101,11 +101,11 @@ class AliquotaController extends Controller
     public function list(): JsonResponse
     {
 
-        $categorias = Aliquota::where('business_id', auth()->user()->business_id)
+        $aliquotas = Aliquota::where('business_id', auth()->user()->business_id)
             ->where('ativo', true)
             ->select('id', 'nome as message')
             ->get('message', 'id');
-        return response()->json($categorias);
+        return response()->json($aliquotas);
     }
 
 }

@@ -10,12 +10,12 @@ class Session extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["business_id","descritivo","image_video","nome","parent_id"];
+    protected $fillable = ["nome","descritivo","image_video","parent_id","business_id",'link'];
 
     protected $searchableFields = ["*"];
 
-    
-    
+
+
 
 
 }

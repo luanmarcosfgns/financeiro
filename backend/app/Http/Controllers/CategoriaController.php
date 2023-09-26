@@ -126,4 +126,14 @@ class CategoriaController extends Controller
         return response()->json($categorias);
     }
 
+    public function listSite($id): JsonResponse
+    {
+
+        $categorias = Categoria::where('business_id', base64_decode($id))
+            ->whereNull('parent_id')
+            ->select('id', 'nome')
+            ->get('message','id');
+        return response()->json($categorias);
+    }
+
 }
