@@ -22,41 +22,44 @@
         <div class="row border border-1 ">
             <div class="col-12 ">
                 <div class="row border border-1" v-for="servico in servicos" :key="servico">
-                    <div class="col-6 p-3">
+                    <div class="col-4 p-3">
                         <strong>Produto:</strong>
-                        <br>
                         <br>
                         <span>
                          {{ servico.servico_id }}-{{ servico.servicos_nome }}
                         </span>
-                        <br>
+                        <input class="ids" type="hidden" :value="servico.servico_id">
+                        <input :id="'premio['+servico.servico_id+']'"  type="hidden" :value="servico.valor_premio">
+                        <input :id="'comissao_maxima_vendedor['+servico.servico_id+']'"  type="hidden" :value="servico.porcentagem_maxima_vendedor">
+                        <input :id="'comissao_minima_vendedor['+servico.servico_id+']'"  type="hidden" :value="servico.porcentagem_minima_vendedor">
 
                     </div>
+
                     <div class="col-6 p-3">
                         <div class="row">
-                            <input-form class-list="col-12" type="select"
-                                        :items="precos[servico.servico_id]"
-                                        @change="setLimits(precos[servico.servico_id])" label="Tabela de Preços"
-                                        :value="servico.aliquotas_item_id" :name="'table_precos['+servico.servico_id+']'"/>
-                            <div class="col-6">
-                                <input-form label="Preço" placeholder="Preço" type="decimal" :value="servico.preco"
-                                            :name="'preco['+servico.servico_id+']'"></input-form>
+                            <div class="col-12 p-1">
+                                <input-form :value="servico.desconto" :name="'desconto['+servico.servico_id+']'"  type="decimal" label="Desconto %" ></input-form>
                             </div>
-                            <div class="col-6 ">
-                                <input-form class-list="col-12" label="Desconto%" placeholder="Desconto%" type="decimal"
-                                            :value="servico.desconto"
-                                            :name="'desconto['+servico.servico_id+']'"></input-form>
+                            <div class="col-12 p-1">
+                                <div class="col-12 p-1">
+                                    <span class="badge rounded-pill text-bg-primary" style="font-size: 100%">Taxa Franquiadora: R$ {{calculaPorcenategem(servico.valor_premio,servico.porcentagem_franquiadora)}}</span>
+                                </div>
+                                <div class="col-12 p-1">
+                                    <span class="badge rounded-pill text-bg-danger" :id="'comissao_vendedor['+servico.servico_id+']'"  style="font-size: 100%">Comissão Vendedor: R$ {{calculaComissaoVendedor(servico.valor_premio,servico.porcentagem_maxima_vendedor,servico.desconto==null?0:servico.desconto)}}</span>
+                                </div>
+                                <div class="col-12 p-1">
+                                    <span class="badge rounded-pill text-bg-primary" style="font-size: 100%">Seguradora: R$ {{calculaPorcenategem(servico.valor_premio,servico.porcentagem_seguradora)}}</span>
+
+                                </div>
+                                <div class="col-12 p-1">
+                                    <span class="badge rounded-pill text-bg-primary" style="font-size: 100%">Valor Prêmio: R$ {{calculaPorcenategem(servico.valor_premio,100)}}</span>
+                                </div>
+                                <div class="col-12 p-1">
+                                    <span class="badge rounded-pill text-bg-info" :id="'valor_desconto['+servico.servico_id+']'" style="font-size: 100%">Desconto: R$ {{calculaDescontoVendedorLoad(servico.valor_premio,servico.desconto==null?0:servico.desconto)}}</span>
+                                </div>
                             </div>
-                            <div class="col-12 pt-4">
-                                <strong>Comissão Prevista:</strong>
-                                <span :id="'comissao['+servico.servico_id+']'">  {{servico.comissao?' '+new String(servico.comissao).replace('.',',')+' %':' 0,00 %'}}</span>
-                            </div>
-                            <input type="hidden" class="id" :value="servico.servico_id">
-                            <input type="hidden"    :id="'comissao_input['+servico.servico_id+']'" value="0">
 
                         </div>
-
-
                     </div>
                 </div>
                 <div v-if="servicos.length==0" class="row toast-center">
@@ -81,7 +84,7 @@
 import InputForm from "@/components/form/inputForm.vue";
 
 import Helpers from "@/services/Helpers";
-import RequestHelper from "@/services/RequestHelper";
+
 
 
 export default {
@@ -97,13 +100,16 @@ export default {
             totalVenda: 0,
             totalComissao: 0,
             precos: [],
-            comissao: null
+            comissao: null,
+            comissaoVendedor:0
         }
     },
     methods: {
-        setLimits(precos) {
-            console.log(precos)
+        calculaPorcenategem(valor,porcentagem){
+            let total =  (porcentagem/100)*valor;
+            return new String(total.toFixed(2)).replace('.',',');
         },
+
         getCliente() {
             let helper = new Helpers();
             if (!helper.empty(this.vendaEdit?.data)) {
@@ -142,143 +148,52 @@ export default {
 
             }
         },
-        getTotalVenda() {
-            let helper = new Helpers();
-            if (!helper.empty(this.vendaEdit?.data)) {
-                this.vendas = this.vendaEdit.data;
-                if (!helper.empty(this.vendas?.servicos)) {
-                    this.servicos = this.vendas.servicos
-                    for (let i in this.servicos) {
-                        let total = parseFloat(this.servicos[i].preco);
-
-                        let porcentagem_desconto = parseFloat(this.servicos[i].desconto);
-                        this.totalVenda = total - parseFloat((total * porcentagem_desconto) / 100)
-                        if (isNaN(this.totalVenda)) {
-                            this.totalVenda = 0;
-                        }
-                    }
-
-                }
-            } else {
-
-                for (let i in this.servicos) {
-                    let total = parseFloat(this.servicos[i].preco);
-                    console.log(total)
-                    let porcentagem_desconto = parseFloat(this.servicos[i].desconto);
-                    if (isNaN(porcentagem_desconto)) {
-                        this.totalVenda = total;
-                    } else {
-                        this.totalVenda = total - parseFloat((total * porcentagem_desconto) / 100)
-                    }
-
-                    console.log(this.totalVenda)
-                    if (isNaN(this.totalVenda)) {
-                        this.totalVenda = 0;
-                    }
-                }
-            }
-
-        },
-        getTotalComissao() {
-            let helper = new Helpers();
-            if (!helper.empty(this.vendaEdit?.data)) {
-                this.vendas = this.vendaEdit.data;
-                if (!helper.empty(this.vendas?.servicos)) {
-                    this.servicos = this.vendas.servicos
-                    for (let i in this.servicos) {
-
-                        let total = parseFloat(this.servicos[i].preco);
-                        let porcentagem_comissao = parseFloat(this.servicos[i].comissao);
-                        this.totalComissao = parseFloat((total * porcentagem_comissao) / 100)
-                        if (isNaN(this.totalComissao)) {
-                            this.totalComissao = 0;
-                        }
-
-                    }
-
-                }
-            }
-
-        },
-        getTabelaPreco() {
-            let helper = new Helpers();
-
-            if (!helper.empty(this.vendaEdit?.data)) {
-                this.vendas = this.vendaEdit.data;
-                if (!helper.empty(this.vendas?.servicos)) {
-                    this.servicos = this.vendas.servicos
-                    for (let i in this.servicos) {
-                        let aliquotas = this.servicos[i].aliquotas;
-                        let data = []
-                        for (let j in aliquotas) {
-                            data.push({id: aliquotas[j].id, message: aliquotas[j].message});
-                        }
-
-                        this.precos[this.servicos[i].servico_id] = data;
-                        console.log(this.precos)
-
-                    }
-
-                }
-            }
-
-        },
         onChangeDesconto(){
-            setTimeout(async () => {
-                    for (let i = 0; i < this.servicos.length; i++) {
-                        document.getElementById('desconto[' + this.servicos[i].servico_id + ']').addEventListener('input', async ()=>{
-                           let desconto =  document.getElementById('desconto[' + this.servicos[i].servico_id + ']');
-                           let comissao =  document.getElementById('comissao[' + this.servicos[i].servico_id + ']');
-                           let comissaoInput =  document.getElementById('comissao_input[' + this.servicos[i].servico_id + ']');
-                            let table_precos =  document.getElementById('table_precos[' + this.servicos[i].servico_id + ']');
-                            let aliquotaItem  = await this.adquirirAliquoitas(table_precos.value);
-                            let valorMaximoDesconto = parseFloat(aliquotaItem.data.desconto_porcentagem)+parseFloat(aliquotaItem.data.porcentagem_comissao);
+            setTimeout(()=>{
+                let ids =  document.getElementsByClassName('ids');
 
-                            if(valorMaximoDesconto>=desconto.value && desconto.value>=aliquotaItem.data.desconto_porcentagem){
-                               let  comissaoDisplay = valorMaximoDesconto - parseFloat(desconto.value).toFixed(2);
-                                 comissaoInput.value = comissaoDisplay;
-                                comissao.innerHTML= new String((comissaoDisplay)).replace('.',',')+' %';
-                            }else{
-                                desconto.value = valorMaximoDesconto;
-                            }
-                        })
-                    }
-            }, 2000)
-        },
-        onChangePrecos() {
-            setTimeout(async () => {
+                for (let i = 0; i < 1; i++) {
+                    let id =  ids[i].value;
+                    document.getElementById('desconto['+id+']').addEventListener('change',()=>{
+                        let descontoPorcento =  document.getElementById('desconto['+id+']').value;
+                        let valorPremio = document.getElementById('premio['+id+']').value;
+                        let porcentagemMaximaComissao = document.getElementById('comissao_maxima_vendedor['+id+']').value;
+                        let porcentagemMinimaComissao = document.getElementById('comissao_minima_vendedor['+id+']').value;
+                        console.log(porcentagemMaximaComissao,porcentagemMinimaComissao)
+                        if(descontoPorcento <= porcentagemMinimaComissao  || descontoPorcento >= porcentagemMaximaComissao ){
+                            document.getElementById('desconto['+id+']').value=0
+                            descontoPorcento = 0;
 
-                for (let i = 0; i < this.servicos.length; i++) {
-                    document.getElementById('preco[' + this.servicos[i].servico_id + ']').readOnly = true;
-                    document.getElementById('desconto[' + this.servicos[i].servico_id + ']').readOnly = true;
-                    document.getElementById('desconto[' + this.servicos[i].servico_id + ']').readOnly = true;
-                    document.getElementById('table_precos[' + this.servicos[i].servico_id + ']').addEventListener('input', async ()=>{
+                        }
 
-                        let table_precos =  document.getElementById('table_precos[' + this.servicos[i].servico_id + ']');
-                        let aliquotaItem  = await this.adquirirAliquoitas(table_precos.value);
-                        document.getElementById('preco[' + this.servicos[i].servico_id + ']').value = aliquotaItem.data.valor;
-                        document.getElementById('desconto[' + this.servicos[i].servico_id + ']').value = aliquotaItem.data.desconto_porcentagem;
-                        document.getElementById('comissao[' + this.servicos[i].servico_id + ']').innerHTML = new String(aliquotaItem.data.porcentagem_comissao).replace('.',',')+' %';
+                        let valor_desconto =  this.calculaDescontoVendedorLoad(valorPremio,descontoPorcento);
+                        let comissao_vendedor =  this.calculaComissaoVendedor(valorPremio,porcentagemMaximaComissao,descontoPorcento);
 
-                        document.getElementById('comissao_input[' + this.servicos[i].servico_id + ']').value = aliquotaItem.data.porcentagem_comissao;
-                        console.log(aliquotaItem.data.porcentagem_comissao)
-                        document.getElementById('preco[' + this.servicos[i].servico_id + ']').readOnly = false;
-                        document.getElementById('desconto[' + this.servicos[i].servico_id + ']').readOnly = false;
-
+                        document.getElementById('valor_desconto['+id+']').innerHTML='Desconto: R$ '+valor_desconto;
+                        document.getElementById('comissao_vendedor['+id+']').innerHTML='Comissão Vendedor: R$ '+comissao_vendedor;
                     });
 
+
                 }
-            }, 2000)
+            },3000)
 
         },
-        async adquirirAliquoitas(id){
-            let request = new RequestHelper();
-            return request.getAuth(process.env.VUE_APP_API_HOST_NAME +'/api/aliquotas_items/'+id,{});
 
-        },
         setEventos() {
-            this.onChangePrecos()
-            this.onChangeDesconto()
+            this.onChangeDesconto();
+
+        },
+        calculaDescontoVendedorLoad(valor,desconto){
+
+            let totaldesconto =  (desconto/100)*valor;
+            return new String(totaldesconto.toFixed(2)).replace('.',',');
+
+        },
+        calculaComissaoVendedor(valor,porcentagem,desconto){
+            let totalComissao =  (porcentagem/100)*valor;
+            let totaldesconto =  (desconto/100)*valor;
+            let total = totalComissao-totaldesconto
+            return new String(total.toFixed(2)).replace('.',',');
         }
 
     },
@@ -287,9 +202,6 @@ export default {
         this.getStatus();
         this.getServicos();
         this.getDescritivo();
-        this.getTotalVenda();
-        this.getTotalComissao();
-        this.getTabelaPreco();
         this.setEventos();
 
 

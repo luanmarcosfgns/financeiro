@@ -74,23 +74,19 @@ export default {
             }
         },
         buildServicos(){
+
             let servicos = new Array();
-            let ids = document.getElementsByClassName('id');
+            let ids = document.getElementsByClassName('ids');
             for (let i = 0; i < ids.length; i++) {
                let id =  ids[i].value;
-                let preco = document.getElementById('preco['+id+']').value;
-                let comissao = document.getElementById('comissao_input['+id+']').value;
                 let desconto = document.getElementById('desconto['+id+']').value;
-                let table_precos = document.getElementById('table_precos['+id+']').value;
 
+                console.log(desconto)
                 servicos.push(
                     {
                         venda_id: this.$route.params.id,
                         servico_id: id,
-                        preco:preco,
-                        comissao:comissao,
                         desconto:desconto,
-                        aliquotas_item_id:table_precos
                     }
                 )
             }

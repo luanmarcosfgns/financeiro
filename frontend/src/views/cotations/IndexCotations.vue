@@ -11,11 +11,7 @@
                                type="text" v-model="search">
                     </div>
 
-                    <div class="float-end">
-                        <button-widget cor="azul" href="./create" tamanho="M">
-                            Adicionar
-                        </button-widget>
-                    </div>
+
                 </div>
 
             </div>
@@ -47,11 +43,12 @@
                                 </button>
                                 <button class="btn btn-danger btn-hover" @click="listServicos(row.id)">
                                           <span class="hover">
-                                    Servicos
+                                    Serviços
                                           </span>
                                     <i class="bi bi-briefcase-fill"></i>
                                 </button>
-                                <button class="btn btn-danger btn-hover" @click="gerarVenda(row.id)">
+
+                                <button v-if="row.selecionado=='Sim'" class="btn btn-danger btn-hover" @click="gerarVenda(row.id)">
                                     <span class="hover">
                                         Gerar Venda
                                     </span>
@@ -133,7 +130,7 @@
 </template>
 <script>
 import LayoutPage from "@/components/page/layoutPage.vue";
-import ButtonWidget from "@/components/widget/buttonWidget.vue";
+
 import RequestHelper from "@/services/RequestHelper";
 import Helpers from "@/services/Helpers";
 import toastr from "toastr/build/toastr.min";
@@ -146,7 +143,7 @@ import ListAnexos from "@/views/perguntas/ListAnexos.vue";
 
 export default {
     name: "IndexCotations",
-    components: {ListAnexos, ModalWidgetVue, ListPerguntas, ModalWidget, ButtonWidget, LayoutPage},
+    components: {ListAnexos, ModalWidgetVue, ListPerguntas, ModalWidget, LayoutPage},
     data() {
         return {
             rows: null,

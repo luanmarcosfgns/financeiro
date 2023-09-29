@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Aliquota;
 use App\Models\AliquotasItem;
+use App\Models\AnexosVenda;
 use App\Models\Servico;
 use App\Models\Venda;
 use App\Models\VendasServico;
@@ -53,7 +54,6 @@ class VendaController extends Controller
                 'vendas.tipo as tipo',
                 'vendas.status as status',
                 DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
-                DB::raw('(SUM(vendas_servicos.preco)-SUM(vendas_servicos.desconto)) as total')
 
             ])
             ->orderBy('vendas.id','desc')
@@ -96,10 +96,6 @@ class VendaController extends Controller
                     VendasServico::create([
                         'venda_id' => $venda['id'],
                         'servico_id' => $servico['id'],
-                        'preco' => $servico['preco'],
-                        'quantidade' => $servico['quantidade'],
-                        'desconto' => $servico['desconto'] ?? 0,
-
                     ]);
                 }
 
@@ -126,32 +122,17 @@ class VendaController extends Controller
                 'vendas_servicos.venda_id',
                 'vendas_servicos.servico_id',
                 'servicos.nome as servicos_nome',
-                'vendas_servicos.preco',
+                'vendas_servicos.porcentagem_seguradora',
+                'vendas_servicos.porcentagem_franquiadora',
+                'vendas_servicos.porcentagem_maxima_vendedor',
+                'vendas_servicos.porcentagem_minima_vendedor',
+                'vendas_servicos.valor_premio',
                 'vendas_servicos.desconto',
-                'vendas_servicos.comissao',
-                'vendas_servicos.aliquotas_item_id',
+
                 DB::raw(' "" as aliquotas')
             ])->where('vendas_servicos.venda_id', $venda->id)->get();
-        $countServicos = count($servicos);
 
-        for ($i = 0; $i < $countServicos; $i++) {
 
-            $servicos[$i]->aliquotas = Servico::join('aliquotas', 'aliquotas.id', 'servicos.aliquota_id')
-                ->join('aliquotas_items', 'aliquotas_items.aliquota_id', 'aliquotas.id')
-                ->select(['aliquotas_items.id',
-                    DB::raw('CONCAT(aliquotas_items.id,
-                    "-",
-                    aliquotas_items.nome,
-                    " desconto maximo %:",
-                    aliquotas_items.desconto_porcentagem,
-                    " comissao %:",aliquotas_items.porcentagem_comissao) as message'),
-                    'aliquotas_items.desconto_porcentagem',
-                    'aliquotas_items.porcentagem_comissao',
-                    'aliquotas_items.valor'
-                ])
-                ->where('servicos.id', $servicos[$i]->servico_id)
-                ->get();
-        }
         $venda->servicos = $servicos;
 
 
@@ -178,10 +159,8 @@ class VendaController extends Controller
 
                $venda =  VendasServico::where('servico_id',$servico['servico_id'])->where('venda_id',$id)->first();
                $venda->update([
-                   'preco' => $servico['preco'],
                    'desconto' => $servico['desconto'] ?? 0,
-                   'comissao' => $servico['comissao'] ?? 0,
-                   'aliquotas_item_id' => $servico['aliquotas_item_id'] ?? 0,]);
+                ]);
             }
 
         }
@@ -204,8 +183,16 @@ class VendaController extends Controller
 
     public function tipoVendaTransform($id)
     {
-        $venda = Venda::find($id);
+        $venda = Venda::findOrFail($id);
         $venda->tipo = 'venda';
+        $vendaAnexo =  AnexosVenda::where('venda_id',$id)->first();
+        $vendaServico =  VendasServico::where('venda_id',$id)->first();
+        $vendaServico->porcentagem_seguradora= $vendaAnexo->porcentagem_seguradora;
+        $vendaServico->porcentagem_franquiadora= $vendaAnexo->porcentagem_franquiadora;
+        $vendaServico->porcentagem_maxima_vendedor= $vendaAnexo->porcentagem_maxima_vendedor;
+        $vendaServico->porcentagem_minima_vendedor= $vendaAnexo->porcentagem_minima_vendedor;
+        $vendaServico->valor_premio= $vendaAnexo->valor_premio;
+        $vendaServico->save();
         $venda->save();
         return response()->json(["success" => true]);
 

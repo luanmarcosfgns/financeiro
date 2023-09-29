@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from "vue-router";
 
 import RegisterForm from "@/views/auth/RegisterForm.vue";
-import IndexAliquotas from "@/views/aliquotas/IndexAliquotas.vue";
+
 import IndexBusiness from "@/views/business/IndexBusiness.vue";
 import IndexCategorias from "@/views/categorias/IndexCategorias.vue";
 import IndexContatos from "@/views/contatos/IndexContatos.vue";
@@ -22,9 +22,7 @@ import EditBusiness from "@/views/business/EditBusiness.vue";
 import EditEnderecos from "@/views/enderecos/EditEnderecos.vue";
 import CreateServicos from "@/views/servicos/CreateServicos.vue";
 import EditServicos from "@/views/servicos/EditServicos.vue";
-import CreateAliquotas from "@/views/aliquotas/CreateAliquotas.vue";
-import EditAliquotas from "@/views/aliquotas/EditAliquotas.vue";
-import EditAliquotasItems from "@/views/aliquotas_items/EditAliquotasItems.vue";
+
 import CreateUsers from "@/views/users/CreateUsers.vue";
 import EditUsers from "@/views/users/EditUsers.vue";
 import EditEntrevistas from "@/views/entrevistas/EditEntrevistas.vue";
@@ -51,30 +49,7 @@ const routes = [
         name: 'registerForm',
         component: RegisterForm
     },
-    {
-        path: '/aliquotas/index',
-        name: 'indexAliquotas',
-        component: IndexAliquotas,
-        meta: {
-            auth: true
-        }
-    },
-    {
-        path: '/aliquotas/create',
-        name: 'createAliquotas',
-        component: CreateAliquotas,
-        meta: {
-            auth: true
-        }
-    },
-    {
-        path: '/aliquotas/:id/edit',
-        name: 'editAliquotas',
-        component: EditAliquotas,
-        meta: {
-            auth: true
-        }
-    },
+
     {
         path: '/sessoes/index',
         name: 'indexSessions',
@@ -183,14 +158,7 @@ const routes = [
             auth: true
         }
     },
-    {
-        path: '/aliquotasitems/:id/edit',
-        name: 'editAliquotasItems',
-        component: EditAliquotasItems,
-        meta: {
-            auth: true
-        }
-    },
+
 
     {
         path: '/painel',

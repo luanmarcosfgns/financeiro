@@ -14,7 +14,7 @@
                         </span>
                         <span class="badge rounded-pill text-bg-danger" style="font-size: 50%">Comissão Vendedor: R$ {{calculaPorcenategem(anexo.valor_premio,anexo.porcentagem_maxima_vendedor)}}</span>
                         <span class="badge rounded-pill text-bg-primary" style="font-size: 50%">Seguradora: R$ {{calculaPorcenategem(anexo.valor_premio,anexo.porcentagem_seguradora)}}</span>
-                        <span class="badge rounded-pill text-bg-primary" style="font-size: 50%">Valor Prêmio: R$ {{calculaPorcenategem(anexo.valor_premio,anexo.valor_premio)}}</span>
+                        <span class="badge rounded-pill text-bg-primary" style="font-size: 50%">Valor Prêmio: R$ {{calculaPorcenategem(anexo.valor_premio,100)}}</span>
                     </button>
                 </div>
                 <div class="col-12 pt-3">
