@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AliquotaController;
 use App\Http\Controllers\AliquotasItemController;
+use App\Http\Controllers\AnexosVendaController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoriaController;
@@ -70,5 +71,6 @@ Route::group([
         Route::resource('vendas_servicos', VendasServicoController::class)->except(['create', 'edit']);
         Route::resource('entrevistas', EntrevistaController::class)->except(['create', 'edit']);
         Route::resource('perguntas', PerguntaController::class)->except(['create', 'edit']);
+        Route::resource('anexos_vendas', AnexosVendaController::class)->except(['create', 'edit']);
 
     });

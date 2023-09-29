@@ -36,6 +36,7 @@ import IndexCotations from "@/views/cotations/IndexCotations.vue";
 import EditSessions from "@/views/sessions/EditSessions.vue";
 import CreateSessions from "@/views/sessions/CreateSessions.vue";
 import IndexSessions from "@/views/sessions/IndexSessions.vue";
+import CreateAnexosVendas from "@/views/anexos_vendas/CreateAnexosVendas.vue";
 
 
 const routes = [
@@ -302,6 +303,14 @@ const routes = [
         path: '/home/:hash',
         name: 'home',
         component: HomePage
+    },
+    {
+        path: '/anexos_vendas/create/:id',
+        name: 'createAnexos',
+        component: CreateAnexosVendas,
+        meta: {
+            auth: true
+        }
     },
 
     {

@@ -44,17 +44,23 @@ class VendaController extends Controller
         $model = Venda::where('vendas.business_id', auth()->user()->business_id)
             ->join('vendas_servicos', 'vendas.id', '=', 'vendas_servicos.venda_id')
             ->join('contatos', 'contatos.id', '=', 'vendas.contato_id')
+            ->join('users', 'users.id', '=', 'vendas.user_id')
             ->select([
                 'contatos.nome as contato_nome',
+                'users.name as user_name',
                 'vendas.id as id',
+                DB::raw('(SELECT IF(COUNT(anexos_vendas.id)>0,"Sim","Não") FROM anexos_vendas where anexos_vendas.venda_id=vendas.id) as selecionado'),
                 'vendas.tipo as tipo',
                 'vendas.status as status',
                 DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
                 DB::raw('(SUM(vendas_servicos.preco)-SUM(vendas_servicos.desconto)) as total')
 
-            ])->groupBy('vendas.id');
+            ])
+            ->orderBy('vendas.id','desc')
+            ->orderBy('selecionado','desc')
+            ->groupBy('vendas.id');
 
-        if (auth()->user()->type == 'revendedor') {
+        if (auth()->user()->type == 'vendedor') {
             $model = $model->where('vendas.user_id', auth()->user()->id);
         }
 

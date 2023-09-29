@@ -28,7 +28,9 @@
                         <th>Ações</th>
                         <th>#</th>
                         <th>Nome</th>
+                        <th>Vendedor</th>
                         <th>Status</th>
+                        <th>Selecionado</th>
                         <th>Criado</th>
 
                     </tr>
@@ -55,12 +57,20 @@
                                     </span>
                                     <i class="bi bi-shop"></i>
                                 </button>
+                                <button class="btn btn-danger btn-hover" @click="listAnexo(row.id)">
+                                    <span class="hover">
+                                        Anexar Cotações
+                                    </span>
+                                    <i class="bi bi-paperclip"></i>
+                                </button>
                             </div>
 
                         </td>
                         <td>{{ row.id }}</td>
                         <td>{{ row.contato_nome }}</td>
+                        <td>{{ row.user_name }}</td>
                         <td>{{ row.status }}</td>
+                        <td>{{ row.selecionado }}</td>
                         <td>{{ row.created }}</td>
 
                     </tr>
@@ -107,6 +117,18 @@
 
 
         </ModalWidgetVue>
+        <ModalWidgetVue v-if="modalAnexos"  id="list-perguntas">
+            <div class="row">
+                <div class="col-12">
+                    <div  class="modal-content">
+                        <span @click="noVisible" class="close">&times;</span>
+                        <list-anexos  :venda_id="venda_id" ></list-anexos>
+                    </div>
+                </div>
+            </div>
+
+
+        </ModalWidgetVue>
     </layout-page>
 </template>
 <script>
@@ -118,24 +140,27 @@ import toastr from "toastr/build/toastr.min";
 import ModalWidget from "@/components/widget/modalWidget.vue";
 import ListPerguntas from "@/views/perguntas/ListPerguntas.vue";
 import ModalWidgetVue from "@/components/widget/modalWidgetVue.vue";
+import ListAnexos from "@/views/perguntas/ListAnexos.vue";
 
 
 
 export default {
     name: "IndexCotations",
-    components: {ModalWidgetVue, ListPerguntas, ModalWidget, ButtonWidget, LayoutPage},
+    components: {ListAnexos, ModalWidgetVue, ListPerguntas, ModalWidget, ButtonWidget, LayoutPage},
     data() {
         return {
             rows: null,
             search: null,
             perguntas: null,
             modalPerguntas:false,
-            venda_id:null
+            venda_id:null,
+            modalAnexos:false
         }
     },
     methods: {
         noVisible(){
             this.modalPerguntas = false;
+            this.modalAnexos = false;
         },
         async list() {
 
@@ -191,6 +216,10 @@ export default {
             let requestHelper = new RequestHelper();
              requestHelper.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/'+id+'/tipoVendaTransform',{"_method": "PUT"});
             location.href = '/vendas/:id/edit'.replace(':id',id)
+        },
+       async listAnexo(id){
+           this.venda_id = await id;
+           this.modalAnexos = true;
         }
 
     },

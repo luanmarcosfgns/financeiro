@@ -165,20 +165,23 @@ export default {
         },
         setImageAndValue() {
             let fileInput = document.getElementById(this.name);
+
             let extention = fileInput.files[0].type;
             let imageDisplay = document.querySelector('#img-' + this.name);
-            if (extention.includes('image')) {
-                let selectedFile = fileInput.files[0];
-                let fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    imageDisplay.src = event.target.result;
+            let selectedFile = fileInput.files[0];
+            let fileReader = new FileReader();
+            imageDisplay.src = require('@/assets/documento.png');
+
+
+                fileReader.onload = (event)=> {
+                    if (extention.includes('image')) {
+                        imageDisplay.src = event.target.result;
+                    }
                     fileInput.dataset.value = event.target.result;
                 }
                 fileReader.readAsDataURL(selectedFile);
 
-            } else {
-                imageDisplay.src = require('@/assets/documento.png');
-            }
+
 
         },
         addRowSelect() {
