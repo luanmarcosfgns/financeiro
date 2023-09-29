@@ -47,7 +47,10 @@ export default {
 
     },
     mounted() {
-        this.displayOptions();
+        setTimeout(()=>{
+            this.displayOptions();
+        },3000)
+
         document.getElementById('tipo_resposta').addEventListener('change',()=>{
             this.displayOptions()
         })

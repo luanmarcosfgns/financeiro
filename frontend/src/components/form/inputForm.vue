@@ -151,7 +151,6 @@ export default {
         }
 
 
-
     },
     methods: {
         onReadComponent() {
@@ -173,14 +172,13 @@ export default {
             imageDisplay.src = require('@/assets/documento.png');
 
 
-                fileReader.onload = (event)=> {
-                    if (extention.includes('image')) {
-                        imageDisplay.src = event.target.result;
-                    }
-                    fileInput.dataset.value = event.target.result;
+            fileReader.onload = (event) => {
+                if (extention.includes('image')) {
+                    imageDisplay.src = event.target.result;
                 }
-                fileReader.readAsDataURL(selectedFile);
-
+                fileInput.dataset.value = event.target.result;
+            }
+            fileReader.readAsDataURL(selectedFile);
 
 
         },
@@ -188,7 +186,9 @@ export default {
             let pesquisa = document.getElementById('search' + this.name).value;
             if (pesquisa != '') {
                 if (document.getElementById(this.name).value != '') {
-                    document.getElementById(this.name).value = document.getElementById(this.name).value + ',' + pesquisa;
+                    let rows = document.getElementById(this.name).value;
+                    rows = rows.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').replaceAll('\\', '').replaceAll("'", '');
+                    document.getElementById(this.name).value =rows+ ',' + pesquisa;
                 } else {
                     document.getElementById(this.name).value = pesquisa;
                 }
@@ -213,7 +213,9 @@ export default {
 
         },
         listRow(list) {
-            list = list.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '');
+
+            console.log(list)
+            list = list.replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').replaceAll('\\', '').replaceAll("'", '');
             let rows = list.split(',');
             let html = '';
             for (let i = 0; i < rows.length; i++) {
@@ -269,21 +271,21 @@ export default {
             let request = new RequestHelper();
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
 
-            if (!new Helpers().empty(response?.data?.code)){
+            if (!new Helpers().empty(response?.data?.code)) {
                 document.getElementById('search-' + this.name).value = response.data.label;
                 document.getElementById(this.name).value = response.data.code;
             }
 
             return true;
         },
-        async setLabelSelect2(id){
+        async setLabelSelect2(id) {
             let payload = {
                 id: id,
             }
             let request = new RequestHelper();
             let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + this.url, payload);
 
-            if (!new Helpers().empty(response?.data?.code)){
+            if (!new Helpers().empty(response?.data?.code)) {
                 document.getElementById('search-' + this.name).value = response.data.label;
                 document.getElementById(this.name).value = response.data.code;
             }
@@ -291,20 +293,19 @@ export default {
 
             return true;
         },
-        mountSelect2(){
-            if(this.type === 'select2'){
+        mountSelect2() {
+            if (this.type === 'select2') {
 
-                setTimeout( ()=>{
-                    let id =  document?.getElementById(this.name)?.value;
-                    let helper=  new Helpers();
-                    if(!helper.empty(id)){
+                setTimeout(() => {
+                    let id = document?.getElementById(this.name)?.value;
+                    let helper = new Helpers();
+                    if (!helper.empty(id)) {
                         this.setLabelSelect2(id);
                     }
 
-                },2000)
+                }, 2000)
 
             }
-
 
 
         }
@@ -312,7 +313,7 @@ export default {
 
     },
     mounted() {
-      this.mountSelect2()
+        this.mountSelect2()
     }
 
 
@@ -347,6 +348,7 @@ export default {
 
 
 }
+
 .form-control {
     border-top-color: white !important;
     border-left-color: white !important;
