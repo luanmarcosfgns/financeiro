@@ -58,14 +58,19 @@ class VendaController extends Controller
             ])
             ->orderBy('vendas.id','desc')
             ->orderBy('selecionado','desc')
-            ->groupBy('vendas.id');
+            ->groupBy('vendas.id')
+            ->groupBy('users.name')
+            ->groupBy('vendas.tipo')
+            ->groupBy('vendas.status')
+            ->groupBy('vendas.created_at')
+            ->groupBy('contatos.nome');
 
         if (auth()->user()->type == 'vendedor') {
             $model = $model->where('vendas.user_id', auth()->user()->id);
         }
 
         $search = $request->get("search", "");
-        if ($search == null) {
+        if ($search != null) {
             $model->where('contatos.nome', 'like', '%' . $search . '%');
         }
         if (!empty($request->tipo)) {
