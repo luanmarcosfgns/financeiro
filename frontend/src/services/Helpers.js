@@ -14,5 +14,10 @@ export default class Helpers{
         }
         return true;
     }
+     decodeUnicode(inputString) {
+        return inputString.replace(/\\u([0-9a-fA-F]{4})/g, (match, hex) => {
+            return String.fromCharCode(parseInt(hex, 16));
+        });
+    }
 
 }

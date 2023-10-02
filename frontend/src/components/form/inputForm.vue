@@ -230,6 +230,8 @@ export default {
       console.log(document.getElementById(this.name).value)
     },
     clearStringJson(value) {
+      let helper =  new Helpers();
+     value =  helper.decodeUnicode(value);
       return value
           .replaceAll('[', '')
           .replaceAll(']', '')
