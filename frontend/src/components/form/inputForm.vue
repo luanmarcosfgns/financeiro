@@ -8,7 +8,7 @@
         <label class="p-2" for="nome">{{ label }}</label>
       </div>
       <div class="col-12 p-4">
-        <img :id="'img-'+name" src="@/assets/no-image.png" width="100">
+        <img alt="Quando Não há imagem" :id="'img-'+name" src="@/assets/no-image.png" width="300">
       </div>
       <div class="col-12">
         <input :placeholder="placeholder" type="file" @change="setImageAndValue" data-value="" :name="name"
@@ -191,21 +191,21 @@ export default {
 
     },
     addRowSelectJson() {
-      let row = document.getElementById('search'+this.name).value;
-      if( this.rows==null){
+      let row = document.getElementById('search' + this.name).value;
+      if (this.rows == null) {
         this.rows = [];
       }
-    this.rows.push(row)
+      this.rows.push(row)
       this.valueInput = JSON.stringify(this.rows)
       this.valueInput = this.clearStringJson(this.valueInput);
-      document.getElementById('search'+this.name).value ='';
+      document.getElementById('search' + this.name).value = '';
     },
     async readRowSelectJson() {
 
       setTimeout(() => {
         let value = document.getElementById(this.name).value;
         let helper = new Helpers();
-        if(!helper.empty(value)){
+        if (!helper.empty(value)) {
           this.valueInput = value;
           this.valueInput = this.clearStringJson(this.valueInput);
           this.listRowJson(this.valueInput);
@@ -217,19 +217,19 @@ export default {
     listRowJson(list) {
       this.rows = this.clearStringJson(list).split(',');
     },
-    deleteRowJson(i){
-    this.rows.splice(i,1);
+    deleteRowJson(i) {
+      this.rows.splice(i, 1);
       this.valueInput = JSON.stringify(this.rows)
       this.valueInput = this.clearStringJson(this.valueInput);
 
     },
-    editRowJson(i){
-      this.rows[i] = document.getElementById(this.name+'_options_'+i).value;
-     this.valueInput = JSON.stringify(this.rows)
+    editRowJson(i) {
+      this.rows[i] = document.getElementById(this.name + '_options_' + i).value;
+      this.valueInput = JSON.stringify(this.rows)
       this.valueInput = this.clearStringJson(this.valueInput);
       console.log(document.getElementById(this.name).value)
     },
-    clearStringJson(value){
+    clearStringJson(value) {
       return value
           .replaceAll('[', '')
           .replaceAll(']', '')
@@ -238,7 +238,7 @@ export default {
           .replaceAll("'", '');
     },
     async readClickSelect2() {
-      if (this.type == 'select2') {
+      if (this.type === 'select2') {
         document.getElementById('dropdown-' + this.name).classList.add('d-none');
         let request = new RequestHelper();
 
