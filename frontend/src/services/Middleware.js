@@ -21,7 +21,7 @@ export default class Middleware {
     }
 
     logout(to) {
-        if(to.href=='/logout'){
+        if (to.href == '/logout') {
             localStorage.setItem('HASH', undefined);
             location.href = '/login'
             return true;
@@ -31,29 +31,65 @@ export default class Middleware {
     }
 
     finishLoading() {
-        setTimeout(function(){
+        setTimeout(function () {
             document.getElementsByClassName('loading-page')[0].classList.add('d-none');
-        },1000)
+        }, 1000)
     }
 
-   async uniqueConfiguration(to) {
-        if(to.href=='/business/create'){
+    async uniqueConfiguration(to) {
+        if (to.href == '/business/create') {
             let request = new RequestHelper();
-            let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view:true});
+            let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view: true});
             let business_id = await resposeRequest.data.business_id;
             let helper = new Helpers();
             if (!helper.empty(business_id)) {
-                location.href = '/business/'+business_id+'/edit';
+                location.href = '/business/' + business_id + '/edit';
             }
         }
     }
-    setRegisterLastRouteBeforeLogin(){
-        if(location.pathname !=="/login" && location.pathname !=="/logout"){
-            localStorage.setItem('href',location.href);
+
+    setRegisterLastRouteBeforeLogin() {
+        if (location.pathname !== "/login" && location.pathname !== "/logout") {
+            localStorage.setItem('href', location.href);
             console.log(localStorage.getItem('href'))
         }
     }
-    getRegisterLastRouteBeforeLogin(){
-        return  localStorage.getItem('href');
+
+    getRegisterLastRouteBeforeLogin() {
+        return localStorage.getItem('href');
+    }
+
+    async userPermissions(to) {
+
+        if (to.href !== '/login' && (to.href.indexOf('/cotations/') == -1 || to.href == '/cotations/index')) {
+            setTimeout(async () => {
+                let request = new RequestHelper();
+                let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view: true});
+                console.log(response.data.type)
+
+                if (response?.data) {
+                    let styleTag = document.createElement("style");
+                    document.head.appendChild(styleTag);
+                    if (response?.data?.type == 'admin') {
+
+
+
+                        styleTag.innerHTML = '.admin_d_none {display:none;}';
+                    }
+                    if (response?.data?.type == 'revendedor') {
+                        styleTag.innerHTML = '.revendedor_d_none {display:none;}';
+
+                    }
+                    if (response?.data?.type == 'vendedor') {
+                        styleTag.innerHTML = '.vendedor_d_none {display:none;}';
+                    }
+
+
+                }
+            }, 100)
+
+        }
+
+
     }
 }

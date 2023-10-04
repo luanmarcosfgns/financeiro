@@ -50,7 +50,7 @@ class VendaController extends Controller
                 'contatos.nome as contato_nome',
                 'users.name as user_name',
                 'vendas.id as id',
-                DB::raw('(SELECT IF(COUNT(anexos_vendas.id)>0,"Sim","Não") FROM anexos_vendas where anexos_vendas.venda_id=vendas.id) as selecionado'),
+                DB::raw('IF((select count(*) from anexos_vendas where anexos_vendas.venda_id=vendas.id and anexos_vendas.selecionado=1) > 0,"Sim","Não") as selecionado'),
                 'vendas.tipo as tipo',
                 'vendas.status as status',
                 DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
@@ -127,10 +127,10 @@ class VendaController extends Controller
                 'vendas_servicos.venda_id',
                 'vendas_servicos.servico_id',
                 'servicos.nome as servicos_nome',
-                'vendas_servicos.porcentagem_seguradora',
                 'vendas_servicos.porcentagem_franquiadora',
-                'vendas_servicos.porcentagem_maxima_vendedor',
-                'vendas_servicos.porcentagem_minima_vendedor',
+                'vendas_servicos.porcentagem_corretora',
+                'vendas_servicos.porcentagem_vendedor',
+                'vendas_servicos.comissao',
                 'vendas_servicos.valor_premio',
                 'vendas_servicos.desconto',
 
@@ -156,15 +156,22 @@ class VendaController extends Controller
 
         $venda = Venda::find($id);
         $validated = $this->validated("update", $request);
+        $validated['tipo']='venda';
         $venda->update($validated);
+
 
         $servicos = $validated['servicos'] ?? false;
         if ($servicos) {
             foreach ($servicos as $servico) {
-
+                $anexoVenda = AnexosVenda::where('venda_id',$id)->first();
                $venda =  VendasServico::where('servico_id',$servico['servico_id'])->where('venda_id',$id)->first();
                $venda->update([
                    'desconto' => $servico['desconto'] ?? 0,
+                   'porcentagem_vendedor' => $anexoVenda['porcentagem_vendedor'] ?? 0,
+                   'porcentagem_corretora' => $anexoVenda['porcentagem_corretora'] ?? 0,
+                   'valor_premio' => $anexoVenda['valor_premio'] ?? 0,
+                   'comissao' => $anexoVenda['comissao'] ?? 0,
+                   'porcentagem_franquiadora' => $anexoVenda['porcentagem_franquiadora'] ?? 0,
                 ]);
             }
 

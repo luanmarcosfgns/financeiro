@@ -18,19 +18,20 @@ class AnexosVendaController extends Controller
                     'nome' => 'required|string|max:255',
                     'anexo' => 'required:10000', // Validar base64 com até 10MB
                     'venda_id' => 'required|integer',
-                    'porcentagem_seguradora' => 'required|numeric',
+                    'porcentagem_corretora' => 'required|numeric',
                     'porcentagem_franquiadora' => 'required|numeric',
-                    'porcentagem_maxima_vendedor' => 'required|numeric',
-                    'porcentagem_minima_vendedor' => 'required|numeric',
+                    'porcentagem_vendedor' => 'required|numeric',
+                    'comissao' => 'required|numeric',
                     'valor_premio' => 'required|numeric',
                     'melhor_opcao' => 'required|string',
                     'descritivo' => 'nullable|string',
 
+
                 ]
             );
-            return $request->only(["nome", "anexo", "venda_id", "selecionado", "porcentagem_seguradora", "porcentagem_franquiadora", "porcentagem_maxima_vendedor", "porcentagem_minima_vendedor", "valor_premio", "melhor_opcao", "descritivo"]);
+            return $request->only(["nome", "anexo", "venda_id", "selecionado", "porcentagem_corretora", "porcentagem_franquiadora", "porcentagem_vendedor", "comissao", "valor_premio", "melhor_opcao","desconto","descritivo"]);
         } else {
-            return $request->only([ "selecionado"]);
+            return $request->only(["selecionado"]);
         }
 
     }
@@ -61,7 +62,7 @@ class AnexosVendaController extends Controller
 
         $validated = $this->validated("store", $request);
 
-        $validated['selecionado']=false;
+        $validated['selecionado'] = false;
         $anexos_venda = AnexosVenda::create($validated);
 
         return response()->json($anexos_venda);
@@ -88,8 +89,8 @@ class AnexosVendaController extends Controller
     {
 
         $anexos_venda = AnexosVenda::find($id);
-        AnexosVenda::where('venda_id',$anexos_venda->venda_id)->update([
-            'selecionado'=>'0'
+        AnexosVenda::where('venda_id', $anexos_venda->venda_id)->update([
+            'selecionado' => '0'
         ]);
         $validated = $this->validated("update", $request);
 

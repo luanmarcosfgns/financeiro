@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="card-body">
-                <FormVendas :vendaEdit="vendas" v-if="vendas!==null"></FormVendas>
+                <FormVendas :selecionado="selecionado" :vendaEdit="vendas" v-if="vendas!==null && selecionado!==null"></FormVendas>
             <div class="row">
                 <div class="col-12 p-4">
                     <button class="btn btn-primary" type="button" @click="sendForm">Finalizar</button>
@@ -38,13 +38,23 @@ export default {
     components: {LayoutPage, FormVendas},
     data(){
         return {
-            vendas:null
+            vendas:null,
+            selecionado:null
         }
     },
     methods: {
         async edit(id) {
             let request = new RequestHelper();
            this.vendas = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + id, {});
+          let anexos = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/anexos_vendas/', {id: id});
+
+          for (let i = 0; i < anexos.data.data.length; i++) {
+            if(anexos.data.data[i].selecionado==1){
+              this.selecionado = anexos.data.data[i];
+
+            }
+          }
+          console.log( this.selecionado)
 
 
         },
@@ -64,6 +74,9 @@ export default {
             let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/' + this.$route.params.id, dataForm);
             if (response.data?.id) {
                 toastr.success('Salvo com sucesso')
+              setTimeout(()=>{
+                location.href = '/vendas/index';
+              },2000)
             } else {
                 if (response.response.data?.message) {
                     toastr.error(response.response.data?.message);

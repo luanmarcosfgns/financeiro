@@ -40,12 +40,12 @@
           <tr v-for="row in rows" :key="row.id">
 
             <td>
-              <div class="btn-group btn-sm" role="group" aria-label="Basic example">
-                <router-link class="btn btn-danger" :to="'./'+row.id+'/edit'">
+              <div class="btn-group btn-sm  " role="group" aria-label="Basic example">
+                <router-link class="btn btn-danger vendedor_d_none " :to="'./'+row.id+'/edit'">
                   <i class="bi bi-pencil-square"></i>
                 </router-link>
 
-                <button class="btn btn-danger" @click="deleteRow(row.id)">
+                <button class="btn btn-danger vendedor_d_none revendedor_d_none" @click="deleteRow(row.id)">
                   <i class="bi bi-trash2-fill"></i>
                 </button>
                 <button class="btn btn-danger" @click="generateLink(row.id)">

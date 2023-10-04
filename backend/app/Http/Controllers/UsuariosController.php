@@ -58,7 +58,7 @@ class UsuariosController extends Controller
         $validated['business_id'] = auth()->user()->business_id;
         $user = User::create($validated);
 
-        return response()->json($user,500);
+        return response()->json($user,200);
     }
 
     /**

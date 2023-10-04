@@ -47,12 +47,7 @@
                                           </span>
                                     <i class="bi bi-briefcase-fill"></i>
                                 </button>
-                                <button class="btn btn-danger btn-hover" @click="listAnexo(row.id)">
-                                    <span class="hover">
-                                        Anexar Cotações
-                                    </span>
-                                    <i class="bi bi-paperclip"></i>
-                                </button>
+
                                 <a class="btn btn-danger btn-hover" :href="'/vendas/'+row.id+'/edit'">
                                     <span class="hover">
                                         Editar Venda
@@ -113,18 +108,6 @@
 
 
         </ModalWidgetVue>
-        <ModalWidgetVue v-if="modalAnexos"  id="list-perguntas">
-            <div class="row">
-                <div class="col-12">
-                    <div  class="modal-content">
-                        <span @click="noVisible" class="close">&times;</span>
-                        <list-anexos  :venda_id="venda_id" ></list-anexos>
-                    </div>
-                </div>
-            </div>
-
-
-        </ModalWidgetVue>
     </layout-page>
 </template>
 <script>
@@ -136,13 +119,12 @@ import toastr from "toastr/build/toastr.min";
 import ModalWidget from "@/components/widget/modalWidget.vue";
 import ListPerguntas from "@/views/perguntas/ListPerguntas.vue";
 import ModalWidgetVue from "@/components/widget/modalWidgetVue.vue";
-import ListAnexos from "@/views/perguntas/ListAnexos.vue";
 
 
 
 export default {
     name: "IndexCotations",
-    components: {ListAnexos, ModalWidgetVue, ListPerguntas, ModalWidget, LayoutPage},
+    components: {ModalWidgetVue, ListPerguntas, ModalWidget, LayoutPage},
     data() {
         return {
             rows: null,
@@ -213,10 +195,7 @@ export default {
             requestHelper.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/'+id+'/tipoVendaTransform',{"_method": "PUT"});
             location.href = '/vendas/:id/edit'.replace(':id',id)
         },
-        async listAnexo(id){
-            this.venda_id = await id;
-            this.modalAnexos = true;
-        }
+
 
     },
     created() {

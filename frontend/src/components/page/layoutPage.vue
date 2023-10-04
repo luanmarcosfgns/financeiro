@@ -65,7 +65,7 @@
                                         Contatos
                                     </router-link>
                                 </li>
-                                <li class="nav-item p-2  border border-1">
+                                <li class="nav-item p-2  border border-1 vendedor_d_none">
                                     <router-link aria-current="page" class="nav-link active" to="/categorias/index">
                                         <svg class="bi bi-ticket-detailed-fill" fill="currentColor" height="16"
                                              viewBox="0 0 16 16"
@@ -76,7 +76,7 @@
                                     </router-link>
                                 </li>
 
-                                <li class="nav-item p-2  border border-1">
+                                <li class="nav-item p-2  border border-1 ">
 
                                     <router-link aria-current="page" class="nav-link active" to="/servicos/index">
                                         <svg class="bi bi-file-person-fill" fill="currentColor" height="16"
@@ -112,7 +112,7 @@
 
 
 
-                                <li class="nav-item p-2  border border-1">
+                                <li class="nav-item p-2  border border-1 vendedor_d_none revendedor_d_none ">
 
                                     <router-link aria-current="page" class="nav-link active" to="/users/index">
                                         <svg class="bi bi-file-earmark-lock2-fill" fill="currentColor" height="16"
@@ -124,7 +124,7 @@
                                         Usuários
                                     </router-link>
                                 </li>
-                                <li class="nav-item p-2  border border-1">
+                                <li class="nav-item p-2  border border-1 vendedor_d_none revendedor_d_none">
                                     <router-link aria-current="page" class="nav-link active" to="/sessoes/index">
                                         <svg class="bi bi-ticket-detailed-fill" fill="currentColor" height="16"
                                              viewBox="0 0 16 16"
@@ -134,7 +134,7 @@
                                         Sessões
                                     </router-link>
                                 </li>
-                                <li class="nav-item p-2  border border-1">
+                                <li class="nav-item p-2  border border-1 vendedor_d_none revendedor_d_none">
                                     <a aria-current="page" class="nav-link active" href="#" @click="goConfig">
                                         <svg class="bi bi-gear-fill" fill="currentColor" height="16" viewBox="0 0 16 16"
                                              width="16" xmlns="http://www.w3.org/2000/svg">

@@ -35,9 +35,6 @@
                                 <button @click="login" class="btn btn-lg btn-primary btn-loading">
                                     Entrar
                                 </button>
-                                <router-link to="register" class="btn btn-lg btn-danger btn-loading">
-                                    Criar Usuário
-                                </router-link>
                             </div>
                         </div>
 

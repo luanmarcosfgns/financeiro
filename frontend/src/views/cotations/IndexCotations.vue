@@ -54,7 +54,7 @@
                                     </span>
                                     <i class="bi bi-shop"></i>
                                 </button>
-                                <button class="btn btn-danger btn-hover" @click="listAnexo(row.id)">
+                                <button class="btn btn-danger btn-hover " @click="listAnexo(row.id)">
                                     <span class="hover">
                                         Anexar Cotações
                                     </span>
@@ -210,8 +210,7 @@ export default {
 
         },
         async gerarVenda(id) {
-            let requestHelper = new RequestHelper();
-             requestHelper.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas/'+id+'/tipoVendaTransform',{"_method": "PUT"});
+
             location.href = '/vendas/:id/edit'.replace(':id',id)
         },
        async listAnexo(id){

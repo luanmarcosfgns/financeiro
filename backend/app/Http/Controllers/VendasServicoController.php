@@ -51,6 +51,7 @@ class VendasServicoController extends Controller
         $countVendas = Venda::where('id',$request->venda_id)
             ->where('business_id',auth()->user()->business_id)->count();
 
+
         if($countVendas==0){
             abort(404, 'Not Found');
         }

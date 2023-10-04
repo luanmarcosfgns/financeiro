@@ -1,5 +1,6 @@
 <?php
-        namespace App\Models;
+
+namespace App\Models;
 
 use App\Models\Scopes\Searchable;
 use Illuminate\Database\Eloquent\Model;
@@ -10,20 +11,29 @@ class VendasServico extends Model
     use HasFactory;
     use Searchable;
 
-    protected $fillable = ["venda_id","servico_id","preco","porcentagem_seguradora","porcentagem_franquiadora","porcentagem_maxima_vendedor","porcentagem_minima_vendedor","valor_premio",'desconto'];
+    protected $fillable = [
+        "venda_id",
+        "servico_id",
+        "desconto",
+        "porcentagem_franquiadora",
+        "valor_premio",
+        "porcentagem_corretora",
+        "porcentagem_vendedor",
+        'comissao'
+    ];
 
     protected $searchableFields = ["*"];
 
 
-   public function Venda()
+    public function Venda()
     {
         return $this->belongsTo(Venda::class);
     }
-   public function Servico()
+
+    public function Servico()
     {
         return $this->belongsTo(Servico::class);
     }
-
 
 
 }

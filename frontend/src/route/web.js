@@ -303,9 +303,10 @@ router.beforeEach((to) => {
 
 
 })
-router.afterEach(() => {
+router.afterEach((to) => {
     let middleware = new Middleware();
     middleware.setRegisterLastRouteBeforeLogin();
+    middleware.userPermissions(to);
     middleware.finishLoading();
 });
 export default router;
