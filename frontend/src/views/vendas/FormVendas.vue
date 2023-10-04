@@ -184,7 +184,11 @@ export default {
       if (this.descontoPorcentagem > this.selecionado.desconto) {
         this.descontoPorcentagem = this.selecionado.desconto
       }
+      if (this.descontoPorcentagem < 0) {
+        this.descontoPorcentagem = 0
+      }
       this.descontoValor = (( this.descontoPorcentagem* this.servico_comissao.valor_premio) / 100);
+
       let helper = new Helpers();
       if (helper.empty(this.descontoValor)) {
         this.descontoValor = 0;
@@ -194,7 +198,7 @@ export default {
       this.vendedorValor = this.calculaComissaoVendedor(premio, this.servico_comissao.porcentagem_vendedor);
       this.corretoraValor = this.calculaPorcentagem(premio, this.servico_comissao.porcentagem_corretora);
       this.premioValor = this.calculaPorcentagem(premio, 100);
-
+      this.descontoValor = new String(this.descontoValor.toFixed(2)).replace('.',',')
 
     },
     calculaComissaoVendedor(valor, porcentagem) {

@@ -62,6 +62,12 @@ class VendasServicoController extends Controller
             ->select([
                 'vendas_servicos.id',
                 'vendas_servicos.venda_id',
+                'vendas_servicos.comissao',
+                'vendas_servicos.porcentagem_vendedor',
+                'vendas_servicos.porcentagem_corretora',
+                'vendas_servicos.valor_premio',
+                'vendas_servicos.porcentagem_franquiadora',
+                'vendas_servicos.desconto',
                 'servicos.nome as servico_nome',
                 'servicos.id as servico_id',
                 DB::raw('IF(categorias.nome IS NULL,"Não Informado",categorias.nome) as categoria_nome'),

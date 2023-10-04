@@ -19,5 +19,15 @@ export default class Helpers{
             return String.fromCharCode(parseInt(hex, 16));
         });
     }
+    numberFormat(value,decimal =2,simbolo = '.'){
+        if(simbolo=='.'){
+            value =  new String(value).replace(',','.')
+           return  parseFloat(value).toFixed(decimal);
+        }
+        if(simbolo==','){
+            return new String(value.toFixed(decimal)).replace('.',',')
+        }
+
+    }
 
 }

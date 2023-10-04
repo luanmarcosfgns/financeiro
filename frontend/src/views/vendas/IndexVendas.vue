@@ -85,7 +85,7 @@
                             <th>#</th>
                             <th>Nome</th>
                             <th>Categoria</th>
-                            <th>% Franquiadora</th>
+                            <th>Franquiadora</th>
                             <th>Comissão Vendedor</th>
                             <th>Corretora</th>
                             <th>Valor Prêmio</th>
@@ -169,18 +169,29 @@ export default {
 
 
         },
+      calculaPorcentagem(valor, porcentagem) {
+        let total = (porcentagem / 100) * valor;
+        return new String(total.toFixed(2)).replace('.', ',');
+      },
         async listServicos(id) {
+
             let requestHelper = new RequestHelper();
             let dataRow = await requestHelper.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/vendas_servicos',{venda_id:id});
             if (!new Helpers().empty(dataRow?.data.data)) {
                 let html='';
 
                 for (const i in dataRow?.data.data) {
+                  let descontoDisplay = this.calculaPorcentagem(dataRow.data.data[i].valor_premio,dataRow.data.data[i].desconto);
+                   let desconto = new Helpers().numberFormat(descontoDisplay,2,'.');
                     html += '<tr>' +
                         '<td>' + dataRow.data.data[i].servico_id + '</td>' +
-                        '<td>' + dataRow.data.data[i].servico_nome + '</td>' +
-                        '<td>' + dataRow.data.data[i].categoria_nome + '</td>' +
-                        '</tr>';
+                        '<td> ' + dataRow.data.data[i].servico_nome + '</td>' +
+                        '<td> ' + dataRow.data.data[i].categoria_nome + '</td>' +
+                        '<td> R$ ' + this.calculaPorcentagem(dataRow.data.data[i].valor_premio - desconto,dataRow.data.data[i].porcentagem_franquiadora) + '</td>' +
+                        '<td> R$ ' + this.calculaPorcentagem(dataRow.data.data[i].valor_premio - desconto,dataRow.data.data[i].comissao) + '</td>' +
+                        '<td> R$ ' + this.calculaPorcentagem(dataRow.data.data[i].valor_premio - desconto,dataRow.data.data[i].porcentagem_corretora) + '</td>' +
+                        '<td> R$ ' + this.calculaPorcentagem(dataRow.data.data[i].valor_premio - desconto,100) + '</td>' +
+                        '<td> R$ ' + descontoDisplay + '</td></tr>';
                 }
                 document.getElementById('servicos').innerHTML = html;
 
