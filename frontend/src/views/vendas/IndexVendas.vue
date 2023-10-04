@@ -85,6 +85,11 @@
                             <th>#</th>
                             <th>Nome</th>
                             <th>Categoria</th>
+                            <th>% Franquiadora</th>
+                            <th>Comissão Vendedor</th>
+                            <th>Corretora</th>
+                            <th>Valor Prêmio</th>
+                            <th>Desconto</th>
                         </tr>
 
                         </thead>

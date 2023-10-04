@@ -49,7 +49,7 @@
               <div class="col-12 p-1">
                 <div class="col-12 p-1">
                   <span class="badge rounded-pill text-bg-primary"
-                        style="font-size: 100%">% Franquiadora: R$ {{ franqueadoraValor }}</span>
+                        style="font-size: 100%">Franquiadora: R$ {{ franqueadoraValor }}</span>
 
                 </div>
                 <div class="col-12 p-1">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="col-12 p-1">
                   <span class="badge rounded-pill text-bg-info" :id="'valor_desconto['+servico.servico_id+']'"
-                        style="font-size: 100%">Desconto: R$ {{ new String(descontoValor.toFixed(2)).replace('.',',') }}</span>
+                        style="font-size: 100%">Desconto: R$ {{ descontoValor}}</span>
                 </div>
               </div>
 
@@ -169,10 +169,11 @@ export default {
       this.franqueadoraValor = this.calculaPorcentagem(this.servico_comissao.valor_premio, this.servico_comissao.porcentagem_franquiadora);
       this.vendedorValor = this.calculaComissaoVendedor(this.servico_comissao.valor_premio, this.servico_comissao.porcentagem_vendedor);
       this.corretoraValor = this.calculaPorcentagem(this.servico_comissao.valor_premio, this.servico_comissao.porcentagem_corretora);
-      this.descontoValor = 0;
+
       this.premioValor = this.calculaPorcentagem(this.servico_comissao.valor_premio, 100);
       this.descontoPorcentagem = this.servico_comissao.desconto
-
+      this.descontoValor = this.calculaPorcentagem(this.servico_comissao.valor_premio, this.descontoPorcentagem);
+      console.log(this.descontoValor)
     },
     setEventos() {
 
