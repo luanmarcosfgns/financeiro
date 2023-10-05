@@ -1,5 +1,5 @@
 <template>
-  <input-form class-list="col-12" type="string" label="Name " value="" name="name"/>
+  <input-form class-list="col-12" type="string" label="Nome " value="" name="name"/>
   <input-form class-list="col-12" type="string" label="Email " value="" name="email"/>
   <input-form class-list="col-12" type="timestamp" label="Email VerifIEd At " value="" name="email_verified_at"/>
   <input-form class-list="col-12" type="string" label="Senha" value="" name="password"/>
