@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-12 ps-4 pt-3 ">
                     <div class="float-start">
-                        <h5>Adicionar Users</h5>
+                        <h5>Adicionar Usuários</h5>
                     </div>
                     <div class="float-end">
                         <button-widget cor="azul" href="./index" tamanho="M">
