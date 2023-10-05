@@ -48,7 +48,7 @@
   </div>
   <div v-if="type==='int' ||type === 'bigint'" :class="classList">
     <label class="p-2" for="nome">{{ label }}</label>
-    <input step="0.00" :placeholder="placeholder" type="number" :name="name" :id="name" :class="name"
+    <input step="0.00" :placeholder="placeholder" @input="validateInt" @keyup="validateInt" @keydown="validateInt" type="number" :name="name" :id="name" :class="name"
            class="form-control decimal" v-model="valueInput">
   </div>
   <div v-if="type==='json'" :class="classList">
@@ -320,13 +320,19 @@ export default {
 
 
     },
-
+    validateInt() {
+      this.valueInput = new String(this.valueInput).replaceAll(',','').replaceAll('.','')
+    }
 
   },
   mounted() {
     this.mountSelect2()
     if (this.type == 'json') {
       this.readRowSelectJson();
+
+    }
+    if (this.type == 'int') {
+      this.validateInt();
 
     }
   }

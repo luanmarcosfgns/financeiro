@@ -17,6 +17,7 @@
 import FormPerguntas from "@/views/perguntas/FormPerguntas.vue";
 import RequestHelper from "@/services/RequestHelper";
 import toastr from "toastr/build/toastr.min";
+import Helpers from "@/services/Helpers";
 
 export default {
     name: "CreatePerguntas",
@@ -34,6 +35,11 @@ export default {
             }
             if (!dataForm.parent_id) {
                 delete dataForm.parent_id
+            }
+
+            if(new Helpers().empty(document.getElementById('opcoes').value) && (dataForm.tipo_resposta=='unica'||dataForm.tipo_resposta=='multipla') ){
+              toastr.info('Cadastre as opções por favor');
+              return false;
             }
             let request = new RequestHelper();
             let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/perguntas', dataForm);
