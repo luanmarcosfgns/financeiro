@@ -56,8 +56,8 @@ class VendaController extends Controller
                 DB::raw('DATE_FORMAT(vendas.created_at,"%d/%m/%Y %H:%i:%S") as created'),
 
             ])
-            ->orderBy('vendas.id','desc')
-            ->orderBy('selecionado','desc')
+            ->orderBy('vendas.id', 'desc')
+            ->orderBy('selecionado', 'desc')
             ->groupBy('vendas.id')
             ->groupBy('users.name')
             ->groupBy('vendas.tipo')
@@ -156,22 +156,22 @@ class VendaController extends Controller
 
         $venda = Venda::find($id);
         $validated = $this->validated("update", $request);
-        $validated['tipo']='venda';
+        $validated['tipo'] = 'venda';
         $venda->update($validated);
 
 
         $servicos = $validated['servicos'] ?? false;
         if ($servicos) {
             foreach ($servicos as $servico) {
-                $anexoVenda = AnexosVenda::where('venda_id',$id)->first();
-               $venda =  VendasServico::where('servico_id',$servico['servico_id'])->where('venda_id',$id)->first();
-               $venda->update([
-                   'desconto' => $servico['desconto'] ?? 0,
-                   'porcentagem_vendedor' => $anexoVenda['porcentagem_vendedor'] ?? 0,
-                   'porcentagem_corretora' => $anexoVenda['porcentagem_corretora'] ?? 0,
-                   'valor_premio' => $anexoVenda['valor_premio'] ?? 0,
-                   'comissao' => $anexoVenda['comissao'] ?? 0,
-                   'porcentagem_franquiadora' => $anexoVenda['porcentagem_franquiadora'] ?? 0,
+                $anexoVenda = AnexosVenda::where('venda_id', $id)->first();
+                $venda = VendasServico::where('servico_id', $servico['servico_id'])->where('venda_id', $id)->first();
+                $venda->update([
+                    'desconto' => $servico['desconto'] ?? 0,
+                    'porcentagem_vendedor' => $anexoVenda['porcentagem_vendedor'] ?? 0,
+                    'porcentagem_corretora' => $anexoVenda['porcentagem_corretora'] ?? 0,
+                    'valor_premio' => $anexoVenda['valor_premio'] ?? 0,
+                    'comissao' => $anexoVenda['comissao'] ?? 0,
+                    'porcentagem_franquiadora' => $anexoVenda['porcentagem_franquiadora'] ?? 0,
                 ]);
             }
 
@@ -197,17 +197,81 @@ class VendaController extends Controller
     {
         $venda = Venda::findOrFail($id);
         $venda->tipo = 'venda';
-        $vendaAnexo =  AnexosVenda::where('venda_id',$id)->first();
-        $vendaServico =  VendasServico::where('venda_id',$id)->first();
-        $vendaServico->porcentagem_seguradora= $vendaAnexo->porcentagem_seguradora;
-        $vendaServico->porcentagem_franquiadora= $vendaAnexo->porcentagem_franquiadora;
-        $vendaServico->porcentagem_maxima_vendedor= $vendaAnexo->porcentagem_maxima_vendedor;
-        $vendaServico->porcentagem_minima_vendedor= $vendaAnexo->porcentagem_minima_vendedor;
-        $vendaServico->valor_premio= $vendaAnexo->valor_premio;
+        $vendaAnexo = AnexosVenda::where('venda_id', $id)->first();
+        $vendaServico = VendasServico::where('venda_id', $id)->first();
+        $vendaServico->porcentagem_seguradora = $vendaAnexo->porcentagem_seguradora;
+        $vendaServico->porcentagem_franquiadora = $vendaAnexo->porcentagem_franquiadora;
+        $vendaServico->porcentagem_maxima_vendedor = $vendaAnexo->porcentagem_maxima_vendedor;
+        $vendaServico->porcentagem_minima_vendedor = $vendaAnexo->porcentagem_minima_vendedor;
+        $vendaServico->valor_premio = $vendaAnexo->valor_premio;
         $vendaServico->save();
         $venda->save();
         return response()->json(["success" => true]);
 
+    }
+
+    public function notfications()
+    {
+        $notifications = [];
+        if (auth()->user()->type == 'revendedor' || auth()->user()->type == 'admin') {
+
+            $cotar = Venda::join('contatos', 'contatos.id', 'vendas.contato_id')
+                ->leftJoin('anexos_vendas', 'anexos_vendas.venda_id', 'vendas.id')
+                ->whereNull('venda_id')
+                ->where('vendas.tipo', 'orcamento')
+                ->where('vendas.business_id', auth()->user()->business_id)
+                ->whereDate('vendas.created_at', '>=', now()->subDays(7))
+                ->select([
+                    DB::raw("concat('Nova cotação realizada cliente ',contatos.nome) as text"),
+                ])
+                ->orderBy('vendas.created_at','desc')
+                ->get();
+            foreach ($cotar as $row) {
+                $notifications[] = $row->text;
+            }
+
+            $naoFinalizado = Venda::join('anexos_vendas', 'vendas.id', 'anexos_vendas.venda_id')
+                ->join('contatos', 'contatos.id', 'vendas.contato_id')
+                ->where('vendas.tipo', 'venda')
+                ->where('vendas.status', '<>', 'finalizado')
+                ->where('vendas.business_id', auth()->user()->business_id)
+                ->whereDate('vendas.created_at', '>=', now()->subDays(7))
+                ->select([
+
+                    DB::raw("concat('A venda do cliente ',contatos.nome,' não foi finalizada ') as text"),
+                ])
+                ->get();
+            foreach ($naoFinalizado as $row) {
+                $notifications[] = $row->text;
+            }
+
+
+        }
+
+        if (auth()->user()->type == 'vendedor' || auth()->user()->type == 'admin') {
+
+            $cotado = Venda::join('anexos_vendas', 'vendas.id', 'anexos_vendas.venda_id')
+                ->join('contatos', 'contatos.id', 'vendas.contato_id')
+                ->where('vendas.tipo', 'orcamento')
+                ->where('anexos_vendas.selecionado', true)
+                ->where('vendas.user_id', auth()->user()->id)
+                ->whereDate('vendas.created_at', '>=', now()->subDays(7))
+                ->select([
+                    DB::raw("concat('Acotação do cliente ',contatos.nome,' está disponivel para seleção') as text"),
+                ])->get();
+            foreach ($cotado as $row) {
+                $notifications[] = $row->text;
+            }
+
+
+        }
+
+
+
+
+
+
+        return response()->json($notifications);
     }
 
 }

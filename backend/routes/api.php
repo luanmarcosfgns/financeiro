@@ -46,7 +46,7 @@ Route::group([
 Route::group([
     'middleware' => 'auth'],
     function ($router) {
-        Route::get('aliquotas/list', [AliquotaController::class, 'list']);
+        Route::get('/notify/list', [VendaController::class, 'notfications']);
         Route::get('sessions/list', [SessionController::class, 'list']);
         Route::get('categorias/list', [CategoriaController::class, 'list']);
         Route::get('contatos/list', [ContatoController::class, 'list']);
@@ -55,13 +55,12 @@ Route::group([
         Route::get('cotations/{id}/link', [ServicoController::class, 'link']);
         Route::put('vendas/{id}/tipoVendaTransform', [VendaController::class, 'tipoVendaTransform']);
 
+
         Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
         Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);
         Route::resource('users', UsuariosController::class)->except(['create', 'edit']);
         Route::resource('business', BusinessController::class)->except(['create', 'edit']);
         Route::resource('categorias', CategoriaController::class)->except(['create', 'edit']);
-        Route::resource('aliquotas', AliquotaController::class)->except(['create', 'edit']);
-        Route::resource('aliquotas_items', AliquotasItemController::class)->except(['create', 'edit']);
         Route::resource('servicos', ServicoController::class)->except(['create', 'edit']);
         Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
         Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
