@@ -176,6 +176,7 @@ import axios from "axios";
 import InputForm from "@/components/form/inputForm.vue";
 import toastr from "toastr/build/toastr.min";
 import Swal from "sweetalert2";
+import Helpers from "@/services/Helpers";
 
 export default {
     name: "FormCaptations",
@@ -244,6 +245,7 @@ export default {
 
         },
         validateFormLead() {
+          let helper =  new Helpers();
             let dataRequest = [];
             let elementInput = document.getElementById('nome').value;
             if (elementInput.length > 0) {
@@ -255,21 +257,21 @@ export default {
             }
             elementInput = document.getElementById('cnpj_cpf').value;
             if (elementInput.length > 0) {
-                dataRequest.push(elementInput);
+                dataRequest.push(helper.unmaskNumber(elementInput));
             } else {
                 toastr.info('CNPJ/CPF não preenchido')
                 return false;
             }
             elementInput = document.getElementById('telefone').value;
             if (elementInput.length > 0) {
-                dataRequest.push(elementInput);
+                dataRequest.push(helper.unmaskNumber(elementInput));
             } else {
                 toastr.info('Telefone não preenchido')
                 return false;
             }
             elementInput = document.getElementById('celular').value;
             if (elementInput.length > 0) {
-                dataRequest.push(elementInput);
+                dataRequest.push(helper.unmaskNumber(elementInput));
             } else {
                 toastr.info('Celular não preenchido')
                 return false;

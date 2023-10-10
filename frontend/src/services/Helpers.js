@@ -29,5 +29,9 @@ export default class Helpers{
         }
 
     }
+    unmaskNumber(value){
+        return value.replace(/[^0-9]/g, '');
+    }
+
 
 }
