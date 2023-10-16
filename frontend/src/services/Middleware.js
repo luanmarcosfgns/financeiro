@@ -65,7 +65,6 @@ export default class Middleware {
             setTimeout(async () => {
                 let request = new RequestHelper();
                 let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view: true});
-                console.log(response.data.type)
 
                 if (response?.data) {
                     let styleTag = document.createElement("style");

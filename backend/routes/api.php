@@ -6,6 +6,7 @@ use App\Http\Controllers\AnexosVendaController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ContaController;
 use App\Http\Controllers\ContatoController;
 use App\Http\Controllers\CotationController;
 use App\Http\Controllers\EnderecoController;
@@ -21,10 +22,6 @@ use App\Http\Controllers\VendasServicoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/consultor/{id}', [UsuariosController::class, 'ver']);
-Route::get('/servicos/{id}/view', [ServicoController::class, 'view']);
-Route::get('/perguntas/{servico_id}/view', [PerguntaController::class, 'view']);
-Route::post('/cotations/store', [CotationController::class, 'store']);
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'], function ($router) {
@@ -34,42 +31,10 @@ Route::group([
 
 
 });
-Route::group([
-    'middleware' => 'api',
-    'prefix' => 'site'], function ($router) {
-    Route::get('categorias/list/{id}', [CategoriaController::class, 'listSite']);
-    Route::get('/sessions/list/{id}', [SessionController::class,'listSite']);
-
-
-});
 
 Route::group([
     'middleware' => 'auth'],
     function ($router) {
-        Route::get('/notify/list', [VendaController::class, 'notfications']);
-        Route::get('sessions/list', [SessionController::class, 'list']);
-        Route::get('categorias/list', [CategoriaController::class, 'list']);
-        Route::get('contatos/list', [ContatoController::class, 'list']);
-        Route::get('servicos/list', [ServicoController::class, 'list']);
-        Route::get('perguntas/list', [PerguntaController::class, 'list']);
-        Route::get('cotations/{id}/link', [ServicoController::class, 'link']);
-        Route::put('vendas/{id}/tipoVendaTransform', [VendaController::class, 'tipoVendaTransform']);
-
-
-        Route::resource('contatos', ContatoController::class)->except(['create', 'edit']);
-        Route::resource('enderecos', EnderecoController::class)->except(['create', 'edit']);
         Route::resource('users', UsuariosController::class)->except(['create', 'edit']);
-        Route::resource('business', BusinessController::class)->except(['create', 'edit']);
-        Route::resource('categorias', CategoriaController::class)->except(['create', 'edit']);
-        Route::resource('servicos', ServicoController::class)->except(['create', 'edit']);
-        Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
-        Route::resource('servicos_anexos', ServicosAnexoController::class)->except(['create', 'edit']);
-        Route::resource('sessions', SessionController::class)->except(['create', 'edit']);
-        Route::resource('vendas', VendaController::class)->except(['create', 'edit']);
-        Route::resource('vendas_pagamentos', VendasPagamentoController::class)->except(['create', 'edit']);
-        Route::resource('vendas_servicos', VendasServicoController::class)->except(['create', 'edit']);
-        Route::resource('entrevistas', EntrevistaController::class)->except(['create', 'edit']);
-        Route::resource('perguntas', PerguntaController::class)->except(['create', 'edit']);
-        Route::resource('anexos_vendas', AnexosVendaController::class)->except(['create', 'edit']);
-
+        Route::resource('contas', ContaController::class)->except(['create', 'edit']);
     });

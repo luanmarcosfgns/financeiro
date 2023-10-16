@@ -33,7 +33,10 @@ export default {
             this.classList = 'btn btn-info';
         }else if(this.cor=="preto"){
             this.classList = 'btn btn-dark';
+        }else if(this.cor=="branco"){
+          this.classList = 'btn btn-light';
         }
+
 
         if (this.tamanho=="P"){
             this.classList += this.classList+' btn-sm';
