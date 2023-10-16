@@ -1,0 +1,52 @@
+
+###LIST CONTAS
+GET http://localhost:8000/api/contas
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+###VER CONTAS
+GET http://localhost:8000/api/contas/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+####ADICIONAR CONTAS
+POST http://localhost:8000/api/contas
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "valor":1.1,
+    "tipo":"value",
+    "nome":"Loren Epsun",
+    "mes":1,
+    "user_id":1
+
+}
+####MUDAR CONTAS
+POST http://localhost:8000/api/contas/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "PUT",
+    "valor":1.1,
+    "tipo":"value",
+    "nome":"Loren Epsun",
+    "mes":1,
+    "user_id":1
+
+}
+
+####APAGAR CONTAS
+POST http://localhost:8000/api/contas/1
+Authorization: Bearer :hash
+Content-Type: application/json
+Accept: application/json
+
+{
+    "_method": "DELETE"
+}
