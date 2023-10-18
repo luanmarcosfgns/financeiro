@@ -66,6 +66,7 @@ const routes = [
 const router = createRouter({history: createWebHistory(), routes});
 router.beforeEach((to) => {
     let middleware = new Middleware();
+
     if (!middleware.logout(to)) {
         middleware.routeExists(to);
         middleware.validateHash(to);

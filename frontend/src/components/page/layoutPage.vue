@@ -43,8 +43,7 @@
 </template>
 
 <script>
-import RequestHelper from "@/services/RequestHelper";
-import Helpers from "@/services/Helpers";
+
 
 export default {
   name: "layoutPage",
@@ -54,98 +53,9 @@ export default {
       notifications: 0
     }
   },
-  methods: {
-    async goConfig() {
-      let request = new RequestHelper();
-      let resposeRequest = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view: true});
-      let business_id = await resposeRequest.data.business_id;
-      let helper = new Helpers();
-      if (helper.empty(business_id)) {
-        location.href = '/business/create';
-      } else {
-        location.href = '/business/' + business_id + '/edit';
-      }
-
-    },
-    popover(id) {
-      let popover = document.getElementById(id);
-      if (popover.classList.contains('d-none')) {
-        document.getElementById(id).classList.remove('d-none');
-      } else {
-        document.getElementById(id).classList.add('d-none');
-      }
-
-    },
-    async pullNotificationsInINterval() {
-      // let request = new RequestHelper();
-      // let i = 0;
-      // setInterval(async ()=>{
-      //   let response = await request.getAuth(process.env.VUE_APP_API_HOST_NAME + '/api/notify/list', {});
-      //
-      //   if (i > 0) {
-      //     if(this.countNotification!=response.data.length){
-      //       this.beep()
-      //       this.solicitarPermissaoParaNotificacoes().then((permissaoConcedida)=>{
-      //         if (permissaoConcedida) {
-      //           // Criar uma notificação
-      //           this.criarNotificacao("Facilita Corretora", "Você tem uma nova Notificação!", );
-      //         }
-      //       });
-      //
-      //     }
-      //   }
-      //   this.countNotification = response.data.length;
-      //   this.notifications = response.data;
-      //   i++
-      // },10000)
-
-
-    },
-    beep() {
-     const sound = require('@/assets/notifications.mp3');
-        // Crie um elemento de áudio
-        var audio = new Audio(sound); // Substitua pelo caminho do seu arquivo de áudio
-
-        // Reproduz o som
-        audio.play();
-
-    },
-    solicitarPermissaoParaNotificacoes() {
-      if ("Notification" in window) {
-        // Verifica se as notificações são suportadas pelo navegador
-
-        return Notification.requestPermission().then(function (permission) {
-          return permission === "granted";
-        });
-      } else {
-        console.warn("Notificações não são suportadas neste navegador.");
-        return Promise.resolve(false);
-      }
-    },
-    criarNotificacao(titulo, corpo, icone) {
-      if (Notification.permission === "granted") {
-        // Se a permissão foi concedida, crie uma notificação
-        var options = {
-          body: corpo,
-          icon: icone
-        };
-
-        var notification = new Notification(titulo, options);
-
-        // Lidar com eventos de clique na notificação
-        notification.onclick = function () {
-          // Faça algo quando a notificação for clicada
-        };
-      } else if (Notification.permission === "denied") {
-        console.warn("Permissão para notificações negada pelo usuário.");
-      } else {
-        console.warn("Permissão para notificações não foi concedida.");
-      }
-    }
-
-  },
+  methods: {},
   mounted() {
-    this.pullNotificationsInINterval();
+
   }
 }
 </script>

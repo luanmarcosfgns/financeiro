@@ -60,6 +60,9 @@ export default class Middleware {
     }
 
     async userPermissions(to) {
+       if(!to.meta.auth){
+           return false;
+       }
 
         if (to.href !== '/login' && (to.href.indexOf('/cotations/') == -1 || to.href == '/cotations/index')) {
             setTimeout(async () => {
