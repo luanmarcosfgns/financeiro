@@ -17,12 +17,18 @@ const routes = [
         path: '/login',
         name: 'LoginForm',
         component: LoginForm,
+        meta: {
+            auth: false
+        }
 
     },
     {
         path: '/register',
         name: 'registerForm',
-        component: RegisterForm
+        component: RegisterForm,
+        meta: {
+            auth: false
+        }
     },
     {
         path: '/contas/create',
