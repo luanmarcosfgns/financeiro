@@ -66,6 +66,7 @@ class UserController extends Controller
 
         $user = User::create($validated);
         $validated['business_id'] = $request->user()->business_id;
+        $validated['type'] = 'cliente';
          return response()->json($user);
     }
 
