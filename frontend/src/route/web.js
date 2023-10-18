@@ -70,7 +70,7 @@ router.beforeEach((to) => {
     if (!middleware.logout(to)) {
         middleware.routeExists(to);
         middleware.validateHash(to);
-        middleware.uniqueConfiguration(to);
+
     }
 
 
