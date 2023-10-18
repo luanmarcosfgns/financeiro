@@ -49,7 +49,7 @@ export default class Middleware {
     }
 
     setRegisterLastRouteBeforeLogin() {
-        if (location.pathname !== "/login" && location.pathname !== "/logout") {
+        if (location.pathname !== "/login" && location.pathname !== "/logout" &&  location.pathname !== "/register") {
             localStorage.setItem('href', location.href);
             console.log(localStorage.getItem('href'))
         }
