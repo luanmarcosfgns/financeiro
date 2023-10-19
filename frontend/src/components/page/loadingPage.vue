@@ -9,6 +9,11 @@
 <script>
 export default {
     name: "loadingPage",
+  mounted() {
+    setTimeout(function () {
+      document.getElementsByClassName('loading-page')[0].classList.add('d-none');
+    }, 10000)
+  }
 };
 </script>
 
