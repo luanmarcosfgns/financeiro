@@ -1,5 +1,4 @@
 import Helpers from "@/services/Helpers";
-import RequestHelper from "@/services/RequestHelper";
 
 export default class Middleware {
 
@@ -48,38 +47,11 @@ export default class Middleware {
         return localStorage.getItem('href');
     }
 
-    async userPermissions(to) {
+     userPermissions(to) {
        if(!to.meta.auth){
            return false;
        }
-
-        if (to.href !== '/login' && (to.href.indexOf('/cotations/') == -1 || to.href == '/cotations/index')) {
-            setTimeout(async () => {
-                let request = new RequestHelper();
-                let response = await request.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/auth/me', {view: true});
-
-                if (response?.data) {
-                    let styleTag = document.createElement("style");
-                    document.head.appendChild(styleTag);
-                    if (response?.data?.type == 'admin') {
-
-
-
-                        styleTag.innerHTML = '.admin_d_none {display:none;}';
-                    }
-                    if (response?.data?.type == 'revendedor') {
-                        styleTag.innerHTML = '.revendedor_d_none {display:none;}';
-
-                    }
-                    if (response?.data?.type == 'vendedor') {
-                        styleTag.innerHTML = '.vendedor_d_none {display:none;}';
-                    }
-
-
-                }
-            }, 100)
-
-        }
+       return true;
 
 
     }
