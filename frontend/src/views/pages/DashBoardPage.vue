@@ -55,16 +55,21 @@
         <div class="col-12  p-2 border-bottom">
           <div @click="editContas(row.id)" class="row">
             <div class="col-12">
-              <h5 class="badge bg-danger">R$ {{ new String(row.valor).replace('.', ',') }}</h5>
+              <h5 class="badge" :class="row.tipo=='conta'?'bg-success':'bg-danger'">R$
+                {{ new String(row.valor).replace('.', ',') }}</h5>
             </div>
             <div class="col-12">
               <h2>{{ row.nome }}</h2>
             </div>
           </div>
-          <div class="col-12" @click="deleteRow(row.id)">
-            <button class="btn btn-danger float-end">
+          <div class="col-12">
+            <button @click="deleteRow(row.id)" class="btn btn-danger float-end m-2">
               <i class="bi bi-trash3-fill"></i>
             </button>
+            <button @click="changePago(row.id)" class="btn float-end m-2" :class="row.pago?'btn-success':'btn-danger'">
+              <i class="bi bi-currency-exchange"></i>
+            </button>
+
           </div>
 
         </div>
@@ -148,6 +153,8 @@ export default {
 
       } else {
         this.rows = [];
+        this.tenho = (0.00).toFixed(2);
+        this.devo = (0.00).toFixed(2);
       }
 
 
@@ -162,7 +169,15 @@ export default {
     },
     editContas(id) {
       location.href = '/contas/' + id + '/edit'
-    }
+    },
+    async changePago(id) {
+      let requestHelper = new RequestHelper();
+      await requestHelper.postAuth(process.env.VUE_APP_API_HOST_NAME + '/api/contas/changePago/' + id, {});
+
+      let mes = document.getElementById('mes');
+      this.mes = mes.value;
+      this.list();
+    },
 
   },
   created() {

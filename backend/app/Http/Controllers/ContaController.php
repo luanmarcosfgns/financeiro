@@ -106,4 +106,15 @@ class ContaController extends Controller
         return response()->json(["success" => true, "message" => "Removed success"]);
     }
 
+    public function changePago($id)
+    {
+        $conta = Conta::find($id);
+        if($conta->pago){
+            $conta->pago = false;
+        }else{
+            $conta->pago = true;
+        }
+        $conta->save();
+    }
+
 }

@@ -37,4 +37,5 @@ Route::group([
     function ($router) {
         Route::resource('users', UsuariosController::class)->except(['create', 'edit']);
         Route::resource('contas', ContaController::class)->except(['create', 'edit']);
+        Route::post('contas/changePago/{id}', [ContaController::class,'changePago']);
     });

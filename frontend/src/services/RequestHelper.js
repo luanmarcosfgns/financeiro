@@ -12,7 +12,7 @@ export default class RequestHelper {
                 Authorization: `Bearer ${localStorage.getItem("HASH")}`,
                 Accept: 'application/json',
                 "Content-Type": 'application/json'
-            }
+            },
         })
             .then((response) => {
                 window.axios = response;
