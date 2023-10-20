@@ -119,11 +119,7 @@ export default {
 <style>
 @import "toastr/build/toastr.css";
 
-#app {
+html,body,div#app {
     background: #3baaa1;
-}
-
-html {
-    background: 3baaa1;
 }
 </style>

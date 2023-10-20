@@ -28,7 +28,7 @@ export default {
     background-color: dodgerblue !important;
 }
 html{
-    background-color: #3baaa1;
+    background-color: dodgerblue;
     height: 100% !important;
 }
 </style>

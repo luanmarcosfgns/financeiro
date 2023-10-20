@@ -65,42 +65,4 @@ body {
   padding: 2px;
 }
 
-.nav-link {
-  color: #3baaa1 !important;
-  font-weight: bold;
-}
-
-.custom-popover {
-
-  position: absolute;
-  background-color: #fff;
-  border: 0px solid #ccc;
-  padding: 10px;
-  z-index: 9999;
-  top: 100%;
-  left: 45%;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
-
-
-}
-
-.popover-header {
-  font-weight: bold;
-  border-bottom: 1px solid #ccc;
-  text-align: center;
-}
-
-.popover-body {
-  font-size: 13px;
-  padding: 5px;
-  max-width: 200px;
-  word-break: normal;
-  border-bottom: 1px solid #ccc;
-
-
-}
-.popover-body>a{
-  text-decoration: none
-}
 </style>
