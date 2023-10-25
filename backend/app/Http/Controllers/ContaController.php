@@ -47,6 +47,10 @@ class ContaController extends Controller
         if (!empty($request->mes)) {
             $contas =  $contas->where('mes', $request->mes);
         }
+        if (!empty($request->search)) {
+            $contas =  $contas->where('nome','like', '%'.$request->search.'%');
+        }
+
 
         $data = $contas->get();
 

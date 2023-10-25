@@ -6,7 +6,7 @@
           <button class="button-circle bg-danger">
             <span class="button-title">Devo:</span>
             <br>
-            <span class="tenho">R$ {{ new String(tenho).replace('.', ',') }}</span>
+            <span class="tenho">R$ {{ new String(devo).replace('.', ',') }}</span>
           </button>
 
         </div>
@@ -15,7 +15,7 @@
           <button class="button-circle bg-primary">
             <span class="button-title">Tenho:</span>
             <br>
-            <span class="tenho">R$ {{ new String(devo).replace('.', ',') }}</span>
+            <span class="tenho">R$ {{ new String(tenho).replace('.', ',') }}</span>
           </button>
 
         </div>
@@ -23,7 +23,12 @@
     </div>
     <div class="card-body">
       <div class="row">
-        <div class="col-8">
+        <div class="col-12">
+          <div class="text-center">
+            <span class="badge bg-primary">R$ {{ new String(diferenca).replace('.', ',') }}</span>
+          </div>
+        </div>
+        <div class="col-8 ">
           <input-form placeholder="Selecione Mês " class-list="col-12" type="select"
                       :items="[
                   {id:'1',message:'Janeiro'},
@@ -39,15 +44,17 @@
                   {id:'11',message:'Novembro'},
                   {id:'12',message:'Dezembro'}
                   ]"
-                      label="Mẽs " :value="mes"
+                      label="Mês " :value="mes"
                       name="mes"/>
         </div>
         <div class="col-4 pt-4 text-center ">
-          <router-link class="btn btn-primary" to="/contas/create">Novo</router-link>
+          <button  type="button" @click="abrirModal(true)" class="btn btn-success">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
+
       </div>
     </div>
-
 
     <div class="card-body " id="list-transactions">
       <div class="row" v-for="row in rows" v-bind:key="row">
@@ -76,7 +83,13 @@
 
       </div>
     </div>
+    <router-link class="btn btn-primary btn-float" to="/contas/create">+</router-link>
 
+    <modal-widget-vue v-if="modal">
+      <span @click="fecharModal" class="close">&times;</span>
+      <input-form type="string" name="searchConta" class-list="m-3" label="Digite sua Pesquisa"></input-form>
+      <button @click="pesquisa" class="btn-success btn">Pesquisar</button>
+    </modal-widget-vue>
   </layout-page>
 </template>
 
@@ -86,12 +99,13 @@ import RequestHelper from "@/services/RequestHelper";
 import Helpers from "@/services/Helpers";
 
 import InputForm from "@/components/form/inputForm.vue";
+import ModalWidgetVue from "@/components/widget/modalWidgetVue.vue";
 
 
 export default {
   name: "DashBoardPage",
 
-  components: {InputForm, LayoutPage},
+  components: {ModalWidgetVue, InputForm, LayoutPage},
   data() {
     return {
       nome: '',
@@ -99,11 +113,27 @@ export default {
       search: null,
       tenho: 0,
       devo: 0,
-      mes: new Date().getMonth() + 1
+      diferenca: 0,
+      mes: new Date().getMonth() + 1,
+      modal:false,
     }
   },
 
   methods: {
+    async pesquisa() {
+      let pesquisa = document.getElementById('searchConta').value;
+      if (!new Helpers().empty(pesquisa)) {
+        this.search = pesquisa;
+      }
+      this.list();
+      this.modal = false;
+    },
+    abrirModal(){
+      this.modal = true;
+    },
+    fecharModal(){
+      this.modal = false;
+    },
     async name() {
       let request = new RequestHelper();
 
@@ -156,6 +186,8 @@ export default {
         this.tenho = (0.00).toFixed(2);
         this.devo = (0.00).toFixed(2);
       }
+      this.diferenca = this.tenho - this.devo;
+      this.diferenca = this.diferenca.toFixed(2);
 
 
     },
@@ -184,8 +216,6 @@ export default {
     this.name();
   },
   mounted() {
-    let transaction = document.getElementById('list-transactions');
-    transaction.style.height = '100%'
     this.list();
     let mes = document.getElementById('mes');
     mes.addEventListener('change', () => {
@@ -256,6 +286,39 @@ body {
 
 .button-circle > span.button-title {
   font-weight: 800 !important;
+}
+
+.btn-float {
+  position: absolute;
+  right: 10px;
+  bottom: 30px;
+  border-radius: 50px !important;
+  height: 60px;
+  width: 60px;
+  padding-top: 15px !important;
+  font-size: 20px !important;
+  font-weight: 450 !important;
+
+}
+
+#list-transactions {
+  overflow: scroll;
+  bottom: 5px;
+  height: 320px;
+}
+.close {
+  color: #aaaaaa;
+  float: right !important;
+  text-align: right;
+  font-size: 28px !important;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 </style>
