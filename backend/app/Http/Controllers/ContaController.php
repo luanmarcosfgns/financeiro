@@ -62,6 +62,7 @@ class ContaController extends Controller
 
         $validated = $this->validated("store", $request);
         $validated['user_id'] = $request->user()->id;
+        $validated['pago'] = 0;
         $conta = Conta::create($validated);
 
         return response()->json($conta);
